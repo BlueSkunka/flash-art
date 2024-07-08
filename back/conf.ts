@@ -5,7 +5,8 @@ interface Env {
     MONGODB_USER: string;
     MONGODB_PWD: string;
     MONGODB_CLUSTER: string;
-    MONGODB_DATABASE?: string;
+    MONGODB_DATABASE: string;
+    JWT_CAT_SECRET: string;
 }
 
 
@@ -14,4 +15,5 @@ export const myEnv: Env = {
     MONGODB_PWD : process.env.MONGODB_PWD  || '',
     MONGODB_CLUSTER : process.env.MONGODB_CLUSTER  || '',
     MONGODB_DATABASE : process.env.MONGODB_DATABASE  || '',
+    JWT_CAT_SECRET : process.env.MONGODB_DATABASE  || '',
 }

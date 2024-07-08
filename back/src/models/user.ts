@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 interface IUser {
     email: string;
-    password: string;
+    password: string|undefined;
     lastname: string;
     firstname: string;
     role: string;
