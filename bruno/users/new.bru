@@ -1,13 +1,13 @@
 meta {
-  name: register
+  name: new
   type: http
-  seq: 2
+  seq: 5
 }
 
 post {
-  url: {{base_url}}/users/register
+  url: {{base_url}}/users
   body: json
-  adminAuth: none
+  auth: none
 }
 
 body:json {
