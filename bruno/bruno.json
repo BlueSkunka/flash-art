@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "chall-node-mango-vue",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

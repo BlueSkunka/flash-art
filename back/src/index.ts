@@ -1,7 +1,9 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import {DbConnect} from './db'
 
 const app = new Hono()
+await DbConnect()
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
