@@ -1,12 +1,13 @@
 import { Date, Number, Schema, Types, model } from "mongoose";
 import { IUser } from "./user";
 import { ILink } from "./link";
+import { IStyle } from "./style";
 
 interface ITattooer extends IUser {
     surname: string;
     place: string;
     links: ILink;
-    styles: T;
+    styles: IStyle;
 }
 
 const tattooerSchema = new Schema<ITattooer>({
