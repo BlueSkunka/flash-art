@@ -1,5 +1,7 @@
 enum Role {
     USER = "user",
-    TATTOER = "tattooer",
+    TATTOOER = "tattooer",
     ADMIN = "admin"
 }
+
+export default Role

@@ -6,6 +6,7 @@ import { sign } from 'hono/jwt'
 import { myEnv } from "../../conf";
 import bcrypt from 'bcrypt'
 import Response from '../enums/response';
+import Role from '../enums/role';
 
 
 const api = new Hono().basePath('/tattooers');
@@ -15,10 +16,12 @@ const api = new Hono().basePath('/tattooers');
 // Récupération de tous les tattoueurs 
 api.get('', async (c) => {
     try {
-        const tattoers = await Tattooer.find({}, {}, { "populate": "tattoers" });
+        const tattoers = await Tattooer.find({});
 
         return c.json(tattoers, Response.OK);
     } catch (error: unknown) {
+        console.error(error);
+
         return c.newResponse("An internal error has occurred", Response.INTERNAL_SERVER_ERROR);
     }
 })
@@ -45,13 +48,13 @@ api.post('/register',
             const email = body.email;
             const existingUser = await Tattooer.findOne({ email });
 
-            if (null !== null) {
+            if (null !== existingUser) {
                 return c.newResponse('Tattoer already exist !', Response.BAD_REQUEST);
             }
 
             const tattoer = new Tattooer(body);
             tattoer.password = bcrypt.hashSync(tattoer.password, 10);
-            tattoer.role = Role.TATTOER;
+            tattoer.role = Role.TATTOOER;
             tattoer.inscriptionDate = new Date();
 
             const saveTattooer = await tattoer.save();
@@ -59,6 +62,7 @@ api.post('/register',
 
             return c.json(saveTattooer);
         } catch (error: unknown) {
+            console.error(error);
             return c.newResponse("An internal error has occurred", Response.INTERNAL_SERVER_ERROR);
         }
     }
@@ -120,6 +124,8 @@ api.put('/:id', async (c) => {
 
         return c.json(tattoer, 200);
     } catch (error: unknown) {
+        console.error(error);
+
         return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
     }
 })
@@ -140,6 +146,8 @@ api.get('/:id', async (c) => {
 
         return c.json(tattooer, Response.OK)
     } catch (error: unknown) {
+        console.error(error);
+
         return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
     }
 })
@@ -161,7 +169,9 @@ api.delete('/:id', async (c) => {
 
         return c.newResponse("Tattooer not found", Response.BAD_REQUEST);
     } catch (error: unknown) {
+        console.error(error);
 
+        return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
     }
 })
 

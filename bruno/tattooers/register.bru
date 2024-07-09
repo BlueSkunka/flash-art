@@ -1,0 +1,30 @@
+meta {
+  name: register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/tattooers/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "tattoo@mail.com",
+    "password": "password",
+    "firstname": "Jean",
+    "lastname": "Neymar",
+    "surname": "Grosse blague",
+    "place": "Groupama Stadium",
+    "links": [{
+      "name": "Instagram",
+      "url": "instagram.com"
+    }],
+    "styles": [
+      {"name": "anime"},
+      {"name": "mignon"}
+    ]
+  }
+}
