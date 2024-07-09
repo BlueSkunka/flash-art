@@ -6,6 +6,7 @@ import {customCors} from "./middlewares/customCors";
 import { logger } from 'hono/logger';
 import users from "./routes/users";
 import tattooers from './routes/tattoer'
+import flashes from './routes/flashs';
 
 const app = new Hono()
 await DbConnect()
@@ -18,6 +19,7 @@ app.get('/api', (c) => {
 
 app.route('/api', tattooers)
 app.route('/api', users)
+app.route('/api', flashes)
 
 app.use(customCors)
 
