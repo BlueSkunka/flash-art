@@ -5,7 +5,8 @@ interface IOpinion {
     tattooer: Types.ObjectId,
     flash: Types.ObjectId,
     rate: number,
-    commentary: string
+    commentary: string,
+    createdAt: Date
 }
 
 const opinionSchema = new Schema<IOpinion>({
@@ -13,7 +14,8 @@ const opinionSchema = new Schema<IOpinion>({
     tattooer: { type: Types.ObjectId, required: true },
     flash: { type: Types.ObjectId, required: true },
     rate: { type: Number, required: true },
-    commentary: { type: String }
+    commentary: { type: String },
+    createdAt: { type: Date, required: true }
 })
 
 const Opinion = model<IOpinion>('opinions', opinionSchema);

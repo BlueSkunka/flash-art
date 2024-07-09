@@ -102,6 +102,10 @@ api.put('/:id',
         const id = c.req.param('id');
 
         try {
+            if (!isValidObjectId(id)) {
+                return c.newResponse('Identifier is not valid', Response.BAD_REQUEST)
+            }
+
             const flash = await Flash.findOneAndUpdate({ id }, { ...body })
 
             if (null === flash) {
@@ -131,7 +135,7 @@ api.delete('/:id', async (c) => {
             return c.newResponse(null, Response.NO_CONTENT);
         }
 
-        return c.newResponse("Tattooer not found", Response.BAD_REQUEST);
+        return c.newResponse("Flash not found", Response.BAD_REQUEST);
     } catch (error: unknown) {
         console.error(error);
 
