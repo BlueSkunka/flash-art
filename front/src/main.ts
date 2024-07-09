@@ -7,6 +7,13 @@ import Lara from '@/presets/lara'
 
 import App from './App.vue'
 import router from './router'
+import Toast from "primevue/toast";
+import Menubar from "primevue/menubar";
+import Ripple from "primevue/ripple";
+import Tooltip from "primevue/tooltip";
+import Card from "primevue/card"
+import Button from "primevue/button";
+
 
 const app = createApp(App)
 
@@ -17,6 +24,16 @@ app.use(PrimeVue, {
     unstyled: true,
     pt: Lara
 });
-
+app.directive('ripple', Ripple);
+app.directive('tooltip', Tooltip);
+app.directive('focus', {
+    mounted(el) {
+        el.focus();
+    },
+});
+app.component("Toast", Toast);
+app.component("Menubar", Menubar);
+app.component("Card", Card);
+app.component("Button", Button);
 
 app.mount('#app')
