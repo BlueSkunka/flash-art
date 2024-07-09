@@ -7,6 +7,7 @@ import { myEnv } from "../../conf";
 import bcrypt from 'bcrypt'
 import StatusCode from '../enums/statusCode';
 import Role from '../enums/role';
+import { identifer } from '../middlewares/identifier';
 
 
 const api = new Hono().basePath('/tattooers');
@@ -107,7 +108,7 @@ api.post('/login',
 )
 
 // Mise à jour du profil tattoueur
-api.put('/:id', async (c) => {
+api.put('/:id', identifer(), async (c) => {
     const body = await c.req.json();
     const id = c.req.param('id');
 
@@ -131,7 +132,7 @@ api.put('/:id', async (c) => {
 })
 
 // Voir le profil d'un tattoueur
-api.get('/:id', async (c) => {
+api.get('/:id', identifer(), async (c) => {
     const id = c.req.param('id');
     try {
         if (!isValidObjectId(id)) {
@@ -153,7 +154,7 @@ api.get('/:id', async (c) => {
 })
 
 // Supprimer tattoueur
-api.delete('/:id', async (c) => {
+api.delete('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
         if (!isValidObjectId(id)) {
