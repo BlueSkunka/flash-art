@@ -1,6 +1,6 @@
-import {createMiddleware} from 'hono/factory'
-import {verify} from 'hono/jwt'
-import {User} from "../models/user";
+import { createMiddleware } from 'hono/factory'
+import { verify } from 'hono/jwt'
+import { User } from "../models/user";
 import StatusCode from "../enums/statusCode";
 
 const guard = (role: string) => createMiddleware(async (c, next) => {
@@ -9,25 +9,24 @@ const guard = (role: string) => createMiddleware(async (c, next) => {
 
     const token = authorization?.replace("Bearer ", "")
 
-    const {header, payload} = verify(token)
+    const { header, payload } = verify(token)
 
     const _id = payload._id
 
     try {
-        const user = await User.findOne({_id})
+        const user = await User.findOne({ _id })
 
         if (!user) {
             await next();
 
-            c.status(403)
-            c.res = new StatusCode("Unauthorized")
+            c.res = new Response("Forbidden", { status: StatusCode.FORBIDDEN })
 
             return c.res
         } else {
             if (user.role !== role) {
                 await next();
 
-                c.res = new Response("Unauthorized", {status: StatusCode.FORBIDDEN})
+                c.res = new Response("Forbidden", { status: StatusCode.FORBIDDEN })
 
                 return c.res
             } else {
@@ -39,4 +38,4 @@ const guard = (role: string) => createMiddleware(async (c, next) => {
     }
 })
 
-export {guard}
+export { guard }
