@@ -1,13 +1,9 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import {DbConnect} from './db'
-
-import login from './routes/users'
-import {myEnv} from "../conf";
-import { jwt } from 'hono/jwt'
-import {bearerAuth} from "hono/bearer-auth";
-import {verify} from "hono/jwt";
 import users from "./routes/users";
+import {cors} from "hono/cors";
+import {customCors} from "./middlewares/customCors";
 
 const app = new Hono()
 await DbConnect()
@@ -17,6 +13,8 @@ app.get('/', (c) => {
 })
 
 app.route('/api', users)
+
+app.use(customCors)
 
 const port = 3000
 console.log(`Server is running on port ${port}`)

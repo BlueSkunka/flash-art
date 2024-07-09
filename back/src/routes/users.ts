@@ -5,10 +5,13 @@ import {sign} from 'hono/jwt'
 import {myEnv} from "../../conf";
 import bcrypt from 'bcrypt'
 import {isValidObjectId} from "mongoose";
+import {customCors} from "../middlewares/customCors";
 
 const api = new Hono().basePath('/users');
 
-api.get('', async (c) => {
+api.get('',
+    customCors,
+    async (c) => {
     try {
         const users = await User.find({})
 
@@ -18,7 +21,9 @@ api.get('', async (c) => {
     }
 })
 
-api.get('/:id', async (c) => {
+api.get('/:id',
+    customCors,
+    async (c) => {
     const _id = c.req.param('id')
 
     if (isValidObjectId(_id)) {
@@ -29,6 +34,7 @@ api.get('/:id', async (c) => {
 })
 
 api.post('',
+    customCors,
     validator('json', (body, c) => {
         if (
             body.email === undefined ||
@@ -67,6 +73,7 @@ api.post('',
     })
 
 api.put('/:id',
+    customCors,
     validator('json', (body, c) => {
         if (
             body.email === undefined ||
@@ -102,7 +109,9 @@ api.put('/:id',
         return c.json(tryToUpdate, 200)
     })
 
-api.delete('/:id', async (c) => {
+api.delete('/:id',
+    customCors,
+    async (c) => {
     const _id = c.req.param('id')
     const tryToDelete = await User.deleteOne({_id})
     const {deletedCount} = tryToDelete
@@ -117,6 +126,7 @@ api.delete('/:id', async (c) => {
 
 
 api.post('/register',
+    customCors,
     validator('json', (body, c) => {
         if (
             body.email === undefined ||
@@ -155,6 +165,7 @@ api.post('/register',
     })
 
 api.post('/login',
+    customCors,
     validator('json', (body, c) => {
         if (body.email === undefined || body.password === undefined) {
             return c.text('Bad Request', 400)
@@ -166,7 +177,6 @@ api.post('/login',
         const {email, password} = c.req.valid('json')
 
         const currentUser = await User.findOne({email})
-
         if (!currentUser) {
             return c.text('Email or Password invalid', 401)
         }
@@ -187,7 +197,7 @@ api.post('/login',
             myEnv.JWT_CAT_SECRET
         );
 
-        return c.json({token: token})
+        return c.json({token: token}, 200)
     })
 
 export default api
