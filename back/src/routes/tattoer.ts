@@ -1,9 +1,9 @@
-import { Hono } from 'hono';
-import { validator } from "hono/validator";
-import { isValidObjectId } from 'mongoose';
-import { Tattooer } from '../models/tattooer';
-import { sign } from 'hono/jwt'
-import { myEnv } from "../../conf";
+import {Hono} from 'hono';
+import {validator} from "hono/validator";
+import {isValidObjectId} from 'mongoose';
+import {Tattooer} from '../models/tattooer';
+import {sign} from 'hono/jwt'
+import {myEnv} from "../../conf";
 import bcrypt from 'bcrypt'
 import StatusCode from '../enums/statusCode';
 import Role from '../enums/role';
@@ -50,7 +50,7 @@ api.post('/register',
             const existingUser = await Tattooer.findOne({ email });
 
             if (null !== existingUser) {
-                return c.newResponse('Tattoer already exist !', StatusCode.BAD_REQUEST);
+                return c.newResponse('Tattoer already exist !', StatusCode.CONFLICT);
             }
 
             const tattoer = new Tattooer(body);
@@ -61,9 +61,8 @@ api.post('/register',
             const saveTattooer = await tattoer.save();
             saveTattooer.password = undefined;
 
-            return c.json(saveTattooer);
+            return c.json(saveTattooer, 201);
         } catch (error: unknown) {
-            console.error(error);
             return c.newResponse("An internal error has occurred", StatusCode.INTERNAL_SERVER_ERROR);
         }
     }

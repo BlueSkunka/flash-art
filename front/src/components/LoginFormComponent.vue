@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useAuthStore} from "@/stores/auth";
 import {useToast} from "primevue/usetoast";
+import {useRouter} from "vue-router";
 
 const toast = useToast();
 
@@ -14,6 +15,20 @@ const form = {
 
 const isPasswordValid = ref(false);
 const isEmailValid = ref(false)
+
+let urlParams = new URLSearchParams(window.location.search);
+const isRegistered = urlParams.get('isRegistered')
+
+onMounted(() => {
+  if (isRegistered === '1') {
+    toast.add({
+      severity: 'success',
+      summary: 'Compte créé',
+      detail: 'Votre compte a été créé vous pouvez maintenant vous connectez',
+      life: 3000
+    });
+  }
+})
 
 async function submit(e: Event) {
   e.preventDefault()
@@ -34,7 +49,12 @@ async function submit(e: Event) {
     const isLogged = await auth.login(form.email.value, form.password.value)
 
     if (false === isLogged) {
-      toast.add({severity: 'warn', summary: 'Erreur', detail: 'Identifiant invalide'});
+      toast.add({
+        severity: 'warn',
+        summary: 'Erreur',
+        detail: 'Identifiant invalide',
+        life: 3000
+      });
     }
   }
 }

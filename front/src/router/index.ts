@@ -13,6 +13,8 @@ import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
 import FlashDetailView from "@/views/FlashDetailView.vue";
 import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
+import TattooerRegisterView from "@/views/TattooerRegisterView.vue";
+import UserRegisterView from "@/views/UserRegisterView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -110,6 +112,29 @@ const router = createRouter({
             ]
         }
     ]
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/tatoueurs',
+      name: 'tatoueurs',
+      component: TatoueursView
+    },
+      {
+          path: '/register/tatoueur',
+          name: 'register-tattooer',
+          component: TattooerRegisterView
+      },
+      {
+          path: '/register/client',
+          name: 'register-user',
+          component: UserRegisterView
+      },
+    {
+      path: '/login',
+        component: LoginView,
+        name: "login"
+    },
+  ]
 })
 
 export default router
