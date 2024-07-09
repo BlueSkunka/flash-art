@@ -1,16 +1,17 @@
-import { Hono } from 'hono'
-import { User } from '../models/user'
-import { validator } from "hono/validator";
-import { sign } from 'hono/jwt'
-import { myEnv } from "../../conf";
+import {Hono} from 'hono'
+import {User} from '../models/user'
+import {validator} from "hono/validator";
+import {sign} from 'hono/jwt'
+import {myEnv} from "../../conf";
 import bcrypt from 'bcrypt'
 import {isValidObjectId} from "mongoose";
-import {customCors} from "../middlewares/customCors";
+import {guard} from "../middlewares/guard";
+import Role from "../enums/role";
 
 const api = new Hono().basePath('/users');
 
 api.get('',
-    customCors,
+    guard(Role.ADMIN),
     async (c) => {
     try {
         const users = await User.find({})
@@ -22,7 +23,7 @@ api.get('',
 })
 
 api.get('/:id',
-    customCors,
+    guard(Role.ADMIN),
     async (c) => {
     const _id = c.req.param('id')
 
@@ -34,7 +35,7 @@ api.get('/:id',
 })
 
 api.post('',
-    customCors,
+    guard(Role.ADMIN),
     validator('json', (body, c) => {
         if (
             body.email === undefined ||
@@ -59,7 +60,7 @@ api.post('',
 
             let user = new User(body)
             user.password = bcrypt.hashSync(user.password, 10)
-            user.role = "user"
+            user.role = Role.USER
             user.inscriptionDate = new Date()
 
             user = await user.save()
@@ -73,7 +74,7 @@ api.post('',
     })
 
 api.put('/:id',
-    customCors,
+    guard(Role.ADMIN),
     validator('json', (body, c) => {
         if (
             body.email === undefined ||
@@ -110,7 +111,7 @@ api.put('/:id',
     })
 
 api.delete('/:id',
-    customCors,
+    guard(Role.ADMIN),
     async (c) => {
     const _id = c.req.param('id')
     const tryToDelete = await User.deleteOne({_id})
@@ -126,7 +127,6 @@ api.delete('/:id',
 
 
 api.post('/register',
-    customCors,
     validator('json', (body, c) => {
         if (
             body.email === undefined ||
@@ -165,7 +165,6 @@ api.post('/register',
     })
 
 api.post('/login',
-    customCors,
     validator('json', (body, c) => {
         if (body.email === undefined || body.password === undefined) {
             return c.text('Bad Request', 400)
@@ -175,7 +174,8 @@ api.post('/login',
     }),
     async (c) => {
         const { email, password } = c.req.valid('json')
-        const currentUser = await User.findOne({ email })
+        const currentUser = await User.findOne({email}, "password firstname lastname role email");
+
         if (!currentUser) {
             return c.text('Email or Password invalid', 401)
         }
@@ -187,14 +187,14 @@ api.post('/login',
         }
 
         const token = await sign({
-            _id: currentUser._id,
-            firstname: currentUser.firstname,
-            lastname: currentUser.lastname,
-            role: currentUser.role,
-            inscriptionDate: currentUser.inscriptionDate,
+                _id: currentUser._id
         },
             myEnv.JWT_CAT_SECRET
         );
+
+        currentUser.password = undefined
+
+        console.log(token)
   
         return c.json({
             token: token,

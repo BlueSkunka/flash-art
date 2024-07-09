@@ -15,7 +15,8 @@ const form = {
 const isPasswordValid = ref(false);
 const isEmailValid = ref(false)
 
-async function submit() {
+async function submit(e: Event) {
+  e.preventDefault()
 
   if (String(form.email.value)
       .toLowerCase()
@@ -42,26 +43,29 @@ async function submit() {
 <template>
   <Toast/>
 
-  <div class="flex flex-col gap-2">
-    <label for="email">Email</label>
-    <IconField iconPosition="left">
-      <InputIcon>
-        <i class="pi pi-envelope"/>
-      </InputIcon>
+  <form @submit="submit">
+    <div class="flex flex-col gap-2">
+      <label for="email">Email</label>
+      <IconField iconPosition="left">
+        <InputIcon>
+          <i class="pi pi-envelope"/>
+        </InputIcon>
 
 
-      <InputText id="email" v-model="form.email.value" v-if="!isEmailValid" invalid/>
-      <InputText id="email" v-model="form.email.value" v-else placeholder="Email"/>
-    </IconField>
-  </div>
+        <InputText type="email" id="email" v-model="form.email.value" v-if="!isEmailValid" invalid/>
+        <InputText type="email" id="email" v-model="form.email.value" v-else placeholder="Email"/>
+      </IconField>
+    </div>
 
 
-  <div class="flex flex-col gap-2 mb-3">
-    <label for="password">Mot de passe</label>
-    <Password inputId="password" toggleMask v-model="form.password.value"/>
-  </div>
+    <div class="flex flex-col gap-2 mb-3">
+      <label for="password">Mot de passe</label>
+      <InputText type="password" id="password" v-model="form.password.value"/>
+    </div>
 
-  <Button label="Se connecter" @click="submit"/>
+    <Button type="submit" label="Se connecter"/>
+  </form>
+
 </template>
 
 <style scoped>
