@@ -197,7 +197,10 @@ api.post('/login',
             myEnv.JWT_CAT_SECRET
         );
 
-        return c.json({token: token}, 200)
+        return c.json({
+            token: token,
+            user: currentUser
+        }, 200)
     })
 
 export default api

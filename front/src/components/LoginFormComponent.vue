@@ -32,8 +32,6 @@ async function submit() {
   if (isEmailValid.value && isPasswordValid.value) {
     const isLogged = await auth.login(form.email.value, form.password.value)
 
-    console.log(isLogged)
-
     if (false === isLogged) {
       toast.add({severity: 'warn', summary: 'Erreur', detail: 'Identifiant invalide'});
     }
