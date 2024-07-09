@@ -13,8 +13,6 @@ const form = {
   lastname: ref(""),
   email: ref(""),
   password: ref(""),
-  surname: ref(""),
-  place: ref(""),
 }
 
 const isPasswordValid = ref(false);

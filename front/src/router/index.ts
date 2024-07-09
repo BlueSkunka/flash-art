@@ -73,6 +73,20 @@ const router = createRouter({
                     }
                 },
                 {
+                    path: '/register/user',
+                    component: UserRegisterView,
+                    meta: {
+                        layout: BaseLayout
+                    }
+                },
+                {
+                    path: '/register/tattooer',
+                    component: TattooerRegisterView,
+                    meta: {
+                        layout: BaseLayout
+                    }
+                },
+                {
                     path: '/event/1',
                     component: EventDetailsView
                 }
@@ -112,29 +126,6 @@ const router = createRouter({
             ]
         }
     ]
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/tatoueurs',
-      name: 'tatoueurs',
-      component: TatoueursView
-    },
-      {
-          path: '/register/tatoueur',
-          name: 'register-tattooer',
-          component: TattooerRegisterView
-      },
-      {
-          path: '/register/client',
-          name: 'register-user',
-          component: UserRegisterView
-      },
-    {
-      path: '/login',
-        component: LoginView,
-        name: "login"
-    },
-  ]
 })
 
 export default router
