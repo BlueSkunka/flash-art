@@ -7,8 +7,6 @@ const guard = (role: string) => createMiddleware(async (c, next) => {
 
     const authorization = c.req.header("Authorization")
 
-    console.log(authorization)
-
     const token = authorization?.replace("Bearer ", "")
 
     const {header, payload} = verify(token)
