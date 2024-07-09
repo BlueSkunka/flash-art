@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt'
 import {isValidObjectId} from "mongoose";
 import {guard} from "../middlewares/guard";
 import Role from "../enums/role";
+import StatusCode from "../enums/statusCode";
 
 const api = new Hono().basePath('/users');
 
@@ -18,7 +19,7 @@ api.get('',
 
         return c.json(users)
     } catch (error: any) {
-        return c.json(error._message, 400)
+        return c.json(error._message, StatusCode.BAD_REQUEST)
     }
 })
 
@@ -31,7 +32,7 @@ api.get('/:id',
         const user = await User.findOne({_id})
         return c.json(user)
     }
-    return c.json({msg: 'ObjectId malformed'}, 400)
+    return c.json({msg: 'ObjectId malformed'}, StatusCode.BAD_REQUEST)
 })
 
 api.post('',
@@ -43,7 +44,7 @@ api.post('',
             body.firstname === undefined ||
             body.lastname === undefined
         ) {
-            return c.text('Bad Request', 400)
+            return c.text('Bad Request', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -55,7 +56,7 @@ api.post('',
             const currentUser = await User.findOne({email})
 
             if (currentUser !== null) {
-                return c.text("User already exist !", 400)
+                return c.text("User already exist !", StatusCode.CONFLICT)
             }
 
             let user = new User(body)
@@ -69,7 +70,7 @@ api.post('',
 
             return c.json(user)
         } catch (error: any) {
-            return c.json(error._message, 400)
+            return c.json(error._message, StatusCode.BAD_REQUEST)
         }
     })
 
@@ -82,7 +83,7 @@ api.put('/:id',
             body.firstname === undefined ||
             body.lastname === undefined
         ) {
-            return c.text('Bad Request', 400)
+            return c.text('Bad Request', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -146,7 +147,7 @@ api.post('/register',
             const currentUser = await User.findOne({ email })
 
             if (currentUser !== null) {
-                return c.text("User already exist !", 400)
+                return c.text("User already exist !", 409)
             }
 
             let user = new User(body)
@@ -158,8 +159,9 @@ api.post('/register',
 
             user.password = undefined
 
-            return c.json(user)
+            return c.json(user, 201)
         } catch (error: any) {
+            console.log(error)
             return c.json(error._message, 400)
         }
     })

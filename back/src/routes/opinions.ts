@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { isValidObjectId } from "mongoose";
-import Response from "../enums/response";
 import { Opinion } from "../models/opinion";
 import { validator } from "hono/validator";
+import StatusCode from "../enums/statusCode";
 
 const api = new Hono().basePath('/opinions')
 
@@ -13,7 +13,7 @@ api.get('/tattooer/:id', async (c) => {
     const id = c.req.param('id')
     try {
         if (!isValidObjectId(id)) {
-            return c.newResponse('Invalid identifier', Response.BAD_REQUEST)
+            return c.newResponse('Invalid identifier', StatusCode.BAD_REQUEST)
         }
 
         const opinions = await Opinion.find({ tattooer: { "_id": id } })
@@ -21,7 +21,7 @@ api.get('/tattooer/:id', async (c) => {
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse('An internal server error has occured', Response.INTERNAL_SERVER_ERROR)
+        return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR)
     }
 })
 
@@ -30,7 +30,7 @@ api.get('/user/:id', async (c) => {
     const id = c.req.param('id')
     try {
         if (!isValidObjectId(id)) {
-            return c.newResponse('Invalid identifier', Response.BAD_REQUEST)
+            return c.newResponse('Invalid identifier', StatusCode.BAD_REQUEST)
         }
 
         const opinions = await Opinion.find({ user: { "_id": id } })
@@ -38,7 +38,7 @@ api.get('/user/:id', async (c) => {
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse('An internal server error has occured', Response.INTERNAL_SERVER_ERROR)
+        return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR)
     }
 })
 
@@ -50,7 +50,7 @@ api.post('',
             undefined === body.flash ||
             undefined === body.rate
         ) {
-            return c.newResponse('Form is invalid', Response.BAD_REQUEST)
+            return c.newResponse('Form is invalid', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -66,7 +66,7 @@ api.post('',
         } catch (error: unknown) {
             console.error(error);
 
-            return c.newResponse('An internal server error has occured', Response.INTERNAL_SERVER_ERROR)
+            return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR)
         }
     }
 )
@@ -79,7 +79,7 @@ api.put('/:id',
             undefined === body.flash ||
             undefined === body.rate
         ) {
-            return c.newResponse('Form is invalid', Response.BAD_REQUEST)
+            return c.newResponse('Form is invalid', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -89,20 +89,20 @@ api.put('/:id',
         const id = c.req.param('id')
         try {
             if (!isValidObjectId(id)) {
-                return c.newResponse('Identifier is not valid', Response.BAD_REQUEST)
+                return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
             }
 
             const opinion = await Opinion.findOneAndUpdate({ id }, { ...body })
 
             if (null === opinion) {
-                return c.newResponse('Opinion not found', Response.BAD_REQUEST)
+                return c.newResponse('Opinion not found', StatusCode.BAD_REQUEST)
             }
 
             return c.json(opinion)
         } catch (error: unknown) {
             console.error(error);
 
-            return c.newResponse('An internal server error has occured', Response.INTERNAL_SERVER_ERROR);
+            return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR);
         }
     }
 )
@@ -112,21 +112,21 @@ api.delete('/:id', async (c) => {
     const id = c.req.param('id')
     try {
         if (!isValidObjectId(id)) {
-            return c.newResponse('Identifier is not valid', Response.BAD_REQUEST)
+            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
         }
 
         const result = await Opinion.deleteOne({ id })
         const { deletedCount } = result;
 
         if (deletedCount) {
-            return c.newResponse(null, Response.NO_CONTENT);
+            return c.newResponse(null, StatusCode.NO_CONTENT);
         }
 
-        return c.newResponse("Opinion not found", Response.BAD_REQUEST);
+        return c.newResponse("Opinion not found", StatusCode.BAD_REQUEST);
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
+        return c.newResponse('An internal error occured', StatusCode.INTERNAL_SERVER_ERROR);
     }
 })
 
