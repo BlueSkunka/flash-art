@@ -31,6 +31,5 @@ export default {
     content: {
     },
     footer: {
-        class: 'pt-3' // Top padding.
     }
 };
