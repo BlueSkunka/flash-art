@@ -13,9 +13,7 @@ import App from './App.vue'
 import router from './router'
 import Password from "primevue/password";
 import InputText from "primevue/inputtext";
-import Button from "primevue/button";
 import ToastService from 'primevue/toastservice';
-import Toast from "primevue/toast";
 
 import Card from 'primevue/card';
 import SelectButton from 'primevue/selectbutton';
@@ -46,7 +44,6 @@ app.component("Toast", Toast)
 
 app.component("Card", Card)
 app.component("SelectButton", SelectButton)
-app.component("Button", Button)
 app.component("Rating", Rating)
 app.component("Tag", Tag)
 app.component("CardComponent", CardComponent)
