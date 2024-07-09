@@ -1,22 +1,15 @@
 meta {
   name: list
   type: http
-  seq: 3
+  seq: 7
 }
 
 get {
   url: {{base_url}}/users
-  body: json
-  adminAuth: bearer
+  body: none
+  auth: bearer
 }
 
-adminAuth:bearer {
-  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjhiZTVmOGMxNTQ2MmNiOWU3NTk4NmUiLCJmaXJzdG5hbWUiOiJVc2VyIiwibGFzdG5hbWUiOiJVc2VyIiwicm9sZSI6InVzZXIiLCJpbnNjcmlwdGlvbkRhdGUiOiIyMDI0LTA3LTA4VDEzOjEzOjI5LjAwN1oifQ.-yd9OIvTchz1b4oGYoLfrXMmUJuZEwfH5A9FCegN1ko
-}
-
-body:json {
-  {
-    "email": "user@user.com",
-    "password": "password"
-  }
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjhkMmFkOTg1NDc3NjA1MGEzYWIyODUifQ.UeZ6uJsdki3eguGljS8bDxlilkrvq1auoyTYhZDmhcM
 }
