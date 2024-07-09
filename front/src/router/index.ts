@@ -12,6 +12,7 @@ import GestionDispoView from "@/views/admin/GestionReservationView.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
 import FlashDetailView from "@/views/FlashDetailView.vue";
+import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,6 +48,13 @@ const router = createRouter({
                     meta: {
                         layout: BaseLayout
                     }
+                },
+                {
+                  path: '/tatoueurs/1',
+                  component: TatoueurDetailsView,
+                  meta: {
+                    layout: BaseLayout
+                  }
                 },
                 {
                     path: '/reservations',
