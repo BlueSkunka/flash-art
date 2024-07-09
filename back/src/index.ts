@@ -1,17 +1,22 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import {DbConnect} from './db'
-import users from "./routes/users";
 import {cors} from "hono/cors";
 import {customCors} from "./middlewares/customCors";
+import { logger } from 'hono/logger';
+import users from "./routes/users";
+import tattooers from './routes/tattoer'
 
 const app = new Hono()
 await DbConnect()
 
-app.get('/', (c) => {
+app.use(logger());
+
+app.get('/api', (c) => {
   return c.text('Hello Hono!')
 })
 
+app.route('/api', tattooers)
 app.route('/api', users)
 
 app.use(customCors)

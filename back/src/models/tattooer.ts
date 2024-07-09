@@ -8,6 +8,7 @@ interface ITattooer extends IUser {
     place: string;
     links: ILink;
     styles: IStyle;
+    description: string;
 }
 
 const tattooerSchema = new Schema<ITattooer>({
@@ -19,13 +20,14 @@ const tattooerSchema = new Schema<ITattooer>({
     inscriptionDate: { type: Date, required: true },
     surname: { type: String, required: true, trim: true },
     place: { type: String, required: true, trim: true },
-    links: {
+    links: [{
         name: { type: String, required: true, trim: true },
         url: { type: String, required: true, trim: true },
-    },
+    }],
     styles: [{
         name: { type: String, required: true, trim: true, lowercase: true }
-    }]
+    }],
+    description: { type: String, required: true, trim: true }
 })
 
 const Tattooer = model<ITattooer>('tattooers', tattooerSchema);

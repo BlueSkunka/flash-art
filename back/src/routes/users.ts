@@ -1,8 +1,8 @@
-import {Hono} from 'hono'
-import {User} from '../models/user'
-import {validator} from "hono/validator";
-import {sign} from 'hono/jwt'
-import {myEnv} from "../../conf";
+import { Hono } from 'hono'
+import { User } from '../models/user'
+import { validator } from "hono/validator";
+import { sign } from 'hono/jwt'
+import { myEnv } from "../../conf";
 import bcrypt from 'bcrypt'
 import {isValidObjectId} from "mongoose";
 import {customCors} from "../middlewares/customCors";
@@ -143,7 +143,7 @@ api.post('/register',
         const body = c.req.valid('json')
         try {
             const email = body.email
-            const currentUser = await User.findOne({email})
+            const currentUser = await User.findOne({ email })
 
             if (currentUser !== null) {
                 return c.text("User already exist !", 400)
@@ -151,7 +151,7 @@ api.post('/register',
 
             let user = new User(body)
             user.password = bcrypt.hashSync(user.password, 10)
-            user.role = "user"
+            user.role = Role.USER
             user.inscriptionDate = new Date()
 
             user = await user.save()
@@ -174,9 +174,8 @@ api.post('/login',
         return body
     }),
     async (c) => {
-        const {email, password} = c.req.valid('json')
-
-        const currentUser = await User.findOne({email})
+        const { email, password } = c.req.valid('json')
+        const currentUser = await User.findOne({ email })
         if (!currentUser) {
             return c.text('Email or Password invalid', 401)
         }
@@ -188,15 +187,15 @@ api.post('/login',
         }
 
         const token = await sign({
-                _id: currentUser._id,
-                firstname: currentUser.firstname,
-                lastname: currentUser.lastname,
-                role: currentUser.role,
-                inscriptionDate: currentUser.inscriptionDate,
-            },
+            _id: currentUser._id,
+            firstname: currentUser.firstname,
+            lastname: currentUser.lastname,
+            role: currentUser.role,
+            inscriptionDate: currentUser.inscriptionDate,
+        },
             myEnv.JWT_CAT_SECRET
         );
-
+  
         return c.json({
             token: token,
             user: currentUser
