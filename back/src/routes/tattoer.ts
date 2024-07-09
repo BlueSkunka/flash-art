@@ -5,7 +5,7 @@ import { Tattooer } from '../models/tattooer';
 import { sign } from 'hono/jwt'
 import { myEnv } from "../../conf";
 import bcrypt from 'bcrypt'
-import Response from '../enums/response';
+import StatusCode from '../enums/statusCode';
 import Role from '../enums/role';
 
 
@@ -18,11 +18,11 @@ api.get('', async (c) => {
     try {
         const tattoers = await Tattooer.find({});
 
-        return c.json(tattoers, Response.OK);
+        return c.json(tattoers, StatusCode.OK);
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse("An internal error has occurred", Response.INTERNAL_SERVER_ERROR);
+        return c.newResponse("An internal error has occurred", StatusCode.INTERNAL_SERVER_ERROR);
     }
 })
 
@@ -37,7 +37,7 @@ api.post('/register',
             body.surname === undefined ||
             body.place === undefined
         ) {
-            return c.newResponse('Form is invalid', Response.BAD_REQUEST)
+            return c.newResponse('Form is invalid', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -49,7 +49,7 @@ api.post('/register',
             const existingUser = await Tattooer.findOne({ email });
 
             if (null !== existingUser) {
-                return c.newResponse('Tattoer already exist !', Response.BAD_REQUEST);
+                return c.newResponse('Tattoer already exist !', StatusCode.BAD_REQUEST);
             }
 
             const tattoer = new Tattooer(body);
@@ -63,7 +63,7 @@ api.post('/register',
             return c.json(saveTattooer);
         } catch (error: unknown) {
             console.error(error);
-            return c.newResponse("An internal error has occurred", Response.INTERNAL_SERVER_ERROR);
+            return c.newResponse("An internal error has occurred", StatusCode.INTERNAL_SERVER_ERROR);
         }
     }
 )
@@ -72,7 +72,7 @@ api.post('/register',
 api.post('/login',
     validator('json', (body, c) => {
         if (body.email === undefined || body.password === undefined) {
-            return c.newResponse('Bad Request', Response.BAD_REQUEST)
+            return c.newResponse('Bad Request', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -83,13 +83,13 @@ api.post('/login',
         const tattoer = await Tattooer.findOne({ email })
 
         if (!tattoer) {
-            return c.text('Email or Password invalid', Response.UNAUTHORIZED)
+            return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
         }
 
         const match = bcrypt.compareSync(password, tattoer.password);
 
         if (!match) {
-            return c.text('Email or Password invalid', Response.UNAUTHORIZED)
+            return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
         }
 
         const token = await sign({
@@ -113,20 +113,20 @@ api.put('/:id', async (c) => {
 
     try {
         if (!isValidObjectId(id)) {
-            return c.newResponse("Identifier is not valid", Response.INTERNAL_SERVER_ERROR);
+            return c.newResponse("Identifier is not valid", StatusCode.INTERNAL_SERVER_ERROR);
         }
 
         const tattoer = await Tattooer.findOneAndUpdate({ id }, { ...body }, { new: false });
 
         if (null === tattoer) {
-            return c.newResponse('Tattoer not found', Response.BAD_REQUEST);
+            return c.newResponse('Tattoer not found', StatusCode.BAD_REQUEST);
         }
 
         return c.json(tattoer, 200);
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
+        return c.newResponse('An internal error occured', StatusCode.INTERNAL_SERVER_ERROR);
     }
 })
 
@@ -135,20 +135,20 @@ api.get('/:id', async (c) => {
     const id = c.req.param('id');
     try {
         if (!isValidObjectId(id)) {
-            return c.newResponse("Identifier is not valid", Response.BAD_REQUEST)
+            return c.newResponse("Identifier is not valid", StatusCode.BAD_REQUEST)
         }
 
         const tattooer = await Tattooer.findOne({ id })
 
         if (null === tattooer) {
-            return c.newResponse('Tattooer not found', Response.BAD_REQUEST);
+            return c.newResponse('Tattooer not found', StatusCode.BAD_REQUEST);
         }
 
-        return c.json(tattooer, Response.OK)
+        return c.json(tattooer, StatusCode.OK)
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
+        return c.newResponse('An internal error occured', StatusCode.INTERNAL_SERVER_ERROR);
     }
 })
 
@@ -157,21 +157,21 @@ api.delete('/:id', async (c) => {
     const id = c.req.param('id')
     try {
         if (!isValidObjectId(id)) {
-            return c.newResponse("Identifier is not valid", Response.BAD_REQUEST)
+            return c.newResponse("Identifier is not valid", StatusCode.BAD_REQUEST)
         }
 
         const tattoer = await Tattooer.deleteOne({ id });
         const { deletedCount } = tattoer;
 
         if (deletedCount) {
-            return c.newResponse(null, Response.NO_CONTENT);
+            return c.newResponse(null, StatusCode.NO_CONTENT);
         }
 
-        return c.newResponse("Tattooer not found", Response.BAD_REQUEST);
+        return c.newResponse("Tattooer not found", StatusCode.BAD_REQUEST);
     } catch (error: unknown) {
         console.error(error);
 
-        return c.newResponse('An internal error occured', Response.INTERNAL_SERVER_ERROR);
+        return c.newResponse('An internal error occured', StatusCode.INTERNAL_SERVER_ERROR);
     }
 })
 
