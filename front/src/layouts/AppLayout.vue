@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref, shallowRef} from "vue";
+import {defineComponent, ref, shallowRef} from "vue";
 import AdminLayout from "./AdminLayout.vue";
 import BaseLayout from "./BaseLayout.vue";
 

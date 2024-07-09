@@ -1,5 +1,5 @@
 <template>
-  <Menubar :model="items" class="px-52">
+  <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white">
     <template #start>
       <div class="mr-10" @click="goHome">
         <h1>Logo</h1>
@@ -19,8 +19,8 @@
     <router-view></router-view>
   </main>
 
-  <footer>
-
+  <footer class="bg-zinc-900 text-white text-center py-3">
+    <small>ici un footer</small>
   </footer>
 </template>
 

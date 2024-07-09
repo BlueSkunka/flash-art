@@ -13,6 +13,9 @@ import Ripple from "primevue/ripple";
 import Tooltip from "primevue/tooltip";
 import Card from "primevue/card"
 import Button from "primevue/button";
+import InputGroup from "primevue/inputgroup";
+import InputText from "primevue/inputtext";
+import "primeicons/primeicons.css"
 
 
 const app = createApp(App)
@@ -35,5 +38,7 @@ app.component("Toast", Toast);
 app.component("Menubar", Menubar);
 app.component("Card", Card);
 app.component("Button", Button);
+app.component("InputGroup", InputGroup);
+app.component("InputText", InputText);
 
 app.mount('#app')
