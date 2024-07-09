@@ -50,7 +50,7 @@ const options = ref(
     
         <div class="grid grid-cols-4 gap-4 justify-items-center m-8">
             <div v-for="index in 8" :key="index">
-                <CardComponent />
+                <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true"/>
             </div>
         </div>
     </div>

@@ -23,6 +23,8 @@ import Tag from 'primevue/tag'
 import 'primeicons/primeicons.css'
 import CardComponent from './components/CardComponent.vue';
 import Toast from 'primevue/toast'
+import CommentComponent from './components/CommentComponent.vue';
+import Avatar from 'primevue/avatar'
 
 const app = createApp(App)
 
@@ -48,5 +50,7 @@ app.component("Rating", Rating)
 app.component("Tag", Tag)
 app.component("CardComponent", CardComponent)
 app.component("Toast", Toast)
+app.component("CommentComponent", CommentComponent)
+app.component("Avatar", Avatar)
 
 app.mount('#app')
