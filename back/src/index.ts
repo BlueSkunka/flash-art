@@ -1,12 +1,13 @@
-import {serve} from '@hono/node-server'
-import {Hono} from 'hono'
-import {DbConnect} from './db'
-import {customCors} from "./middlewares/customCors";
-import {logger} from 'hono/logger';
+import { serve } from '@hono/node-server'
+import { Hono } from 'hono'
+import { DbConnect } from './db'
+import { cors } from "hono/cors";
+import { logger } from 'hono/logger';
+
 import users from "./routes/users";
 import tattooers from './routes/tattoer'
-import {cors} from "hono/cors";
 import flashes from './routes/flashs';
+import opinions from './routes/opinions'
 
 const app = new Hono()
 await DbConnect()
@@ -22,6 +23,7 @@ app.get('/api', (c) => {
 app.route('/api', tattooers)
 app.route('/api', users)
 app.route('/api', flashes)
+app.route('/api', opinions)
 
 //app.use(customCors)
 
