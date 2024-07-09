@@ -1,0 +1,22 @@
+meta {
+  name: update
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{base_url}}/flashes/668d07c0bfa708a539fb0a14
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Moonligh event",
+    "description": "Multiples choix de flash dans un style steam punk futuriste !",
+    "price": 45.50,
+    "tattooer": "668ceaeabcfd7fba082c65a3",
+    "flashDate": "2024-10-17 14:00:00",
+    "place": "Sutdio MoonLight, Lyon 3è"
+  }
+}

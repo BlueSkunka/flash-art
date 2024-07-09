@@ -1,0 +1,20 @@
+meta {
+  name: put
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{base_url}}/users/668be5ebc15462cb9e75986b
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "user@user.com",
+    "password": "password",
+    "firstname": "test",
+    "lastname": "test"
+  }
+}
