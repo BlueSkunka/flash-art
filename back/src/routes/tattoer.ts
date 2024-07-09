@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt'
 import Response from '../enums/response';
 
 
-const api = new Hono().basePath('/tattoers');
+const api = new Hono().basePath('/tattooers');
 
 // Gestion des tattoueurs
 
@@ -42,7 +42,8 @@ api.post('/register',
     async (c) => {
         const body = c.req.valid('json');
         try {
-            const existingUser = await Tattooer.findOne({ body.email });
+            const email = body.email;
+            const existingUser = await Tattooer.findOne({ email });
 
             if (null !== null) {
                 return c.newResponse('Tattoer already exist !', Response.BAD_REQUEST);
@@ -102,7 +103,7 @@ api.post('/login',
 )
 
 // Mise à jour du profil tattoueur
-api.put('/:id/update', async (c) => {
+api.put('/:id', async (c) => {
     const body = await c.req.json();
     const id = c.req.param('id');
 
