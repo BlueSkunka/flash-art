@@ -1,0 +1,18 @@
+meta {
+  name: login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/tattooers/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "tattoo@mail.com",
+    "password": "password"
+  }
+}

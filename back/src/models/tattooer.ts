@@ -19,10 +19,10 @@ const tattooerSchema = new Schema<ITattooer>({
     inscriptionDate: { type: Date, required: true },
     surname: { type: String, required: true, trim: true },
     place: { type: String, required: true, trim: true },
-    links: {
+    links: [{
         name: { type: String, required: true, trim: true },
         url: { type: String, required: true, trim: true },
-    },
+    }],
     styles: [{
         name: { type: String, required: true, trim: true, lowercase: true }
     }]

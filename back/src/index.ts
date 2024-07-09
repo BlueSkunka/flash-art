@@ -1,16 +1,15 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { logger } from 'hono/logger';
 import { DbConnect } from './db'
-import {myEnv} from "../conf";
-import { jwt } from 'hono/jwt'
-import {bearerAuth} from "hono/bearer-auth";
-import {verify} from "hono/jwt";
 
 import users from "./routes/users";
 import tattooers from './routes/tattoer'
 
 const app = new Hono()
 await DbConnect()
+
+app.use(logger());
 
 app.get('/api', (c) => {
   return c.text('Hello Hono!')
