@@ -21,7 +21,7 @@ import Button from 'primevue/button'
 import Rating from 'primevue/rating'
 import Tag from 'primevue/tag'
 import 'primeicons/primeicons.css'
-import CardComponent from './assets/components/CardComponent.vue';
+import CardComponent from './components/CardComponent.vue';
 import Toast from 'primevue/toast'
 
 const app = createApp(App)

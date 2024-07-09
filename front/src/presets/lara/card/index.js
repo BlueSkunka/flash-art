@@ -29,9 +29,8 @@ export default {
         ]
     },
     content: {
-        class: 'py-5' // Vertical padding.
     },
     footer: {
-        class: 'pt-5' // Top padding.
+        class: 'pt-3' // Top padding.
     }
 };
