@@ -1,0 +1,22 @@
+meta {
+  name: create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/flashes
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Flash mob",
+    "description": "Multiples choix de flash dans un style steam punk futuriste !",
+    "price": 45.50,
+    "tattooer": "668ceaeabcfd7fba082c65a3",
+    "flashDate": "2024-10-17 14:00:00",
+    "place": "Sutdio MoonLight, Lyon 3è"
+  }
+}

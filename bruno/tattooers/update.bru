@@ -1,0 +1,22 @@
+meta {
+  name: update
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{base_url}}/tattooers/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "tattoo@mail.com",
+    "password": "password",
+    "firstname": "Jean",
+    "lastname": "Neymar",
+    "surname": "Grosse blague",
+    "place": "Groupama Stadium"
+  }
+}
