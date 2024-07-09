@@ -11,6 +11,7 @@ import GestionFlashView from "@/views/admin/GestionFlashView.vue";
 import GestionDispoView from "@/views/admin/GestionReservationView.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
+import FlashDetailView from "@/views/FlashDetailView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,13 @@ const router = createRouter({
                 {
                     path: '/flashs',
                     component: FlashView,
+                    meta: {
+                        layout: BaseLayout
+                    }
+                },
+                {
+                    path: '/flashs/1',
+                    component: FlashDetailView,
                     meta: {
                         layout: BaseLayout
                     }
