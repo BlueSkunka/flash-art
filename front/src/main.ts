@@ -34,6 +34,7 @@ import FileUpload from 'primevue/fileupload';
 import Toolbar from 'primevue/toolbar';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Image from "primevue/image";
 
 const app = createApp(App)
 
@@ -74,5 +75,6 @@ app.component("FileUpload", FileUpload)
 app.component("Toolbar", Toolbar)
 app.component("DataTable", DataTable)
 app.component("Column", Column)
+app.component("Image", Image);
 
 app.mount('#app')
