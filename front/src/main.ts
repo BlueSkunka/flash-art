@@ -33,6 +33,10 @@ import Dropdown from "primevue/dropdown";
 import Fieldset from "primevue/fieldset";
 import Panel from "primevue/panel";
 
+import MultiSelect from 'primevue/multiselect';
+import FileUpload from 'primevue/fileupload';
+import Image from "primevue/image";
+
 const app = createApp(App)
 
 app.use(createPinia())
@@ -61,7 +65,6 @@ app.component("Password", Password)
 app.component("InputText", InputText)
 app.component("Button", Button)
 app.component("Toast", Toast)
-
 app.component("Card", Card)
 app.component("SelectButton", SelectButton)
 app.component("Rating", Rating)
@@ -74,5 +77,8 @@ app.component("Avatar", Avatar)
 app.component("Dropdown", Dropdown)
 app.component("Fieldset", Fieldset)
 app.component("Panel", Panel)
+app.component("MultiSelect", MultiSelect)
+app.component("FileUpload", FileUpload)
+app.component("Image", Image);
 
 app.mount('#app')
