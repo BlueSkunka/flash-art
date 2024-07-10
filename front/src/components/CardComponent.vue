@@ -17,6 +17,9 @@ const props = defineProps<{
   subtitle: string
   styles: Style[]
 }>();
+
+const value1 = ref('20/07/2024');
+
 </script>
 
 <template>
@@ -53,13 +56,6 @@ const props = defineProps<{
       </template>
     </Card>
   </template>
-  
-  <script setup lang="ts">
-  import { ref } from 'vue';
-
-  const value1 = ref('20/07/2024');
-
-  </script>
   
   <style scoped>
   .like-button {
