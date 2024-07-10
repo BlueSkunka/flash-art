@@ -31,6 +31,7 @@ import Avatar from 'primevue/avatar'
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 import FileUpload from 'primevue/fileupload';
+import Image from "primevue/image";
 
 const app = createApp(App)
 
@@ -68,5 +69,6 @@ app.component("Avatar", Avatar)
 app.component("Dropdown", Dropdown)
 app.component("MultiSelect", MultiSelect)
 app.component("FileUpload", FileUpload)
+app.component("Image", Image);
 
 app.mount('#app')

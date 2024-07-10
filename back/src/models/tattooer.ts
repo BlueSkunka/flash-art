@@ -7,8 +7,12 @@ interface ITattooer extends IUser {
     surname: string;
     place: string;
     links: ILink;
-    styles: IStyle;
+    styles: IStyle[];
     description: string;
+    location: {
+        type: { type: string },
+        coordinates: [number],
+    }
 }
 
 const tattooerSchema = new Schema<ITattooer>({
@@ -27,7 +31,18 @@ const tattooerSchema = new Schema<ITattooer>({
     styles: [{
         name: { type: String, required: true, trim: true, lowercase: true }
     }],
-    description: { type: String, required: true, trim: true }
+    description: { type: String, required: true, trim: true },
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'], // 'location.type' must be 'Point'
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    }
 })
 
 const Tattooer = model<ITattooer>('tattooers', tattooerSchema);
