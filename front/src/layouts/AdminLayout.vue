@@ -52,5 +52,11 @@ const items = ref([
       router.push('/admin/disponibilite');
     }
   },
+  {
+    label: 'Mon profil',
+    command: () => {
+      router.push('/admin/profil');
+    }
+  },
 ]);
 </script>
