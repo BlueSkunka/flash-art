@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { Flash } from "../models/flash";
 import StatusCode from "../enums/statusCode";
 import { validator } from "hono/validator";
-import { isValidObjectId, ObjectId } from "mongoose";
 import { identifer } from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
@@ -32,10 +31,6 @@ api.get('', async (c) => {
 
         // Tattoer
         if (undefined !== tattooer) {
-            console.log(isValidObjectId(tattooer));
-            console.log(tattooer);
-
-
             query["tattooer"] = tattooer
         }
 
@@ -97,7 +92,7 @@ api.get('', async (c) => {
 
         console.log(query);
 
-        const flashes = await Flash.find(query);
+        const flashes = await Flash.find(query).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         return c.json(flashes, StatusCode.OK)
     } catch (error: unknown) {
@@ -147,11 +142,7 @@ api.post('',
 api.get('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-        }
-
-        const flash = await Flash.findOne({ "_id": id })
+        const flash = await Flash.findOne({ "_id": id }).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         if (null == flash) {
             return c.newResponse('Flash not found', StatusCode.BAD_REQUEST)
@@ -192,10 +183,6 @@ api.put('/:id',
         const id = c.req.param('id');
 
         try {
-            if (!isValidObjectId(id)) {
-                return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-            }
-
             const flash = await Flash.findOneAndUpdate({ id }, { ...body })
 
             if (null === flash) {
@@ -215,10 +202,6 @@ api.put('/:id',
 api.delete('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-        }
-
         const result = await Flash.deleteOne({ id })
         const { deletedCount } = result;
 

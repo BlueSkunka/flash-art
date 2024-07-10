@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { isValidObjectId } from "mongoose";
 import StatusCode from "../enums/statusCode";
 import { Opinion } from "../models/opinion";
 import { validator } from "hono/validator";
@@ -9,15 +8,34 @@ const api = new Hono().basePath('/opinions')
 
 // Gestion des opinions
 
+// Récupérer un avis
+api.get('/:id', identifer(), async (c) => {
+    const id = c.req.param('id')
+    try {
+        const opinion = Opinion.findOne({ id })
+            .populate('user', 'lastname firstname')
+            .populate('tattooer', 'surname place')
+            .populate('flash', 'place flashDate name')
+
+        if (null == opinion) {
+            return c.newResponse('Opinion not found', StatusCode.BAD_REQUEST)
+        }
+
+        return c.json(opinion)
+    } catch (error: unknown) {
+        console.error(error);
+
+        return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR)
+    }
+})
+
 // Récupérations de tous les opinions d'un tattoeur 
 api.get('/tattooer/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Invalid identifier', StatusCode.BAD_REQUEST)
-        }
-
         const opinions = await Opinion.find({ tattooer: { "_id": id } })
+            .populate('user', 'lastname firstname')
+            .populate('flash', 'place flashDate name')
         return c.json(opinions);
     } catch (error: unknown) {
         console.error(error);
@@ -30,11 +48,9 @@ api.get('/tattooer/:id', identifer(), async (c) => {
 api.get('/user/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Invalid identifier', StatusCode.BAD_REQUEST)
-        }
-
         const opinions = await Opinion.find({ user: { "_id": id } })
+            .populate('tattooer', 'surname place')
+            .populate('flash', 'place flashDate name')
         return c.json(opinions);
     } catch (error: unknown) {
         console.error(error);
@@ -90,10 +106,6 @@ api.put('/:id',
         const body = c.req.valid('json')
         const id = c.req.param('id')
         try {
-            if (!isValidObjectId(id)) {
-                return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-            }
-
             const opinion = await Opinion.findOneAndUpdate({ id }, { ...body })
 
             if (null === opinion) {
@@ -113,10 +125,6 @@ api.put('/:id',
 api.delete('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-        }
-
         const result = await Opinion.deleteOne({ id })
         const { deletedCount } = result;
 

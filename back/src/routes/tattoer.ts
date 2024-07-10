@@ -1,13 +1,12 @@
-import {Hono} from 'hono';
-import {validator} from "hono/validator";
-import {isValidObjectId} from 'mongoose';
-import {Tattooer} from '../models/tattooer';
-import {sign} from 'hono/jwt'
-import {myEnv} from "../../conf";
+import { Hono } from 'hono';
+import { validator } from "hono/validator";
+import { Tattooer } from '../models/tattooer';
+import { sign } from 'hono/jwt'
+import { myEnv } from "../../conf";
 import bcrypt from 'bcrypt'
 import StatusCode from '../enums/statusCode';
 import Role from '../enums/role';
-import {identifer} from '../middlewares/identifier';
+import { identifer } from '../middlewares/identifier';
 
 
 const api = new Hono().basePath('/tattooers');
@@ -22,7 +21,7 @@ api.get('', async (c) => {
             filter = {
                 styles: {
                     $elemMatch: {
-                        name: {$regex: c.req.query("style"), $options: 'i'}
+                        name: { $regex: c.req.query("style"), $options: 'i' }
                     }
                 }
             }
@@ -125,10 +124,6 @@ api.put('/:id', identifer(), async (c) => {
     const id = c.req.param('id');
 
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse("Identifier is not valid", StatusCode.INTERNAL_SERVER_ERROR);
-        }
-
         const tattoer = await Tattooer.findOneAndUpdate({ id }, { ...body }, { new: false });
 
         if (null === tattoer) {
@@ -147,10 +142,6 @@ api.put('/:id', identifer(), async (c) => {
 api.get('/:id', identifer(), async (c) => {
     const id = c.req.param('id');
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse("Identifier is not valid", StatusCode.BAD_REQUEST)
-        }
-
         const tattooer = await Tattooer.findOne({ id })
 
         if (null === tattooer) {
@@ -169,10 +160,6 @@ api.get('/:id', identifer(), async (c) => {
 api.delete('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse("Identifier is not valid", StatusCode.BAD_REQUEST)
-        }
-
         const tattoer = await Tattooer.deleteOne({ id });
         const { deletedCount } = tattoer;
 
