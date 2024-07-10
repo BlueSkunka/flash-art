@@ -83,7 +83,7 @@ const data = {
 }
 
 onMounted(() => {
-    ProductService.getProducts().then((data) => (products.value = data));
+    // ProductService.getProducts().then((data) => (products.value = data));
 });
 
 const toast = useToast();

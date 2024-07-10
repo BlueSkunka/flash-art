@@ -14,6 +14,7 @@ import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
 import TattooerRegisterView from "@/views/TattooerRegisterView.vue";
 import UserRegisterView from "@/views/UserRegisterView.vue";
 import GestionReservationView from '@/views/admin/GestionReservationView.vue';
+import AccueilAdminView from "@/views/admin/AccueilAdminView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -95,6 +96,13 @@ const router = createRouter({
         {
             path: '/admin',
             children: [
+                {
+                    path: '',
+                    component: AccueilAdminView,
+                    meta: {
+                        layout: AdminLayout
+                    }
+                },
                 {
                     path: 'profil',
                     component: GestionProfilView,
