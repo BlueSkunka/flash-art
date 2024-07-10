@@ -80,14 +80,14 @@ const router = createRouter({
             path: '/admin',
             children: [
                 {
-                    path: '/profil',
+                    path: 'profil',
                     component: GestionProfilView,
                     meta: {
                         layout: AdminLayout
                     }
                 },
                 {
-                    path: '/flashs',
+                    path: 'flashs',
                     component: GestionFlashView,
                     meta: {
                         layout: AdminLayout
