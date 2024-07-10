@@ -7,7 +7,7 @@ import {myEnv} from "../../conf";
 import bcrypt from 'bcrypt'
 import StatusCode from '../enums/statusCode';
 import Role from '../enums/role';
-import { identifer } from '../middlewares/identifier';
+import {identifer} from '../middlewares/identifier';
 
 
 const api = new Hono().basePath('/tattooers');
@@ -17,7 +17,19 @@ const api = new Hono().basePath('/tattooers');
 // Récupération de tous les tattoueurs 
 api.get('', async (c) => {
     try {
-        const tattoers = await Tattooer.find({});
+        let filter = {}
+        if (c.req.query("style")) {
+            filter = {
+                styles: {
+                    $elemMatch: {
+                        name: {$regex: c.req.query("style"), $options: 'i'}
+                    }
+                }
+            }
+
+        }
+
+        const tattoers = await Tattooer.find(filter);
 
         return c.json(tattoers, StatusCode.OK);
     } catch (error: unknown) {

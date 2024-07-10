@@ -1,59 +1,79 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
+import {useTattooersStore} from "@/stores/tattooers";
+import {useStylesStore} from "@/stores/styles";
 
-const value = ref('Style 1');
-const options = ref(
-    [
-        'Style 1',
-        'Style 2', 
-        'Style 3', 
-        'Petit moyen style 1', 
-        'Moyen style 1', 
-        'Géant style tendance 1',
-        'Petit moyen style 2',
-        'Style 4',
-        'Style 5',
-        'Géant style tendance 2',
-        'Moyen style 2', 
-        'Style 6',
-        'Style 7',
-        'Moyen style 3  ',
-        'Petit moyen Style 3'
-    ]);
+const tattooersStore = useTattooersStore()
+const stylesStore = useStylesStore()
+
+const value = ref('Tous');
+const options = computed(() => stylesStore.styles)
+const tattooers = computed(() => tattooersStore.tattooers)
+const isLoadingTattoers = computed(() => tattooersStore.isLoading)
+const isLoadingStyles = computed(() => stylesStore.isLoading)
+
+const filterTattooers = async (style: string|null = null) => {
+  value.value = style
+  await tattooersStore.findAll(style)
+}
+
+const fetchData = async () => {
+  await stylesStore.findAll()
+  await tattooersStore.findAll()
+}
+
+fetchData()
+
 </script>
 
 <template>
+  <section v-if="isLoadingTattoers && isLoadingStyles">
+    <ProgressSpinner/>
+  </section>
+  <section v-else>
     <div class="flex flex-col m-6">
 
-        <!-- Titre -->
-        <div class="text-center m-4">
-            <h1 class="text-6xl">Les tatoueurs</h1>
-            <div class="flex justify-end pr-6">
-                <button class="tri flex items-center gap-2">
-                    Trier par
-                    <i class="pi pi-angle-down" style="font-size: 12px"></i>
-                </button>
-            </div>
-            <div class="button-group">
-                <button
-                    v-for="option in options"
-                    :key="option"
-                    :class="['custom-button', { 'selected': option === value }]"
-                    @click="value = option"
-                >
-                {{ option }}
-                </button>
-            </div>
+      <!-- Titre -->
+      <div class="text-center m-4">
+        <h1 class="text-6xl">Les tatoueurs</h1>
+        <div class="flex justify-end pr-6">
+          <button class="tri flex items-center gap-2">
+            Trier par
+            <i class="pi pi-angle-down" style="font-size: 12px"></i>
+          </button>
         </div>
-    
+        <div class="button-group">
+          <button
+              key="Tous"
+              :class="['custom-button', { 'selected': 'Tous' === value }]"
+              @click="filterTattooers"
+          >Tous
+          </button>
+          <button
+              v-for="option in options"
+              :key="option.name"
+              :class="['custom-button', { 'selected': option.name === value }]"
+              @click="filterTattooers(option.name)"
+          >
+            {{ option.name }}
+          </button>
+        </div>
+      </div>
 
-    
-        <div class="grid grid-cols-4 gap-4 justify-items-center m-8">
-            <div v-for="index in 8" :key="index">
-                <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true"/>
-            </div>
+
+        <div class="grid grid-cols-4 gap-4 justify-items-center m-8" v-if="!isLoadingTattoers">
+          <div v-if="tattooers.length > 0" v-for="(tattooer, index) in tattooers" :key="index" >
+            <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true" :subtitle="tattooer.surname"
+                           :styles="tattooer.styles" :title="tattooer.firstname + ' ' + tattooer.lastname"/>
+          </div>
+          <div v-else>
+            <p class="text-center"><b>Aucun résultat</b></p>
+          </div>
         </div>
+        <ProgressSpinner v-else/>
+
     </div>
+  </section>
     
 </template>
 
