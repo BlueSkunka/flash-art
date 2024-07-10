@@ -41,6 +41,7 @@ import Column from 'primevue/column';
 import Image from "primevue/image";
 import Textarea from "primevue/textarea";
 import Message from "primevue/message";
+import ProgressSpinner from "primevue/progressspinner";
 
 const app = createApp(App)
 
@@ -90,5 +91,6 @@ app.component("Column", Column)
 app.component("Image", Image);
 app.component("Textarea", Textarea);
 app.component("Message", Message);
+app.component("ProgressSpinner", ProgressSpinner);
 
 app.mount('#app')

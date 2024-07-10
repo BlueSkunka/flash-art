@@ -23,5 +23,5 @@ export const useStylesStore = defineStore('styles', () => {
         isLoading.value = false
     }
 
-    return {styles, findAll}
+    return {styles, findAll, isLoading}
 })
