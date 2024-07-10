@@ -3,7 +3,9 @@
       <template #header>
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
       </template>
-      <template #title v-if="showTitle">Jean Neymar</template>
+      <template #title v-if="showTitle">Jean Neymar
+        <div class="text-xl font-normal">150 €</div>
+      </template>
       <template #subtitle v-if="showSubtitle">
         Lyon, France
         <Rating v-model="rating" readonly class="mt-4" :cancel="false" />
@@ -18,6 +20,10 @@
             <i v-if="liked" class="pi pi-heart-fill filled"></i>
             <i v-else class="pi pi-heart"></i>
           </button>
+        </div>
+        <div class="flex justify-between border-2 rounded p-3 items-center my-4">
+          <div>20/07/2024</div>
+          <i class="pi pi-calendar" />
         </div>
       </template>
       <template #footer>
@@ -44,6 +50,9 @@
     showSubtitle: boolean;
     showMultiple: boolean;
   }>();
+
+  const value1 = ref('20/07/2024');
+
   </script>
   
   <style scoped>
