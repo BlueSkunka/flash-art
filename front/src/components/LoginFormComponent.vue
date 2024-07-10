@@ -64,7 +64,7 @@ async function submit(e: Event) {
   <Toast/>
 
   <form @submit="submit">
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mb-5">
       <label for="email">Email</label>
       <IconField iconPosition="left">
         <InputIcon>
@@ -78,7 +78,7 @@ async function submit(e: Event) {
     </div>
 
 
-    <div class="flex flex-col gap-2 mb-3">
+    <div class="flex flex-col gap-2 mb-5">
       <label for="password">Mot de passe</label>
       <InputText type="password" id="password" v-model="form.password.value"/>
     </div>
