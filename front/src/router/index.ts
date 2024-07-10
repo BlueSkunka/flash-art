@@ -8,11 +8,11 @@ import FlashView from "@/views/FlashView.vue";
 import ConnexionView from "@/views/ConnexionView.vue";
 import GestionProfilView from "@/views/admin/GestionProfilView.vue";
 import GestionFlashView from "@/views/admin/GestionFlashView.vue";
-import GestionDispoView from "@/views/admin/GestionReservationView.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
 import FlashDetailView from "@/views/FlashDetailView.vue";
 import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
+import GestionReservationView from '@/views/admin/GestionReservationView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -94,8 +94,8 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/reservations',
-                    component: GestionDispoView,
+                    path: 'reservations',
+                    component: GestionReservationView,
                     meta: {
                         layout: AdminLayout
                     }
