@@ -416,7 +416,8 @@ const flashes = Array.from({ length: 20 }, (_, index) => {
         location: {
             type: 'Point',
             coordinates: citiesCoordinates[cityName]
-        }
+        },
+        styles: getRandomStyles()
     };
 });
 
