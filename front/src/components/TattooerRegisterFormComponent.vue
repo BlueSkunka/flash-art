@@ -4,6 +4,7 @@ import {useToast} from "primevue/usetoast";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {useStylesStore} from "@/stores/styles";
+import {Address} from "@/entities/address";
 
 
 const router = useRouter()
@@ -20,7 +21,7 @@ const form = {
   password: ref(""),
   surname: ref(""),
   place: ref(""),
-  links: ref([]),
+  links: ref<Link[]>([]),
   styles: ref<string[]>([]),
   description: ref(""),
 }
@@ -39,8 +40,46 @@ const hasBeenSubmit = ref(false)
 
 const search = async (event) => {
   await stylesStore.findAll(event.query)
+}
 
-  console.log(styles.value)
+let addresses = ref<object[]>([])
+
+async function findAddress(event) {
+  if (event.query.length > 3) {
+    const url = new URL("https://api-adresse.data.gouv.fr/search/")
+    url.searchParams.set("q", event.query)
+
+    addresses.value = await axios.get(url.href)
+        .then(response => {
+          const data = response.data
+          const dataAddress: Address[] = []
+          data.features.forEach((item: any) => {
+            const address = new Address(
+                {
+                  long: item.geometry.coordinates[0],
+                  lat: item.geometry.coordinates[1]
+                },
+                item.properties.label
+            )
+
+            dataAddress.push(address)
+          })
+
+          return dataAddress
+        })
+        .catch(error => console.log(error))
+  }
+}
+
+function addLink() {
+  form.links.value.push({
+    name: "",
+    url: ""
+  })
+}
+
+function deleteLink(index: number) {
+  form.links.value.splice(index, 1)
 }
 
 async function submit(e: Event) {
@@ -149,14 +188,14 @@ async function submit(e: Event) {
       <InputText type="text" id="firstname" v-model="form.firstname.value" v-else placeholder="Mathis"/>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="lastname">Nom</label>
       <InputText type="text" id="lastname" v-model="form.lastname.value" placeholder="Rome"
                  v-if="!isLastnameValid && hasBeenSubmit" invalid/>
       <InputText type="text" id="lastname" v-model="form.lastname.value" v-else placeholder="Rome"/>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="email">Email</label>
       <IconField iconPosition="left">
         <InputIcon>
@@ -170,39 +209,58 @@ async function submit(e: Event) {
       </IconField>
     </div>
 
-    <div class="flex flex-col gap-2 mb-3">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="password">Mot de passe</label>
-      <InputText type="password" id="password" v-model="form.password.value" v-if="!isEmailValid && hasBeenSubmit"
+      <Password inputId="password" v-model="form.password.value" v-if="!isPasswordValid && hasBeenSubmit"
                  invalid/>
-      <InputText type="password" id="password" v-model="form.password.value" v-else/>
+      <Password inputId="password" v-model="form.password.value" v-else/>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="surname">Nom d'artiste</label>
       <InputText type="text" id="surname" v-model="form.surname.value" placeholder="Rome"
                  v-if="!isSurnameValid && hasBeenSubmit" invalid/>
       <InputText type="text" id="surname" v-model="form.surname.value" v-else placeholder="Rome"/>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="address">Adresse</label>
-      <InputText type="text" id="address" v-model="form.place.value" placeholder="53 Cours Albert Thomas, 69003, Lyon"
-                 v-if="!isPlaceValid && hasBeenSubmit" invalid/>
-      <InputText type="text" id="address" v-model="form.place.value" v-else
-                 placeholder="53 Cours Albert Thomas, 69003, Lyon"/>
+      <AutoComplete v-model="form.place.value" fluid multiple @complete="findAddress" optionLabel="label"
+                    :suggestions="addresses"/>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="email">Liens</label>
 
+      <ul class="flex flex-col gap-5">
+        <li v-for="(link, index) in form.links.value">
+          <Panel :header="'Lien' + (index + 1)" :toggleable="true">
+            <template #icons>
+              <button type="button" class="p-panel-header-icon p-link mr-2" @click="deleteLink(index)">
+                <span class="pi pi-trash"></span>
+              </button>
+            </template>
+            <div class="flex flex-col gap-2">
+              <label :for="'linkName' + (index + 1)">Nom du lien</label>
+              <InputText type="text" :id="'linkName' + (index + 1)" v-model="link.name" placeholder="Instagram"/>
+            </div>
+            <div class="flex flex-col gap-2 mt-3">
+              <label :for="'linkUrl' + (index + 1)">Url</label>
+              <InputText type="text" :id="'linkUrl' + (index + 1)" v-model="link.url" placeholder="Instagram"/>
+            </div>
+          </Panel>
+        </li>
+      </ul>
+      <Button label="Ajouter un lien" @click="addLink" class="w-fit"/>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-5">
       <label for="style">Styles</label>
-      <AutoComplete v-model="form.styles.value" fluid multiple @complete="search" optionLabel="name" :suggestions="styles"/>
+      <AutoComplete v-model="form.styles.value" fluid multiple @complete="search" optionLabel="name"
+                    :suggestions="styles"/>
     </div>
 
-    <Button type="submit" label="S'inscrire"/>
+    <Button type="submit" label="S'inscrire" class="mt-5"/>
   </form>
 
 </template>

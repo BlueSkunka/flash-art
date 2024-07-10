@@ -30,6 +30,8 @@ import AutoComplete from "primevue/autocomplete";
 import CommentComponent from './components/CommentComponent.vue';
 import Avatar from 'primevue/avatar'
 import Dropdown from "primevue/dropdown";
+import Fieldset from "primevue/fieldset";
+import Panel from "primevue/panel";
 
 const app = createApp(App)
 
@@ -70,5 +72,7 @@ app.component("AutoComplete", AutoComplete)
 app.component("CommentComponent", CommentComponent)
 app.component("Avatar", Avatar)
 app.component("Dropdown", Dropdown)
+app.component("Fieldset", Fieldset)
+app.component("Panel", Panel)
 
 app.mount('#app')

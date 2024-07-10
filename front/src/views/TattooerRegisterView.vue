@@ -3,9 +3,11 @@ import TattooerRegisterFormComponent from "@/components/TattooerRegisterFormComp
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold">S'inscrire en tant que tatoueur</h1>
+  <section class="container mx-auto py-10">
+    <h1 class="text-3xl font-bold mb-5">S'inscrire en tant que tatoueur</h1>
 
-  <TattooerRegisterFormComponent/>
+    <TattooerRegisterFormComponent/>
+  </section>
 </template>
 
 <style scoped>

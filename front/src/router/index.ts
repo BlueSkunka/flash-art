@@ -5,7 +5,6 @@ import EventDetailsView from '@/views/EventDetailsView.vue';
 import AccueilView from "@/views/AccueilView.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import FlashView from "@/views/FlashView.vue";
-import ConnexionView from "@/views/ConnexionView.vue";
 import GestionProfilView from "@/views/admin/GestionProfilView.vue";
 import GestionFlashView from "@/views/admin/GestionFlashView.vue";
 import GestionDispoView from "@/views/admin/GestionReservationView.vue";
@@ -115,14 +114,7 @@ const router = createRouter({
                     meta: {
                         layout: AdminLayout
                     }
-                },
-                {
-                    path: '/login',
-                    component: ConnexionView,
-                    meta: {
-                        layout: LoginView
-                    }
-                },
+                }
             ]
         }
     ]
