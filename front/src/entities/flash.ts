@@ -1,6 +1,7 @@
 import type {Tattooer} from "@/entities/tattooer";
 
 class Flash {
+    _id: number;
     place: string;
     flashDate: Date;
     tattooer: Tattooer;
@@ -14,6 +15,7 @@ class Flash {
     };
 
     constructor(
+        _id: number,
         place: string,
         flashDate: Date,
         tattooer: Tattooer,
@@ -26,6 +28,7 @@ class Flash {
             coordinates: [Number],
         }
     ) {
+        this._id = _id;
         this.place = place;
         this.flashDate = flashDate;
         this.tattooer = tattooer;

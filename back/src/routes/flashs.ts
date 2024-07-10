@@ -209,13 +209,13 @@ api.put('/:id',
 
 // Suppression d'un flash
 api.delete('/:id', identifer(), async (c) => {
-    const id = c.req.param('id')
+    const _id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
+        if (!isValidObjectId(_id)) {
             return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
         }
 
-        const result = await Flash.deleteOne({ id })
+        const result = await Flash.deleteOne({ _id })
         const { deletedCount } = result;
 
         if (deletedCount) {

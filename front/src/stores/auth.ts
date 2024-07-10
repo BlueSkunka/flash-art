@@ -20,8 +20,6 @@ export const useAuthStore = defineStore('auth', () => {
         ).then(function (response) {
             localStorage.setItem('user', response.data.token);
 
-            console.log(response.data.user)
-
             return response.data.user
         })
         .catch(function (error) {

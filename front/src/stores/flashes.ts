@@ -31,8 +31,46 @@ export const useFlashesStore = defineStore('flashes', () => {
             })
             .catch(error => console.log(error))
 
+        url.searchParams.delete("tattooer")
+
         isLoading.value = false
     }
 
-    return {flashes, isLoading, findAll, findByTattooer}
+    async function create(data: object) {
+        const isCreated = await axios.post(
+            url,
+            data
+        ).then(response => {
+            flashes.value.push(response.data)
+
+            return response.status === 201
+        }).catch(error => {
+            return false
+        })
+
+        return isCreated
+    }
+
+    async function remove(flash: Flash) {
+        isLoading.value = true
+
+        const isDeleted = await axios.delete(url.href + '/' + flash._id)
+            .then(response => {
+                return response.status === 204
+            })
+            .then(error => {
+                return false
+            })
+
+        if (isDeleted) {
+            const index = flashes.value.findIndex(flashItem => flash === flashItem)
+            flashes.value.splice(index, 1)
+        }
+
+        isLoading.value = false
+
+        return isDeleted
+    }
+
+    return {flashes, isLoading, findAll, findByTattooer, remove, create}
 })

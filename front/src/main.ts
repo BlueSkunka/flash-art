@@ -9,9 +9,11 @@ import 'primeicons/primeicons.css'
 import App from './App.vue'
 import router from './router'
 
+import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
+
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-
 import Menubar from "primevue/menubar";
 import Ripple from "primevue/ripple";
 import Tooltip from "primevue/tooltip";
@@ -20,7 +22,6 @@ import Button from "primevue/button";
 import InputGroup from "primevue/inputgroup";
 import Password from "primevue/password";
 import InputText from "primevue/inputtext";
-import ToastService from 'primevue/toastservice';
 import SelectButton from 'primevue/selectbutton';
 import Rating from 'primevue/rating'
 import Tag from 'primevue/tag'
@@ -44,18 +45,24 @@ import Message from "primevue/message";
 import ProgressSpinner from "primevue/progressspinner";
 import SplitterPanel from "primevue/splitterpanel";
 import Splitter from "primevue/splitter";
+import ConfirmPopup from "primevue/confirmpopup";
+import InputNumber from "primevue/inputnumber";
+import Dialog from "primevue/dialog";
+
 
 const app = createApp(App)
 
 const pinia = createPinia()
 app.use(pinia)
-
 app.use(router)
-
 app.use(PrimeVue, {
     unstyled: true,
     pt: Lara
 });
+app.use(ConfirmationService);
+app.use(ToastService);
+
+
 app.directive('ripple', Ripple);
 app.directive('tooltip', Tooltip);
 app.directive('focus', {
@@ -67,7 +74,6 @@ app.component("Menubar", Menubar);
 app.component("Button", Button);
 app.component("InputGroup", InputGroup);
 app.component("InputText", InputText);
-app.use(ToastService);
 
 app.component("IconField", IconField)
 app.component("InputIcon", InputIcon)
@@ -98,5 +104,8 @@ app.component("Message", Message);
 app.component("ProgressSpinner", ProgressSpinner);
 app.component("Splitter", Splitter);
 app.component("SplitterPanel", SplitterPanel);
+app.component("ConfirmPopup", ConfirmPopup);
+app.component("InputNumber", InputNumber);
+app.component("Dialog", Dialog);
 
 app.mount('#app')
