@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import { User } from "./models/user";
 import { Tattooer } from "./models/tattooer";
 import { Flash } from "./models/flash";
+import { Style } from "./models/style";
 
 const { ObjectId } = mongoose.Types;
 
@@ -56,6 +57,46 @@ const users = [
     }
 ];
 
+// Création des styles 
+const styles = [
+    { name: "Traditionnel Americain" },
+    { name: "Jeux vidéos" },
+    { name: "Japanese (Irezumi)" },
+    { name: "Realisme" },
+    { name: "Punk" },
+    { name: "Dotwork" },
+    { name: "Minimaliste" },
+    { name: "Aquarelle" },
+    { name: "Géométrique" },
+    { name: "Trash Polka" },
+    { name: "New School" },
+    { name: "Biomecanique" },
+    { name: "Tribal" },
+    { name: "Cyber" },
+    { name: "Polka Trash" },
+    { name: "Nature" },
+    { name: "Néon" },
+    { name: "Celtique" },
+    { name: "Manga" },
+    { name: "Non catégorisé" }
+];
+
+const resStyle = await Style.insertMany(styles)
+
+function getRandomStyles() {
+    // Sélection aléatoire de deux index différents dans le tableau styles
+    const index1 = Math.floor(Math.random() * resStyle.length);
+    let index2 = Math.floor(Math.random() * resStyle.length);
+
+    // Assure que index2 est différent de index1
+    while (index2 === index1) {
+        index2 = Math.floor(Math.random() * resStyle.length);
+    }
+
+    // Retourne un tableau contenant les deux styles aléatoires
+    return [resStyle[index1], resStyle[index2]];
+}
+
 const tattooers_id = [
     '000000209e1b9a723c7b2dad',
     '000000209e1b9a723c7b2dae',
@@ -96,10 +137,7 @@ const tattooers = [
                 url: 'https://www.instagram.com/alice'
             }
         ],
-        styles: [
-            { name: 'Realism' },
-            { name: 'Blackwork' },
-        ],
+        styles: getRandomStyles(),
         description: 'Specializes in realism and blackwork styles.',
         location: {
             type: 'Point',
@@ -122,10 +160,7 @@ const tattooers = [
                 url: 'https://www.facebook.com/bob'
             }
         ],
-        styles: [
-            { name: 'Old School' },
-            { name: 'Neo Traditional' },
-        ],
+        styles: getRandomStyles(),
         description: 'Expert in old school and neo traditional designs.',
         location: {
             type: 'Point',
@@ -148,10 +183,7 @@ const tattooers = [
                 url: 'https://www.twitter.com/carol'
             }
         ],
-        styles: [
-            { name: 'Watercolor' },
-            { name: 'Geometric' },
-        ],
+        styles: getRandomStyles(),
         description: 'Loves creating watercolor and geometric tattoos.',
         location: {
             type: 'Point',
@@ -174,10 +206,7 @@ const tattooers = [
                 url: 'https://www.linkedin.com/in/dave'
             }
         ],
-        styles: [
-            { name: 'Minimalist' },
-            { name: 'Linework' },
-        ],
+        styles: getRandomStyles(),
         description: 'Focuses on minimalist and linework tattoos.',
         location: {
             type: 'Point',
@@ -200,10 +229,7 @@ const tattooers = [
                 url: 'https://www.instagram.com/eve'
             }
         ],
-        styles: [
-            { name: 'Dotwork' },
-            { name: 'Tribal' },
-        ],
+        styles: getRandomStyles(),
         description: 'Skilled in dotwork and tribal styles.',
         location: {
             type: 'Point',
@@ -226,10 +252,7 @@ const tattooers = [
                 url: 'https://www.facebook.com/frank'
             }
         ],
-        styles: [
-            { name: 'Surrealism' },
-            { name: 'Abstract' },
-        ],
+        styles: getRandomStyles(),
         description: 'Passionate about surrealism and abstract tattoos.',
         location: {
             type: 'Point',
@@ -252,10 +275,7 @@ const tattooers = [
                 url: 'https://www.twitter.com/grace'
             }
         ],
-        styles: [
-            { name: 'New School' },
-            { name: 'Illustrative' },
-        ],
+        styles: getRandomStyles(),
         description: 'Specializes in new school and illustrative styles.',
         location: {
             type: 'Point',
@@ -278,10 +298,7 @@ const tattooers = [
                 url: 'https://www.linkedin.com/in/henry'
             }
         ],
-        styles: [
-            { name: 'Portrait' },
-            { name: 'Biomechanical' },
-        ],
+        styles: getRandomStyles(),
         description: 'Expert in portrait and biomechanical tattoos.',
         location: {
             type: 'Point',
@@ -304,10 +321,7 @@ const tattooers = [
                 url: 'https://www.instagram.com/isabel'
             }
         ],
-        styles: [
-            { name: 'Color' },
-            { name: 'Black & Grey' },
-        ],
+        styles: getRandomStyles(),
         description: 'Specializes in color and black & grey tattoos.',
         location: {
             type: 'Point',
@@ -330,10 +344,7 @@ const tattooers = [
                 url: 'https://www.facebook.com/jack'
             }
         ],
-        styles: [
-            { name: 'Lettering' },
-            { name: 'Cover-Up' },
-        ],
+        styles: getRandomStyles(),
         description: 'Known for lettering and cover-up tattoos.',
         location: {
             type: 'Point',
