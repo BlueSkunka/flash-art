@@ -1,29 +1,34 @@
 import {ref} from 'vue'
 import {defineStore} from 'pinia'
 import axios from "axios";
+import Role from "@/enums/role";
 
 export const useAuthStore = defineStore('auth', () => {
 
-    const url = import.meta.env.VITE_BACKEND_URL + "/users/login"
-    const user = ref({})
+    const urlUser = import.meta.env.VITE_BACKEND_URL + "/users/login"
+    const urlTattooer = import.meta.env.VITE_BACKEND_URL + "/tattooers/login"
 
-    async function login(email: string, password: string) {
-        return await axios.post(
-            url,
+    const user = ref<User | null>(null)
+
+    async function login(email: string, password: string, role: string) {
+        user.value = await axios.post(
+            role === Role.TATTOOER ? urlTattooer : urlUser,
             {
                 email: email,
                 password: password
             }
         ).then(function (response) {
-            console.log(response.data.token)
             localStorage.setItem('user', response.data.token);
-            user.value = response.data.user
 
-            return true
+            console.log(response.data.user)
+
+            return response.data.user
         })
-            .catch(function (error) {
-                return false
-            })
+        .catch(function (error) {
+            return false
+        })
+
+        return user.value !== false
     }
 
     return {user, login}

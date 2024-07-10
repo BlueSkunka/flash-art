@@ -115,7 +115,10 @@ api.post('/login',
             myEnv.JWT_CAT_SECRET
         );
 
-        return c.json({ token: token })
+        return c.json({
+            token: token,
+            user: tattoer
+        })
     }
 )
 

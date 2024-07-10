@@ -1,7 +1,7 @@
 import './assets/main.css'
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import {createApp} from 'vue'
+import {createPinia} from 'pinia'
 import PrimeVue from 'primevue/config';
 import Lara from '@/presets/lara'
 import 'primeicons/primeicons.css'
@@ -42,10 +42,14 @@ import Image from "primevue/image";
 import Textarea from "primevue/textarea";
 import Message from "primevue/message";
 import ProgressSpinner from "primevue/progressspinner";
+import SplitterPanel from "primevue/splitterpanel";
+import Splitter from "primevue/splitter";
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia()
+app.use(pinia)
+
 app.use(router)
 
 app.use(PrimeVue, {
@@ -92,5 +96,7 @@ app.component("Image", Image);
 app.component("Textarea", Textarea);
 app.component("Message", Message);
 app.component("ProgressSpinner", ProgressSpinner);
+app.component("Splitter", Splitter);
+app.component("SplitterPanel", SplitterPanel);
 
 app.mount('#app')

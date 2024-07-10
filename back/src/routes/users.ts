@@ -200,8 +200,6 @@ api.post('/login',
 
         currentUser.password = undefined
 
-        console.log(token)
-
         return c.json({
             token: token,
             user: currentUser

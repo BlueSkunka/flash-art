@@ -3,10 +3,18 @@ import {onMounted, ref} from "vue";
 import {useAuthStore} from "@/stores/auth";
 import {useToast} from "primevue/usetoast";
 import {useRouter} from "vue-router";
+import Role from "@/enums/role";
 
 const toast = useToast();
-
 const auth = useAuthStore()
+const router = useRouter()
+
+const props = defineProps({
+  role: {
+    type: String,
+    required: true
+  }
+})
 
 const form = {
   email: ref(""),
@@ -46,7 +54,11 @@ async function submit(e: Event) {
   }
 
   if (isEmailValid.value && isPasswordValid.value) {
-    const isLogged = await auth.login(form.email.value, form.password.value)
+    const isLogged = await auth.login(
+        form.email.value,
+        form.password.value,
+        props.role
+    )
 
     if (false === isLogged) {
       toast.add({
@@ -55,6 +67,12 @@ async function submit(e: Event) {
         detail: 'Identifiant invalide',
         life: 3000
       });
+    } else {
+      if (props.role === Role.TATTOOER) {
+        router.push({name: "admin-flashes"})
+      } else {
+        router.push({name: "tattooers"})
+      }
     }
   }
 }

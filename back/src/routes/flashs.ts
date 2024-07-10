@@ -32,7 +32,7 @@ api.get('', async (c) => {
 
         // Tattoer
         if (undefined !== tattooer) {
-            query["tattooer"] = { tattooer }
+            query["tattooer"] = tattooer
         }
 
         // Styles

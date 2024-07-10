@@ -10,6 +10,7 @@ class Tattooer extends User {
     }
 
     constructor(
+        _id: number,
         email: string,
         password: string,
         lastname: string,
@@ -26,6 +27,7 @@ class Tattooer extends User {
         }
     ) {
         super(
+            _id,
             email,
             password,
             lastname,
