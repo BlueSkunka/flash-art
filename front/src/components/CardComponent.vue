@@ -24,7 +24,9 @@ const props = defineProps<{
       <template #header>
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
       </template>
-      <template #title v-if="showTitle">{{ props.title }}</template>
+      <template #title v-if="showTitle">{{ props.title }}
+        <div class="text-xl font-normal">150 €</div>
+      </template>
       <template #subtitle v-if="showSubtitle">
         {{ subtitle }}
         <Rating v-model="rating" readonly class="mt-4" :cancel="false" />
@@ -39,6 +41,10 @@ const props = defineProps<{
             <i v-else class="pi pi-heart"></i>
           </button>
         </div>
+        <div class="flex justify-between border-2 rounded p-3 items-center my-4">
+          <div>20/07/2024</div>
+          <i class="pi pi-calendar" />
+        </div>
       </template>
       <template #footer>
         <div class="flex gap-4 mt-1 pt-0">
@@ -47,6 +53,13 @@ const props = defineProps<{
       </template>
     </Card>
   </template>
+  
+  <script setup lang="ts">
+  import { ref } from 'vue';
+
+  const value1 = ref('20/07/2024');
+
+  </script>
   
   <style scoped>
   .like-button {
