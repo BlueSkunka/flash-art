@@ -20,7 +20,7 @@ const form = {
   email: ref(""),
   password: ref(""),
   surname: ref(""),
-  place: ref(""),
+  place: ref<Address | null>(null),
   links: ref<Link[]>([]),
   styles: ref<string[]>([]),
   description: ref(""),
@@ -42,7 +42,7 @@ const search = async (event) => {
   await stylesStore.findAll(event.query)
 }
 
-let addresses = ref<object[]>([])
+const addresses = ref<Address[]>([])
 
 async function findAddress(event) {
   if (event.query.length > 3) {
@@ -111,11 +111,11 @@ async function submit(e: Event) {
     isSurnameValid.value = true
   }
 
-  if (form.place.value.trim() !== '') {
+  if (form.place.value !== null && form.place.value.label.trim() !== '') {
     isPlaceValid.value = true
   }
 
-  if (form.links.value.filter((item, index) => form.links.value.indexOf(item) !== index).length > 0) {
+  if (form.links.value.length > 0) {
     isLinksValid.value = true
   }
 
@@ -124,16 +124,20 @@ async function submit(e: Event) {
   }
 
   if (form.description.value.trim() !== '') {
-    isStylesValid.value = true
+    isDescriptionValid.value = true
   }
-
 
   // Inscription
   if (
+      isFirstnameValid.value &&
+      isLastnameValid.value &&
       isEmailValid.value &&
       isPasswordValid.value &&
-      isFirstnameValid.value &&
-      isLastnameValid.value
+      isSurnameValid.value &&
+      isPlaceValid.value &&
+      isLinksValid.value &&
+      isStylesValid.value &&
+      isDescriptionValid.value
   ) {
     const isRegistered = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/tattooers/register",
@@ -143,10 +147,17 @@ async function submit(e: Event) {
           email: form.email.value,
           password: form.password.value,
           surname: form.surname.value,
-          place: form.place.value,
+          place: form.place.value?.label,
           links: form.links.value,
           styles: form.styles.value,
           description: form.description.value,
+          location: {
+            type: "Point",
+            coordinates: [
+              form.place.value?.coordinates.long,
+              form.place.value?.coordinates.lat,
+            ]
+          },
         }
     )
         .then(response => {
@@ -160,6 +171,8 @@ async function submit(e: Event) {
               detail: 'Un compte avec cette adresse existe déjà !',
               life: 3000
             });
+          } else {
+            console.log(error)
           }
         })
 
@@ -226,13 +239,17 @@ async function submit(e: Event) {
     <div class="flex flex-col gap-2 mt-5">
       <label for="address">Adresse</label>
       <AutoComplete inputClass="w-full" inputId="address" v-model="form.place.value" @complete="findAddress" optionLabel="label"
-                    :suggestions="addresses"/>
+                    :suggestions="addresses" v-if="!isPlaceValid && hasBeenSubmit" invalid/>
+
+      <AutoComplete inputClass="w-full" inputId="address" v-model="form.place.value" @complete="findAddress"
+                    optionLabel="label"
+                    :suggestions="addresses" v-else/>
       <small>Renseigner au moins 4 caractères</small>
     </div>
 
     <div class="flex flex-col gap-2 mt-5">
       <label for="email">Liens</label>
-
+      <Message severity="error" v-if="!isLinksValid && hasBeenSubmit">Vous devez renseigner au moins un lien</Message>
       <ul class="flex flex-col gap-5">
         <li v-for="(link, index) in form.links.value">
           <Panel :header="'Lien' + (index + 1)" :toggleable="true">
@@ -259,6 +276,13 @@ async function submit(e: Event) {
       <label for="style">Styles</label>
       <AutoComplete v-model="form.styles.value" fluid multiple @complete="search" optionLabel="name"
                     :suggestions="styles"/>
+    </div>
+
+    <div class="flex flex-col gap-2 mt-5">
+      <label for="description">Description</label>
+      <Textarea type="text" id="description" v-model="form.description.value"
+                v-if="!isDescriptionValid && hasBeenSubmit" invalid/>
+      <Textarea type="text" id="surname" v-model="form.description.value" v-else/>
     </div>
 
     <Button type="submit" label="S'inscrire" class="mt-5"/>

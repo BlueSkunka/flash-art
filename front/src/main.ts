@@ -36,6 +36,8 @@ import Panel from "primevue/panel";
 import MultiSelect from 'primevue/multiselect';
 import FileUpload from 'primevue/fileupload';
 import Image from "primevue/image";
+import Textarea from "primevue/textarea";
+import Message from "primevue/message";
 
 const app = createApp(App)
 
@@ -80,5 +82,7 @@ app.component("Panel", Panel)
 app.component("MultiSelect", MultiSelect)
 app.component("FileUpload", FileUpload)
 app.component("Image", Image);
+app.component("Textarea", Textarea);
+app.component("Message", Message);
 
 app.mount('#app')

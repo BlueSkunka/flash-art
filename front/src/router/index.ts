@@ -69,7 +69,8 @@ const router = createRouter({
                     component: LoginView,
                     meta: {
                         layout: BaseLayout
-                    }
+                    },
+                    name: "login"
                 },
                 {
                     path: '/register/user',

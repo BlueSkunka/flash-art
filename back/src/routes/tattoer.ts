@@ -63,6 +63,7 @@ api.post('/register',
 
             return c.json(saveTattooer, 201);
         } catch (error: unknown) {
+            console.log(error)
             return c.newResponse("An internal error has occurred", StatusCode.INTERNAL_SERVER_ERROR);
         }
     }
