@@ -11,4 +11,4 @@ const styleSchema = new Schema<IStyle>({
 
 const Style = model<IStyle>('styles', styleSchema);
 
-export { IStyle, styleSchema }
+export { IStyle, Style }

@@ -47,9 +47,9 @@ const items = ref([
     }
   },
   {
-    label: 'Mes disponibilités',
+    label: 'Mes réservations',
     command: () => {
-      router.push('/admin/disponibilite');
+      router.push('/admin/reservations');
     }
   },
   {

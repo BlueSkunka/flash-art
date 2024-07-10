@@ -1,14 +1,17 @@
 <script setup lang="ts">
 
 import LoginFormComponent from "@/components/LoginFormComponent.vue";
+import RegisterFormComponent from "@/components/UserRegisterFormComponent.vue";
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold">
-    Se connecter
-  </h1>
+  <section class="container mx-auto py-10">
+    <h1 class="text-3xl font-bold mb-5">
+      Se connecter
+    </h1>
 
-  <LoginFormComponent/>
+    <LoginFormComponent/>
+  </section>
 </template>
 
 <style scoped>
