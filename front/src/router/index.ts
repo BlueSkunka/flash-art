@@ -87,7 +87,7 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/flashs',
+                    path: 'flashs',
                     component: GestionFlashView,
                     meta: {
                         layout: AdminLayout
