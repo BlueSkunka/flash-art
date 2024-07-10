@@ -13,6 +13,7 @@ import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
 import FlashDetailView from "@/views/FlashDetailView.vue";
 import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
+import AccueilAdminView from "@/views/admin/AccueilAdminView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +81,13 @@ const router = createRouter({
             path: '/admin',
             children: [
                 {
+                    path: '',
+                    component: AccueilAdminView,
+                    meta: {
+                        layout: AdminLayout
+                    }
+                },
+                {
                     path: 'profil',
                     component: GestionProfilView,
                     meta: {
@@ -94,14 +102,14 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/reservations',
+                    path: 'reservations',
                     component: GestionDispoView,
                     meta: {
                         layout: AdminLayout
                     }
                 },
                 {
-                    path: '/login',
+                    path: 'login',
                     component: ConnexionView,
                     meta: {
                         layout: LoginView
