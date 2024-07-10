@@ -8,7 +8,7 @@
           </div>
           <div class="ml-10">
             <h2 class="mb-3 text-xl"> Flash "{{ props.nomFlash }}"</h2>
-            <div class="flex gap-6">
+            <div class="flex gap-6" v-if="tatoueurReservation">
               <div class="flex my-2">
                 <i class="pi pi-user my-auto pr-1"/>
                 <p class="my-auto">{{ user.nom }}</p>
@@ -67,8 +67,8 @@ const props = defineProps({
     type: String,
     required: true
   },
-  userReservation : {
-    type: String,
+  tatoueurReservation : {
+    type: Boolean,
   },
 })
 
