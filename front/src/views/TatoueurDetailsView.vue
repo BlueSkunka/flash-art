@@ -17,7 +17,7 @@ const totalAvis = ref(6)
 
 <template>
     <div class="flex flex-col mx-32">
-        <div class="flex gap-20 justify-center items-center m-6 mx-auto mb-20" style="width: 75%;">
+        <div class="flex gap-20 justify-center items-center m-6 mx-auto my-20" style="width: 75%;">
             <div class="bg-gray-400" style="width: 500px; height: 300px;">
             </div>
 
