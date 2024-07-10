@@ -10,7 +10,7 @@
     </div>
   </div>
 
-    <div class="bg-[url('illu-tatoueur.jpg')] bg-covermy-5 bg-opacity-50">
+    <div class="bg-[url('illu-tatoueur.jpg')] bg-cover my-5 bg-opacity-50">
       <div class="bg-black py-24 opacity-75">
         <div class="w-3/4 mx-auto text-white">
           <h1 class="text-center text-3xl mb-12">Des artistes de grande renomée</h1>

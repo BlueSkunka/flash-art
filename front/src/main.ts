@@ -35,6 +35,9 @@ import Panel from "primevue/panel";
 
 import MultiSelect from 'primevue/multiselect';
 import FileUpload from 'primevue/fileupload';
+import Toolbar from 'primevue/toolbar';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 import Image from "primevue/image";
 import Textarea from "primevue/textarea";
 import Message from "primevue/message";
@@ -81,6 +84,9 @@ app.component("Fieldset", Fieldset)
 app.component("Panel", Panel)
 app.component("MultiSelect", MultiSelect)
 app.component("FileUpload", FileUpload)
+app.component("Toolbar", Toolbar)
+app.component("DataTable", DataTable)
+app.component("Column", Column)
 app.component("Image", Image);
 app.component("Textarea", Textarea);
 app.component("Message", Message);
