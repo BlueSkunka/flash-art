@@ -1,4 +1,5 @@
 import { Schema, Date, Types, model } from "mongoose";
+import { IStyle } from "./style";
 
 interface IFlash {
     place: string;
@@ -12,6 +13,7 @@ interface IFlash {
         type: { type: String },
         coordinates: [Number],
     };
+    styles: IStyle[];
 }
 
 const flashSchema = new Schema<IFlash>({
@@ -32,7 +34,10 @@ const flashSchema = new Schema<IFlash>({
             type: [Number],
             required: true
         }
-    }
+    },
+    styles: [{
+        name: { type: String, required: true, trim: true, lowercase: true }
+    }]
 })
 
 const Flash = model<IFlash>('flashs', flashSchema);
