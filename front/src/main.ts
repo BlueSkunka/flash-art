@@ -27,6 +27,7 @@ import Rating from 'primevue/rating'
 import Tag from 'primevue/tag'
 import CardComponent from './components/CardComponent.vue';
 import Dropdown from "primevue/dropdown";
+import Image from "primevue/image";
 
 const app = createApp(App)
 
@@ -60,5 +61,6 @@ app.component("Rating", Rating)
 app.component("Tag", Tag)
 app.component("CardComponent", CardComponent)
 app.component("Dropdown", Dropdown)
+app.component("Image", Image);
 
 app.mount('#app')
