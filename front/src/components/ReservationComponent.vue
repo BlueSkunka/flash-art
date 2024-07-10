@@ -7,7 +7,17 @@
             <Image src="../src/assets/illu-tatoueur.jpg" class="m-auto"/>
           </div>
           <div class="ml-10">
-            <h2 class="mb-3 text-xl"> Réservation du flash "{{ props.nomFlash }}"</h2>
+            <h2 class="mb-3 text-xl"> Flash "{{ props.nomFlash }}"</h2>
+            <div class="flex gap-6">
+              <div class="flex my-2">
+                <i class="pi pi-user my-auto pr-1"/>
+                <p class="my-auto">{{ user.nom }}</p>
+              </div>
+              <div class="flex my-2">
+                <i class="pi pi-at my-auto pr-1"/>
+                <p class="my-auto">{{ user.mail }}</p>
+              </div>
+            </div>
             <div class="flex gap-6">
               <div class="flex my-2">
                 <i class="pi pi-calendar-clock my-auto pr-1"/>
@@ -17,11 +27,15 @@
                 <i class="pi pi-map-marker my-auto pr-1"/>
                 <p class="my-auto">{{ props.lieuReservation }}</p>
               </div>
+              <div class="flex my-2">
+                <i class="pi pi-wallet my-auto pr-1"/>
+                <p class="my-auto">{{ props.prixFlash }} €</p>
+              </div>
             </div>
           </div>
         </div>
         <div class="my-auto">
-          <Button label="Annuler ma réservation" severity="danger" @click="cancelReservation"/>
+          <Button label="Annuler la réservation" severity="danger" @click="cancelReservation"/>
         </div>
       </div>
 
@@ -33,11 +47,32 @@
 <script setup lang="ts">
 
 const props = defineProps({
-  nomFlash: String,
-  imageFlashUrl: String,
-  dateReservation: String,
-  lieuReservation: String,
+  nomFlash: {
+    type: String,
+    required: true
+  },
+  prixFlash : {
+    type: Number,
+    required: true
+  },
+  imageFlashUrl: {
+    type: String,
+    required: true
+  },
+  dateReservation: {
+    type: String,
+    required: true
+  },
+  lieuReservation: {
+    type: String,
+    required: true
+  },
+  userReservation : {
+    type: String,
+  },
 })
+
+const user = { nom: "Dark Bernadette", mail: "dark_bernadette@gmail.com" };
 
 const cancelReservation = () => {
   //TODO: Annuler la réservation
