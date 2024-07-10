@@ -8,6 +8,7 @@ import { isValidObjectId } from "mongoose";
 import { guard } from "../middlewares/guard";
 import Role from "../enums/role";
 import { identifer } from '../middlewares/identifier';
+import StatusCode from "../enums/statusCode";
 
 const api = new Hono().basePath('/users');
 
@@ -17,11 +18,11 @@ api.get('',
         try {
             const users = await User.find({})
 
-            return c.json(users)
-        } catch (error: any) {
-            return c.json(error._message, 400)
-        }
-    })
+        return c.json(users)
+    } catch (error: any) {
+        return c.json(error._message, StatusCode.BAD_REQUEST)
+    }
+})
 
 api.get('/:id',
     guard(Role.ADMIN),
@@ -29,12 +30,12 @@ api.get('/:id',
     async (c) => {
         const _id = c.req.param('id')
 
-        if (isValidObjectId(_id)) {
-            const user = await User.findOne({ _id })
-            return c.json(user)
-        }
-        return c.json({ msg: 'ObjectId malformed' }, 400)
-    })
+    if (isValidObjectId(_id)) {
+        const user = await User.findOne({_id})
+        return c.json(user)
+    }
+    return c.json({msg: 'ObjectId malformed'}, StatusCode.BAD_REQUEST)
+})
 
 api.post('',
     guard(Role.ADMIN),
@@ -45,7 +46,7 @@ api.post('',
             body.firstname === undefined ||
             body.lastname === undefined
         ) {
-            return c.text('Bad Request', 400)
+            return c.text('Bad Request', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -57,7 +58,7 @@ api.post('',
             const currentUser = await User.findOne({ email })
 
             if (currentUser !== null) {
-                return c.text("User already exist !", 400)
+                return c.text("User already exist !", StatusCode.CONFLICT)
             }
 
             let user = new User(body)
@@ -71,7 +72,7 @@ api.post('',
 
             return c.json(user)
         } catch (error: any) {
-            return c.json(error._message, 400)
+            return c.json(error._message, StatusCode.BAD_REQUEST)
         }
     })
 
@@ -85,7 +86,7 @@ api.put('/:id',
             body.firstname === undefined ||
             body.lastname === undefined
         ) {
-            return c.text('Bad Request', 400)
+            return c.text('Bad Request', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -117,17 +118,17 @@ api.delete('/:id',
     guard(Role.ADMIN),
     identifer(),
     async (c) => {
-        const _id = c.req.param('id')
-        const tryToDelete = await User.deleteOne({ _id })
-        const { deletedCount } = tryToDelete
+    const _id = c.req.param('id')
+    const tryToDelete = await User.deleteOne({_id})
+    const {deletedCount} = tryToDelete
 
-        if (deletedCount) {
-            return c.newResponse(null, 204)
-        }
+    if (deletedCount) {
+        return c.newResponse(null, 204)
+    }
 
-        return c.json({ msg: "not found" }, 404)
+    return c.json({msg: "not found"}, 404)
 
-    })
+})
 
 
 api.post('/register',
@@ -162,8 +163,9 @@ api.post('/register',
 
             user.password = undefined
 
-            return c.json(user)
+            return c.json(user, 201)
         } catch (error: any) {
+            console.log(error)
             return c.json(error._message, 400)
         }
     })

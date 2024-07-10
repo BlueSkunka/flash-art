@@ -8,6 +8,7 @@ import users from "./routes/users";
 import tattooers from './routes/tattoer'
 import flashes from './routes/flashs';
 import opinions from './routes/opinions'
+import styles from "./routes/styles";
 
 const app = new Hono()
 await DbConnect()
@@ -24,6 +25,7 @@ app.route('/api', tattooers)
 app.route('/api', users)
 app.route('/api', flashes)
 app.route('/api', opinions)
+app.route('/api', styles)
 
 //app.use(customCors)
 

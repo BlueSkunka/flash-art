@@ -5,13 +5,14 @@ import EventDetailsView from '@/views/EventDetailsView.vue';
 import AccueilView from "@/views/AccueilView.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import FlashView from "@/views/FlashView.vue";
-import ConnexionView from "@/views/ConnexionView.vue";
 import GestionProfilView from "@/views/admin/GestionProfilView.vue";
 import GestionFlashView from "@/views/admin/GestionFlashView.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
 import FlashDetailView from "@/views/FlashDetailView.vue";
 import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
+import TattooerRegisterView from "@/views/TattooerRegisterView.vue";
+import UserRegisterView from "@/views/UserRegisterView.vue";
 import GestionReservationView from '@/views/admin/GestionReservationView.vue';
 
 const router = createRouter({
@@ -68,6 +69,21 @@ const router = createRouter({
                     component: LoginView,
                     meta: {
                         layout: BaseLayout
+                    },
+                    name: "login"
+                },
+                {
+                    path: '/register/user',
+                    component: UserRegisterView,
+                    meta: {
+                        layout: BaseLayout
+                    }
+                },
+                {
+                    path: '/register/tattooer',
+                    component: TattooerRegisterView,
+                    meta: {
+                        layout: BaseLayout
                     }
                 },
                 {
@@ -99,14 +115,7 @@ const router = createRouter({
                     meta: {
                         layout: AdminLayout
                     }
-                },
-                {
-                    path: '/login',
-                    component: ConnexionView,
-                    meta: {
-                        layout: LoginView
-                    }
-                },
+                }
             ]
         }
     ]
