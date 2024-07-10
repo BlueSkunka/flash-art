@@ -29,6 +29,7 @@ import CardComponent from './components/CardComponent.vue';
 import CommentComponent from './components/CommentComponent.vue';
 import Avatar from 'primevue/avatar'
 import Dropdown from "primevue/dropdown";
+import Image from "primevue/image";
 
 const app = createApp(App)
 
@@ -64,5 +65,6 @@ app.component("CardComponent", CardComponent)
 app.component("CommentComponent", CommentComponent)
 app.component("Avatar", Avatar)
 app.component("Dropdown", Dropdown)
+app.component("Image", Image);
 
 app.mount('#app')
