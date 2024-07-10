@@ -26,6 +26,8 @@ import SelectButton from 'primevue/selectbutton';
 import Rating from 'primevue/rating'
 import Tag from 'primevue/tag'
 import CardComponent from './components/CardComponent.vue';
+import CommentComponent from './components/CommentComponent.vue';
+import Avatar from 'primevue/avatar'
 import Dropdown from "primevue/dropdown";
 import Image from "primevue/image";
 
@@ -60,6 +62,8 @@ app.component("SelectButton", SelectButton)
 app.component("Rating", Rating)
 app.component("Tag", Tag)
 app.component("CardComponent", CardComponent)
+app.component("CommentComponent", CommentComponent)
+app.component("Avatar", Avatar)
 app.component("Dropdown", Dropdown)
 app.component("Image", Image);
 
