@@ -14,11 +14,24 @@
       <Dropdown v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Sélectionner un creaneau" class="w-full md:w-[18rem]" />
     </div>
   </div>
+  <h1 class="text-3xl text-center my-12">Les autres flash de Jean Neymar</h1>
+  <div  key="index" class="flex flex-wrap w-10/12 mx-auto gap-5">
+<!--    <div v-for="index in 15">-->
+<!--      <FlashComponent image-flash-url="" nom-flash="Papillon tout mignon"  />-->
+<!--    </div>-->
+    <Carousel :value="flashs" :numVisible="5" :numScroll="1" circular :autoplayInterval="3000">
+      <template #item="slotProps">
+        <FlashComponent image-flash-url="" nom-flash="Papillon tout mignon"  />
+        <!-- TODO envoyer les props (doc carousel) -->
+      </template>
+    </Carousel>
+  </div>
 </template>
 
 <script setup>
 
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import FlashComponent from "@/components/FlashComponent.vue";
 const selectedCity = ref();
 const cities = ref([
   { name: 'New York', code: 'NY' },
@@ -27,5 +40,11 @@ const cities = ref([
   { name: 'Istanbul', code: 'IST' },
   { name: 'Paris', code: 'PRS' }
 ]);
+const flashs = ref();
+
+onMounted(() => {
+  //récupération des flashs
+})
+
 
 </script>

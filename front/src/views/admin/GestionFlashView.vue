@@ -51,6 +51,11 @@
               {{ formatCurrency(slotProps.data.price) }}
           </template>
       </Column>
+      <Column field="period" header="Période" sortable style="min-width: 8rem">
+          <template #body="slotProps">
+              {{ formatCurrency(slotProps.data.price) }}
+          </template>
+      </Column>
       <Column field="description" header="Description" sortable style="min-width: 10rem"></Column>
       <Column :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
@@ -78,7 +83,7 @@ const data = {
 }
 
 onMounted(() => {
-    ProductService.getProducts().then((data) => (products.value = data));
+    // ProductService.getProducts().then((data) => (products.value = data));
 });
 
 const toast = useToast();

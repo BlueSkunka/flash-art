@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-32">
-  <h1 class="text-3xl my-10">Gestion de mon profil</h1>
+  <h1 class="text-3xl my-10 text-center">Gestion de mon profil</h1>
 
   <h2 class="text-2xl my-6">Mes informations</h2>
   

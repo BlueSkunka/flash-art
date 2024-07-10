@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { Flash } from "../models/flash";
 import StatusCode from "../enums/statusCode";
 import { validator } from "hono/validator";
-import { isValidObjectId } from "mongoose";
+import { isValidObjectId, ObjectId } from "mongoose";
 import { identifer } from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
@@ -11,8 +11,93 @@ const api = new Hono().basePath('/flashes')
 
 // Récupération de tous les flash sans réservation 
 api.get('', async (c) => {
+    const { long, lat, maxRange, tattooer, favourite, minDate, maxDate, minPrice, maxPrice } = c.req.query()
+    const styles = c.req.queries('style')
+
     try {
-        const flashes = await Flash.find({ user: { $exists: false, $eq: null } });
+        const query = {}
+
+        // Location
+        if (undefined !== long && undefined !== lat && undefined !== maxRange) {
+            query['location'] = {
+                "$near": {
+                    "$maxDistance": maxRange,
+                    "$geometry": {
+                        "type": "Point",
+                        "coordinates": [long, lat]
+                    }
+                },
+            }
+        }
+
+        // Tattoer
+        if (undefined !== tattooer) {
+            console.log(isValidObjectId(tattooer));
+            console.log(tattooer);
+
+
+            query["tattooer"] = tattooer
+        }
+
+        // Styles
+        if (undefined !== styles) {
+            query["styles.name"] = { "$in": styles }
+            //     query["match"] = {
+            //         $expr: {
+            //             $gt: [{
+            //                 $size: {
+            //                     $reduce: {
+            //                         input: styles,
+            //                         initialValue: [],
+            //                         in: {
+            //                             $concatArrays: [
+            //                                 "$$value",
+            //                                 {
+            //                                     $filter: {
+            //                                         input: "$name",
+            //                                         as: "name",
+            //                                         cond: { $regexMatch: { input: "$$this", regex: "$$name" } }
+            //                                     }
+            //                                 }
+            //                             ]
+            //                         }
+            //                     }
+            //                 }
+            //             }, 0]
+            //         }
+            //     }
+        }
+
+        // Favoris
+        if (undefined !== favourite) {
+            // Query for user favourite tattooers
+        }
+
+        // MinDate
+        if (undefined !== minDate) {
+            query["flashDate"] = { "$gte": new Date(minDate) }
+        }
+
+        // Max date
+        if (undefined !== maxDate) {
+            query["flashDate"] = { "$lte": new Date(maxDate) }
+        }
+
+        // Min price
+        if (undefined !== minPrice) {
+            query["price"] = { "$gte": minPrice }
+        }
+
+        // Max price
+        if (undefined !== maxPrice) {
+            query["price"] = { "$lte": maxPrice }
+        }
+
+        query["user"] = { $exists: false, $eq: null }
+
+        console.log(query);
+
+        const flashes = await Flash.find(query);
 
         return c.json(flashes, StatusCode.OK)
     } catch (error: unknown) {
@@ -22,6 +107,7 @@ api.get('', async (c) => {
     }
 })
 
+// Création d'un flash
 api.post('',
     validator('json', (body, c) => {
         if (undefined === body.place ||
@@ -57,6 +143,7 @@ api.post('',
     }
 )
 
+// Récupérer un flash
 api.get('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
@@ -78,6 +165,7 @@ api.get('/:id', identifer(), async (c) => {
     }
 })
 
+// Modification d'un flash 
 api.put('/:id',
     identifer(),
     validator('json', (body, c) => {
@@ -123,6 +211,7 @@ api.put('/:id',
     }
 )
 
+// Suppression d'un flash
 api.delete('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {

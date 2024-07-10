@@ -5,14 +5,16 @@ import EventDetailsView from '@/views/EventDetailsView.vue';
 import AccueilView from "@/views/AccueilView.vue";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 import FlashView from "@/views/FlashView.vue";
-import ConnexionView from "@/views/ConnexionView.vue";
 import GestionProfilView from "@/views/admin/GestionProfilView.vue";
 import GestionFlashView from "@/views/admin/GestionFlashView.vue";
-import GestionDispoView from "@/views/admin/GestionReservationView.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import ReservationView from "@/views/ReservationView.vue";
 import FlashDetailView from "@/views/FlashDetailView.vue";
 import TatoueurDetailsView from '@/views/TatoueurDetailsView.vue';
+import TattooerRegisterView from "@/views/TattooerRegisterView.vue";
+import UserRegisterView from "@/views/UserRegisterView.vue";
+import GestionReservationView from '@/views/admin/GestionReservationView.vue';
+import AccueilAdminView from "@/views/admin/AccueilAdminView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +70,21 @@ const router = createRouter({
                     component: LoginView,
                     meta: {
                         layout: BaseLayout
+                    },
+                    name: "login"
+                },
+                {
+                    path: '/register/user',
+                    component: UserRegisterView,
+                    meta: {
+                        layout: BaseLayout
+                    }
+                },
+                {
+                    path: '/register/tattooer',
+                    component: TattooerRegisterView,
+                    meta: {
+                        layout: BaseLayout
                     }
                 },
                 {
@@ -79,6 +96,13 @@ const router = createRouter({
         {
             path: '/admin',
             children: [
+                {
+                    path: '',
+                    component: AccueilAdminView,
+                    meta: {
+                        layout: AdminLayout
+                    }
+                },
                 {
                     path: 'profil',
                     component: GestionProfilView,
@@ -94,19 +118,12 @@ const router = createRouter({
                     }
                 },
                 {
-                    path: '/reservations',
-                    component: GestionDispoView,
+                    path: 'reservations',
+                    component: GestionReservationView,
                     meta: {
                         layout: AdminLayout
                     }
-                },
-                {
-                    path: '/login',
-                    component: ConnexionView,
-                    meta: {
-                        layout: LoginView
-                    }
-                },
+                }
             ]
         }
     ]

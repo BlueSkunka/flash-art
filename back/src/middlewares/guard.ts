@@ -9,32 +9,40 @@ const guard = (role: string) => createMiddleware(async (c, next) => {
 
     const token = authorization?.replace("Bearer ", "")
 
-    const { header, payload } = verify(token)
+    if (token) {
+        const { header, payload } = verify(token)
 
-    const _id = payload._id
+        const _id = payload._id
 
-    try {
-        const user = await User.findOne({ _id })
+        try {
+            const user = await User.findOne({ _id })
 
-        if (!user) {
-            await next();
-
-            c.res = new Response("Forbidden", { status: StatusCode.FORBIDDEN })
-
-            return c.res
-        } else {
-            if (user.role !== role) {
+            if (!user) {
                 await next();
 
                 c.res = new Response("Forbidden", { status: StatusCode.FORBIDDEN })
 
                 return c.res
             } else {
-                await next();
+                if (user.role !== role) {
+                    await next();
+
+                    c.res = new Response("Forbidden", { status: StatusCode.FORBIDDEN })
+
+                    return c.res
+                } else {
+                    await next();
+                }
             }
+        } catch (e: any) {
+            console.log("Une erreur est survenue");
         }
-    } catch (e: any) {
-        console.log("Une erreur est survenue");
+    } else {
+        await next();
+
+        c.res = new Response("Forbidden", { status: StatusCode.FORBIDDEN })
+
+        return c.res
     }
 })
 
