@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { Flash } from "../models/flash";
 import StatusCode from "../enums/statusCode";
 import { validator } from "hono/validator";
-import { isValidObjectId } from "mongoose";
+import { isValidObjectId, ObjectId } from "mongoose";
 import { identifer } from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
@@ -19,20 +19,24 @@ api.get('', async (c) => {
 
         // Location
         if (undefined !== long && undefined !== lat && undefined !== maxRange) {
-            query['$geoNear'] = {
-                "near": {
-                    "type": "Point",
-                    "coordinates": [long, lat]
+            query['location'] = {
+                "$near": {
+                    "$maxDistance": maxRange,
+                    "$geometry": {
+                        "type": "Point",
+                        "coordinates": [long, lat]
+                    }
                 },
-                "distanceField": "distance",
-                "spherical": true,
-                "maxDistance": maxRange
             }
         }
 
         // Tattoer
         if (undefined !== tattooer) {
-            query["tattooer"] = { tattooer }
+            console.log(isValidObjectId(tattooer));
+            console.log(tattooer);
+
+
+            query["tattooer"] = tattooer
         }
 
         // Styles
