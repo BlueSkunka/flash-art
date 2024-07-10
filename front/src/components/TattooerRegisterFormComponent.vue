@@ -225,8 +225,9 @@ async function submit(e: Event) {
 
     <div class="flex flex-col gap-2 mt-5">
       <label for="address">Adresse</label>
-      <AutoComplete v-model="form.place.value" fluid multiple @complete="findAddress" optionLabel="label"
+      <AutoComplete inputClass="w-full" inputId="address" v-model="form.place.value" @complete="findAddress" optionLabel="label"
                     :suggestions="addresses"/>
+      <small>Renseigner au moins 4 caractères</small>
     </div>
 
     <div class="flex flex-col gap-2 mt-5">
