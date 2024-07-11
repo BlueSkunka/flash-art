@@ -63,7 +63,7 @@ fetchData()
 
         <div class="grid grid-cols-4 gap-4 justify-items-center m-8" v-if="!isLoadingTattoers">
           <div v-if="tattooers.length > 0" v-for="(tattooer, index) in tattooers" :key="index" >
-            <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true" :subtitle="tattooer.surname"
+            <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true" :subtitle="tattooer.surname" :showDate="false"
                            :styles="tattooer.styles" :title="tattooer.firstname + ' ' + tattooer.lastname"/>
           </div>
           <div v-else>
