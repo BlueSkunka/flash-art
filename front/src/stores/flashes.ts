@@ -51,6 +51,22 @@ export const useFlashesStore = defineStore('flashes', () => {
         return isCreated
     }
 
+    async function update(data: object, flashId: null) {
+        console.log(data, flashId)
+        const isUpdated = await axios.post(
+            url.href  + '/' + flashId,
+            data
+        ).then(response => {
+            flashes.value.push(response.data)
+
+            return response.status === 201
+        }).catch(error => {
+            return false
+        })
+
+        return isUpdated
+    }
+
     async function remove(flash: Flash) {
         isLoading.value = true
 
@@ -72,5 +88,5 @@ export const useFlashesStore = defineStore('flashes', () => {
         return isDeleted
     }
 
-    return {flashes, isLoading, findAll, findByTattooer, remove, create}
+    return {flashes, isLoading, findAll, findByTattooer, remove, create, update}
 })

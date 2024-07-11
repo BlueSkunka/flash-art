@@ -82,7 +82,23 @@ const submit = async (e: Event) => {
       isPriceValid.value
   ) {
     if (props.flash) {
+      const isUpdated = await flashesStore.update({
+        place: form.place.value.label,
+        flashDate: form.flashDate.value,
+        tattooer: tattooer.value._id,
+        name: form.name.value,
+        description: form.description.value,
+        price: form.price.value,
+        location: {
+          type: "Point",
+          coordinates: [
+            form.place.value?.coordinates.long,
+            form.place.value?.coordinates.lat,
+          ]
+        },
+      }, props.flash._id)
 
+      emitFormSubmitEvent(isUpdated)
     } else {
       const isCreated = await flashesStore.create({
         place: form.place.value.label,
@@ -105,6 +121,7 @@ const submit = async (e: Event) => {
 
   }
 }
+
 </script>
 
 <template>
