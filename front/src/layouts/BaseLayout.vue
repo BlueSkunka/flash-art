@@ -62,41 +62,43 @@ const logout = () => {
 
 const items = ref([]);
 
-if (user.value !== null) {
-  items.value = [
-    {
-      label: 'Les tatoueurs',
-      command: () => {
-        router.push('/tatoueurs');
+watch(() => {
+  if (user.value !== null) {
+    items.value = [
+      {
+        label: 'Les tatoueurs',
+        command: () => {
+          router.push('/tatoueurs');
+        }
+      },
+      {
+        label: 'Les flashs',
+        command: () => {
+          router.push('/flashs');
+        }
+      },
+      {
+        label: 'Mes réservations',
+        command: () => {
+          router.push({name: "reservations"});
+        }
       }
-    },
-    {
-      label: 'Les flashs',
-      command: () => {
-        router.push('/flashs');
+    ]
+  } else {
+    items.value = [
+      {
+        label: 'Les tatoueurs',
+        command: () => {
+          router.push('/tatoueurs');
+        }
+      },
+      {
+        label: 'Les flashs',
+        command: () => {
+          router.push('/flashs');
+        }
       }
-    },
-    {
-      label: 'Mes réservations',
-      command: () => {
-        router.push({name: "reservations"});
-      }
-    }
-  ]
-} else {
-  items.value = [
-    {
-      label: 'Les tatoueurs',
-      command: () => {
-        router.push('/tatoueurs');
-      }
-    },
-    {
-      label: 'Les flashs',
-      command: () => {
-        router.push('/flashs');
-      }
-    }
-  ]
-}
+    ]
+  }
+})
 </script>

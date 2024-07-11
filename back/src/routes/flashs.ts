@@ -10,7 +10,7 @@ const api = new Hono().basePath('/flashes')
 
 // Récupération de tous les flash sans réservation 
 api.get('', async (c) => {
-    const { long, lat, maxRange, tattooer, favourite, minDate, maxDate, minPrice, maxPrice, booked } = c.req.query()
+    const { long, lat, maxRange, tattooer, favourite, minDate, maxDate, minPrice, maxPrice, booked, user } = c.req.query()
     const styles = c.req.queries('style')
 
     try {
@@ -91,6 +91,8 @@ api.get('', async (c) => {
         // booked
         if (undefined !== booked) {
             query["user"] = { $exists: true }
+        } else if (undefined !== user) {
+            query["user"] = user
         } else {
             query["user"] = { $exists: false, $eq: null }
         }

@@ -7,35 +7,31 @@
             <Image src="../src/assets/illu-tatoueur.jpg" class="m-auto"/>
           </div>
           <div class="ml-10">
-            <h2 class="mb-3 text-xl"> Flash "{{ props.nomFlash }}"</h2>
+            <h2 class="mb-3 text-xl"> Flash "{{ props.flash.name }}"</h2>
             <div class="flex gap-6" v-if="tatoueurReservation">
               <div class="flex my-2">
                 <i class="pi pi-user my-auto pr-1"/>
-                <p class="my-auto">{{ user.nom }}</p>
-              </div>
-              <div class="flex my-2">
-                <i class="pi pi-at my-auto pr-1"/>
-                <p class="my-auto">{{ user.mail }}</p>
+                <p class="my-auto">{{ props.flash.user.firstname + ' ' + props.flash.user.lastname }}</p>
               </div>
             </div>
             <div class="flex gap-6">
               <div class="flex my-2">
                 <i class="pi pi-calendar-clock my-auto pr-1"/>
-                <p class="my-auto">{{ props.dateReservation }}</p>
+                <p class="my-auto">{{ props.flash.flashDate }}</p>
               </div>
               <div class="flex my-2">
                 <i class="pi pi-map-marker my-auto pr-1"/>
-                <p class="my-auto">{{ props.lieuReservation }}</p>
+                <p class="my-auto">{{ props.flash.place }}</p>
               </div>
               <div class="flex my-2">
                 <i class="pi pi-wallet my-auto pr-1"/>
-                <p class="my-auto">{{ props.prixFlash }} €</p>
+                <p class="my-auto">{{ props.flash.price }} €</p>
               </div>
             </div>
           </div>
         </div>
         <div class="my-auto">
-          <Button label="Annuler la réservation" severity="danger" @click="cancelReservation"/>
+          <Button label="Annuler la réservation" severity="danger" @click="cancelBook"/>
         </div>
       </div>
 
@@ -46,25 +42,12 @@
 
 <script setup lang="ts">
 
+import {useFlashesStore} from "@/stores/flashes";
+import {Flash} from "@/entities/flash";
+
 const props = defineProps({
-  nomFlash: {
-    type: String,
-    required: true
-  },
-  prixFlash : {
-    type: Number,
-    required: true
-  },
-  imageFlashUrl: {
-    type: String,
-    required: true
-  },
-  dateReservation: {
-    type: String,
-    required: true
-  },
-  lieuReservation: {
-    type: String,
+  flash: {
+    type: Object,
     required: true
   },
   tatoueurReservation : {
@@ -73,9 +56,32 @@ const props = defineProps({
 })
 
 const user = { nom: "Dark Bernadette", mail: "dark_bernadette@gmail.com" };
+const flashesStore = useFlashesStore()
 
-const cancelReservation = () => {
-  //TODO: Annuler la réservation
+const emits = defineEmits(['cancel-book-event'])
+
+const cancelBook = async () => {
+  const data = {
+    place: props.flash.place,
+    flashDate: props.flash.flashDate,
+    tattooer: props.flash.tattooer._id,
+    name: props.flash.name,
+    description: props.flash.description,
+    price: props.flash.price,
+    location: {
+      type: "Point",
+      coordinates: [
+        props.flash.location.coordinates[0],
+        props.flash.location.coordinates[1]
+      ]
+    },
+    styles: props.flash.styles,
+    user: null
+  }
+
+  const isUpdated = await flashesStore.update(data, props.flash._id)
+
+  emits('cancel-book-event', {isCanceked: isUpdated})
 }
 
 </script>
