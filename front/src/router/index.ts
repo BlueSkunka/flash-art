@@ -41,7 +41,7 @@ const router = createRouter({
                     name: "flashes"
                 },
                 {
-                    path: '/flashs/1',
+                    path: '/flashs/:id',
                     component: FlashDetailView,
                 },
                 {

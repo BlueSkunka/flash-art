@@ -1,50 +1,77 @@
 <template>
+  <Toast/>
   <h1 class="text-3xl text-center my-12">Réservation d'un flash</h1>
   <div class="grid grid-cols-2 mb-16 w-1/2 mx-auto">
     <div class="border border-red-600 w-2/3 m-auto">
       <img src="../assets/illu-tatoueur.jpg" alt="image de flash">
-      <!-- TODO remplir les infos avec le flash sélectionné-->
     </div>
     <div>
-      <h2 class="text-2xl my-3">Nom du flash</h2>
-      <h3 class="text-xl mb-5 font-medium">000 €</h3>
-      <p class="text-grey-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-      <p class="my-5">Lieu de tatouage: dtc</p>
-      <p class="mt-5 mb-1">Créneau horaire:</p>
-      <Dropdown v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Sélectionner un creaneau" class="w-full md:w-[18rem]" />
+      <h2 class="text-2xl my-3">{{ flash.name }}</h2>
+      <h3 class="text-xl mb-5 font-medium">{{ flash.price }}</h3>
+      <p class="text-grey-600">{{ flash.description }}</p>
+      <p class="mt-5 mb-1">Créneau horaire:
+        {{ date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' à ' + date.getHours() + 'h' + date.getMinutes() }}</p>
+      <Button v-if="user && flash.user === undefined" @click="toBook">Réserver le créneau</Button>
+      <InlineMessage severity="info" v-else-if="flash.user !== undefined">Ce créneau à déjà été réservé</InlineMessage>
+      <InlineMessage severity="info" v-else>Vous devez être connecté pour réserver ce créneau</InlineMessage>
     </div>
-  </div>
-  <h1 class="text-3xl text-center my-12">Les autres flash de Jean Neymar</h1>
-  <div  key="index" class="flex flex-wrap w-10/12 mx-auto gap-5">
-<!--    <div v-for="index in 15">-->
-<!--      <FlashComponent image-flash-url="" nom-flash="Papillon tout mignon"  />-->
-<!--    </div>-->
-    <Carousel :value="flashs" :numVisible="5" :numScroll="1" circular :autoplayInterval="3000">
-      <template #item="slotProps">
-        <FlashComponent image-flash-url="" nom-flash="Papillon tout mignon"  />
-        <!-- TODO envoyer les props (doc carousel) -->
-      </template>
-    </Carousel>
   </div>
 </template>
 
 <script setup>
-
-import { ref, onMounted } from "vue";
+import {ref, onMounted, onBeforeMount, computed} from "vue";
 import FlashComponent from "@/components/FlashComponent.vue";
-const selectedCity = ref();
-const cities = ref([
-  { name: 'New York', code: 'NY' },
-  { name: 'Rome', code: 'RM' },
-  { name: 'London', code: 'LDN' },
-  { name: 'Istanbul', code: 'IST' },
-  { name: 'Paris', code: 'PRS' }
-]);
-const flashs = ref();
+import {Flash} from "@/entities/flash";
+import {useFlashesStore} from "@/stores/flashes";
+import {useRoute} from "vue-router";
+import {useAuthStore} from "@/stores/auth";
+import {useToast} from "primevue/usetoast";
 
-onMounted(() => {
-  //récupération des flashs
+const route = useRoute()
+const authStore = useAuthStore()
+const toast = useToast()
+
+const user = computed(() => authStore.user)
+const flashId = route.params.id
+const flashesStore = useFlashesStore()
+const flash = computed(() => flashesStore.flash);
+const date = ref(new Date())
+
+onBeforeMount(async () => {
+  await flashesStore.findOne(flashId)
+  date.value = new Date(flash.value.flashDate)
 })
+
+
+const toBook = async () => {
+  const data = {
+    place: flash.value.place,
+    flashDate: flash.value.flashDate,
+    tattooer: flash.value.tattooer._id,
+    name: flash.value.name,
+    description: flash.value.description,
+    price: flash.value.price,
+    location: {
+      type: "Point",
+      coordinates: [
+        flash.value.location.coordinates[0],
+        flash.value.location.coordinates[1]
+      ]
+    },
+    styles: flash.value.styles,
+    user: user.value._id
+  }
+
+  const isUpdated = await flashesStore.update(data, flashId)
+
+
+  if (isUpdated) {
+    flash.value.user = user.value
+    toast.add({severity:'info', summary: 'Le créneau a été réservé'})
+  } else {
+    toast.add({severity:'error', summary: 'Une erreur est survenue'})
+  }
+}
 
 
 </script>
