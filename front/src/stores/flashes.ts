@@ -41,26 +41,39 @@ export const useFlashesStore = defineStore('flashes', () => {
             url,
             data
         ).then(response => {
-            flashes.value.push(response.data)
+            console.log(response)
+            if (response.status === 201) {
+                flashes.value.push(response.data)
 
-            return response.status === 201
+                return true
+            }
+
+            return false
         }).catch(error => {
+            console.error(error)
+
             return false
         })
 
         return isCreated
     }
 
-    async function update(data: object, flashId: null) {
-        console.log(data, flashId)
-        const isUpdated = await axios.post(
+    async function update(data: object, flashId: number) {
+        const isUpdated = await axios.put(
             url.href  + '/' + flashId,
             data
         ).then(response => {
-            flashes.value.push(response.data)
+            if (response.status === 200) {
+                const flashIndex = flashes.value.findIndex(flash => flash._id === flashId)
+                flashes.value[flashIndex] = response.data
 
-            return response.status === 201
+                return true
+            }
+
+            return false
         }).catch(error => {
+            console.error(error)
+
             return false
         })
 
@@ -72,16 +85,20 @@ export const useFlashesStore = defineStore('flashes', () => {
 
         const isDeleted = await axios.delete(url.href + '/' + flash._id)
             .then(response => {
-                return response.status === 204
+                if (response.status === 204) {
+                    const index = flashes.value.findIndex(flashItem => flash === flashItem)
+                    flashes.value.splice(index, 1)
+
+                    return true;
+                } else {
+                    return false;
+                }
             })
-            .then(error => {
+            .catch(error => {
+                console.error(error)
+
                 return false
             })
-
-        if (isDeleted) {
-            const index = flashes.value.findIndex(flashItem => flash === flashItem)
-            flashes.value.splice(index, 1)
-        }
 
         isLoading.value = false
 

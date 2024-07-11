@@ -3,14 +3,20 @@ import {ref} from "vue";
 import {Address} from "@/entities/address";
 import axios from "axios";
 
-const address = ref<Address>()
 
 const props = defineProps({
   invalid: {
     required: true,
     type: Boolean
+  },
+  address: {
+    required: false,
+    type: Address
   }
 })
+
+const address = ref<Address>(props.address ? props.address : new Address(""))
+
 
 const emits = defineEmits(['address-update-event'])
 const emitAddressUpdateEvent = () => {
@@ -30,11 +36,11 @@ async function findAddress(event) {
           const dataAddress: Address[] = []
           data.features.forEach((item: any) => {
             const address = new Address(
+                item.properties.label,
                 {
                   long: item.geometry.coordinates[0],
                   lat: item.geometry.coordinates[1]
-                },
-                item.properties.label
+                }
             )
 
             dataAddress.push(address)
@@ -50,7 +56,7 @@ async function findAddress(event) {
 <template>
   <label for="address">Adresse</label>
   <AutoComplete inputClass="w-full" inputId="address" v-model="address" @complete="findAddress" optionLabel="label"
-                :suggestions="addresses" :invalid="invalid" @change="emitAddressUpdateEvent"/>
+                :suggestions="addresses" :invalid="invalid" @itemSelect="emitAddressUpdateEvent"/>
   <small>Renseigner au moins 4 caractères</small>
 </template>
 

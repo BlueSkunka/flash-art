@@ -5,7 +5,7 @@ import {computed, ref} from "vue";
 import {useAuthStore} from "@/stores/auth";
 import AddressFieldComponent from "@/components/AddressFieldComponent.vue";
 import {useFlashesStore} from "@/stores/flashes";
-import type {Address} from "@/entities/address";
+import {Address} from "@/entities/address";
 
 const authStore = useAuthStore()
 const flashesStore = useFlashesStore()
@@ -19,14 +19,14 @@ const emitFormSubmitEvent = (submitted: boolean) => {
 
 const props = defineProps({
   flash: {
-    type: Flash,
+    type: Object,
     required: false
   }
 })
 
 const form = {
-  place: ref<Address>(props.flash ? props.flash.place.label : undefined),
-  flashDate: ref<Date>(props.flash ? props.flash.flashDate : new Date()),
+  place: ref<Address>(props.flash ? new Address(props.flash.place) : new Address('')),
+  flashDate: ref<Date>(props.flash ? new Date(props.flash.flashDate) : new Date()),
   tattooer: tattooer,
   name: ref<string>(props.flash ? props.flash.name : ""),
   description: ref<string>(props.flash ? props.flash.description : ""),
@@ -118,7 +118,6 @@ const submit = async (e: Event) => {
 
       emitFormSubmitEvent(isCreated)
     }
-
   }
 }
 
@@ -127,12 +126,12 @@ const submit = async (e: Event) => {
 <template>
   <form action="">
     <div class="flex flex-col gap-2 mb-5">
-      <AddressFieldComponent :invalid="!isPlaceValid && hasBeenSubmit" @addressUpdateEvent="handleAddressUpdateEvent"/>
+      <AddressFieldComponent :address="form.place.value" :invalid="!isPlaceValid && hasBeenSubmit" @addressUpdateEvent="handleAddressUpdateEvent"/>
     </div>
 
     <div class="flex flex-col gap-2 mb-5">
       <label for="date">Date</label>
-      <InputText type="date" id="date" v-model="form.flashDate.value" :invalid="!isFlashDateValid && hasBeenSubmit"/>
+      <Calendar v-model="form.flashDate.value" dateFormat="dd/mm/yy"/>
     </div>
 
     <div class="flex flex-col gap-2 mb-5">

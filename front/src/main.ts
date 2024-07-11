@@ -48,6 +48,7 @@ import Splitter from "primevue/splitter";
 import ConfirmPopup from "primevue/confirmpopup";
 import InputNumber from "primevue/inputnumber";
 import Dialog from "primevue/dialog";
+import Calendar from "primevue/calendar";
 
 
 const app = createApp(App)
@@ -107,5 +108,6 @@ app.component("SplitterPanel", SplitterPanel);
 app.component("ConfirmPopup", ConfirmPopup);
 app.component("InputNumber", InputNumber);
 app.component("Dialog", Dialog);
+app.component("Calendar", Calendar);
 
 app.mount('#app')

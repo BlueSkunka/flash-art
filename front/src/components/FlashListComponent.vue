@@ -52,6 +52,11 @@ const showOrHideForm = () => {
   visibleForm.value = !visibleForm.value
 }
 
+const newFlash = (event) => {
+  flash.value = null
+  showOrHideForm()
+}
+
 const editFlash = (event) => {
   flash.value = event.data
   showOrHideForm()
@@ -61,7 +66,7 @@ const handleFormSubmitEvent = (data) => {
   visibleForm.value = false
 
   if (data.submitted) {
-    toast.add({severity: 'info', summary: 'Element added', detail: 'Record deleted', life: 3000});
+    toast.add({severity: 'info', summary: 'Element registered', detail: 'Record registered', life: 3000});
   }
 }
 
@@ -95,7 +100,7 @@ fetchData()
                 <FlashFormComponent :flash="flash" @formSubmitEvent="handleFormSubmitEvent"/>
               </Dialog>
 
-              <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="showOrHideForm"/>
+              <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="newFlash"/>
             </div>
           </template>
 
