@@ -19,6 +19,7 @@ import {useAuthStore} from "@/stores/auth";
 import {computed} from "vue";
 import UserLoginView from "@/views/UserLoginView.vue";
 import TattooerLoginView from "@/views/TattooerLoginView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -77,6 +78,11 @@ const router = createRouter({
                 {
                     path: '/register/tattooer',
                     component: TattooerRegisterView,
+                },
+                {
+                    path: '/register',
+                    component: RegisterView,
+                    name: "register"
                 },
                 {
                     path: '/event/1',

@@ -12,7 +12,8 @@
         </a>
       </template>
       <template #end>
-        <Button label="Connexion" @click="goLogin"/>
+        <Button outlined label="Connexion" @click="goLogin" class="mr-3"/>
+        <Button label="S'inscrire" @click="goRegister"/>
       </template>
     </Menubar>
   </div>
@@ -38,7 +39,11 @@ const goHome = () => {
 };
 
 const goLogin = () => {
-  router.push('/login');
+  router.push({name: "login"});
+};
+
+const goRegister = () => {
+  router.push({name: "register"});
 };
 
 const items = ref([
