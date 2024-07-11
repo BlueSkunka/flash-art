@@ -51,10 +51,11 @@ import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Slider from 'primevue/slider';
 
-const app = createApp(App)
 
 const pinia = createPinia()
+const app = createApp(App)
 app.use(pinia)
+
 app.use(router)
 app.use(PrimeVue, {
     unstyled: true,
