@@ -6,6 +6,7 @@ import {useAuthStore} from "@/stores/auth";
 import AddressFieldComponent from "@/components/AddressFieldComponent.vue";
 import {useFlashesStore} from "@/stores/flashes";
 import {Address} from "@/entities/address";
+import StyleFieldComponent from "@/components/StyleFieldComponent.vue";
 
 const authStore = useAuthStore()
 const flashesStore = useFlashesStore()
@@ -31,10 +32,15 @@ const form = {
   name: ref<string>(props.flash ? props.flash.name : ""),
   description: ref<string>(props.flash ? props.flash.description : ""),
   price: ref<number>(props.flash ? props.flash.price : 0),
+  styles: ref<Style[]>(props.flash ? props.flash.styles : []),
 }
 
 const handleAddressUpdateEvent = (data) => {
   form.place.value = data.address
+}
+
+const handleStylesSelectedEvent = (data) => {
+  form.styles.value = data.styles
 }
 
 const isPlaceValid = ref(false)
@@ -43,6 +49,7 @@ const isTattooerValid = ref(false)
 const isNameValid = ref(false)
 const isDescriptionValid = ref(false)
 const isPriceValid = ref(false)
+const isStylesValid = ref(false)
 const hasBeenSubmit = ref(false)
 
 const submit = async (e: Event) => {
@@ -73,6 +80,10 @@ const submit = async (e: Event) => {
     isPriceValid.value = true
   }
 
+  if (form.styles.value.length > 0) {
+    isStylesValid.value = true
+  }
+
   if (
       isPlaceValid.value &&
       isFlashDateValid.value &&
@@ -96,6 +107,7 @@ const submit = async (e: Event) => {
             form.place.value?.coordinates.lat,
           ]
         },
+        styles: form.styles.value,
       }, props.flash._id)
 
       emitFormSubmitEvent(isUpdated)
@@ -114,6 +126,7 @@ const submit = async (e: Event) => {
             form.place.value?.coordinates.lat,
           ]
         },
+        styles: form.styles.value,
       })
 
       emitFormSubmitEvent(isCreated)
@@ -149,6 +162,11 @@ const submit = async (e: Event) => {
       <InputNumber :invalid="!isPriceValid && hasBeenSubmit" id="price" mode="currency" currency="EUR" locale="fr-FR"
                    showButtons v-model="form.price.value"/>
     </div>
+
+    <div class="flex flex-col gap-2 mb-5">
+      <StyleFieldComponent :styles="form.styles.value" :invalid="!isStylesValid && hasBeenSubmit" @stylesSelectedEvent="handleStylesSelectedEvent"/>
+    </div>
+
 
     <Button label="Enregistrer" type="submit" @click="submit"/>
   </form>

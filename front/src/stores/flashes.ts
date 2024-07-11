@@ -41,7 +41,6 @@ export const useFlashesStore = defineStore('flashes', () => {
             url,
             data
         ).then(response => {
-            console.log(response)
             if (response.status === 201) {
                 flashes.value.push(response.data)
 
