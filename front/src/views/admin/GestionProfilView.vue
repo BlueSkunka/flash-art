@@ -187,11 +187,11 @@ async function submit(e: Event) {
   <Toast/>
 
   <form @submit="submit">
-    <div class="container mx-auto px-32 items-center flex flex-col">
-        <h1 class="text-3xl my-10 text-center">Gestion de mon profil</h1>
-        <h2 class="text-2xl my-6">Mes informations</h2>
+    <div class="container mx-auto px-32 items-center flex flex-col my-10">
+        <h1 class="text-3xl text-center">Gestion de mon profil</h1>
 
         <div class="container mx-auto px-60">
+            <h2 class="text-2xl my-6">Mes informations</h2>
             <div class="flex flex-col gap-6 w-full sm:w-auto">
 
                 <div class="flex flex-col sm:flex-row sm:items-center gap-6">
@@ -243,8 +243,8 @@ async function submit(e: Event) {
             </div>
         </div>
 
-        <h2 class="text-2xl my-6">Mon profil visible</h2>
         <div class="container mx-auto px-60">
+            <h2 class="text-2xl my-6">Mon profil visible</h2>
             <div class="flex flex-col gap-6 w-full sm:w-auto">
                 <div class="flex flex-col sm:flex-row sm:items-center gap-6">
                     <div class="flex-auto">
@@ -269,8 +269,8 @@ async function submit(e: Event) {
             </div>
         </div>
 
-        <h2 class="text-2xl my-6">Mes réseaux</h2>
-            <div class="container mx-auto px-60">
+        <div class="container mx-auto px-60">
+                <h2 class="text-2xl my-6">Mes réseaux</h2>
                 <label for="email">Liens</label>
                 <Message severity="error" v-if="!isLinksValid && hasBeenSubmit">Vous devez renseigner au moins un lien</Message>
                 <ul class="flex flex-col gap-5">
@@ -294,8 +294,8 @@ async function submit(e: Event) {
                 </ul>
                 <Button label="Ajouter un lien" @click="addLink" class="w-fit"/>
             </div>
-            <Button type="submit" label="S'inscrire" class="mt-5"/>
-    </div>
+            <Button type="submit" label="S'inscrire" class="my-10 text-emerald-500 bg-transparent shadow-md border-0"/>
+        </div>
 
   </form>
 
