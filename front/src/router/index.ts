@@ -25,88 +25,58 @@ const router = createRouter({
     routes: [
         {
             path: '/',
+            meta: {
+                layout: BaseLayout
+            },
             children: [
                 {
                     path: '',
                     component: AccueilView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/flashs',
                     component: FlashView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "flashes"
                 },
                 {
                     path: '/flashs/1',
                     component: FlashDetailView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/tatoueurs',
                     name: 'tattooers',
                     component: TatoueursView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                 },
                 {
                   path: '/tatoueurs/1',
                   component: TatoueurDetailsView,
-                  meta: {
-                    layout: BaseLayout
-                  }
                 },
                 {
                     path: '/reservations',
                     component: ReservationView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/login/customer',
                     component: UserLoginView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "login-customer"
                 },
                 {
                     path: '/login/tattooer',
                     component: TattooerLoginView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "login-tattooer"
                 },
                 {
                     path: '/login',
                     component: LoginView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "login"
                 },
                 {
                     path: '/register/user',
                     component: UserRegisterView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/register/tattooer',
                     component: TattooerRegisterView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/event/1',
@@ -116,6 +86,9 @@ const router = createRouter({
         },
         {
             path: '/admin',
+            meta: {
+                layout: AdminLayout
+            },
             children: [
                 {
                     path: '',
@@ -127,24 +100,16 @@ const router = createRouter({
                 {
                     path: 'profil',
                     component: GestionProfilView,
-                    meta: {
-                        layout: AdminLayout
-                    }
+
                 },
                 {
                     path: 'flashs',
                     component: GestionFlashView,
-                    meta: {
-                        layout: AdminLayout
-                    },
                     name: "admin-flashes"
                 },
                 {
                     path: 'reservations',
                     component: GestionReservationView,
-                    meta: {
-                        layout: AdminLayout
-                    }
                 }
             ]
         }
