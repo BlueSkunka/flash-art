@@ -11,7 +11,7 @@
       </a>
     </template>
     <template #end>
-      <Button label="Connexion" @click="goLogin"/>
+      <Button label="Se deconnecter" @click="goLogout"/>
     </template>
   </Menubar>
 
@@ -27,9 +27,11 @@
 <script setup>
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth";
 
 
 const router = useRouter();
+const authStore = useAuthStore()
 
 const goHome = () => {
   router.push('/admin');
@@ -38,6 +40,11 @@ const goHome = () => {
 const goLogin = () => {
   router.push('/login');
 };
+
+const goLogout = () => {
+  authStore.logout()
+  router.push({name: 'home'})
+}
 
 const items = ref([
   {
