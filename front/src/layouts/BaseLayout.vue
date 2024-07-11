@@ -25,6 +25,7 @@
     <main class="flex-grow">
       <router-view></router-view>
     </main>
+  </div>
   <footer class="bg-zinc-900 text-white text-center py-3">
         2024 © FlashArt Association - Powered by Atomic Dev 
     </footer>
@@ -62,43 +63,45 @@ const logout = () => {
 
 const items = ref([]);
 
-if (user.value !== null) {
-  items.value = [
-    {
-      label: 'Les tatoueurs',
-      command: () => {
-        router.push('/tatoueurs');
+watch(() => {
+  if (user.value !== null) {
+    items.value = [
+      {
+        label: 'Les tatoueurs',
+        command: () => {
+          router.push('/tatoueurs');
+        }
+      },
+      {
+        label: 'Les flashs',
+        command: () => {
+          router.push('/flashs');
+        }
+      },
+      {
+        label: 'Mes réservations',
+        command: () => {
+          router.push({name: "reservations"});
+        }
       }
-    },
-    {
-      label: 'Les flashs',
-      command: () => {
-        router.push('/flashs');
+    ]
+  } else {
+    items.value = [
+      {
+        label: 'Les tatoueurs',
+        command: () => {
+          router.push('/tatoueurs');
+        }
+      },
+      {
+        label: 'Les flashs',
+        command: () => {
+          router.push('/flashs');
+        }
       }
-    },
-    {
-      label: 'Mes réservations',
-      command: () => {
-        router.push({name: "reservations"});
-      }
-    }
-  ]
-} else {
-  items.value = [
-    {
-      label: 'Les tatoueurs',
-      command: () => {
-        router.push('/tatoueurs');
-      }
-    },
-    {
-      label: 'Les flashs',
-      command: () => {
-        router.push('/flashs');
-      }
-    }
-  ]
-}
+    ]
+  }
+})
 </script>
 
 <style scoped>

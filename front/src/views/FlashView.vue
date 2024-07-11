@@ -88,7 +88,7 @@ const form = {
 
 const submit = async (e: Event) => {
   e.preventDefault()
-  console.log(form.styles.value)
+
   await flashesStore.findAll(
     form.place.value,
     form.flashDate.value,
@@ -108,6 +108,8 @@ const submit = async (e: Event) => {
 const handleStylesSelectedEvent = (data) => {
   form.styles.value = data.styles
 }
+
+console.log(flashes.value)
 
 </script>
 
@@ -147,7 +149,7 @@ const handleStylesSelectedEvent = (data) => {
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 justify-items-center m-8 sm:grid-cols-2 md:grid-cols-3" v-if="!isLoadingFlashes">
         <div v-if="flashes.length > 0" v-for="(flash, index) in flashes" :key="index" >
             <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true" :subtitle="flash.tattooer.surname" :showDate="true"
-                          :price="flash.price" :description="flash.description" :flashDate="flash.flashDate.getDay"  :title="flash.name" :styles="flash.styles" :url="'/flashs/'+ flash._id"/>
+                          :price="flash.price" :description="flash.description" :flashDate="new Date(flash.flashDate)"  :title="flash.name" :styles="flash.styles" :url="'/flashs/'+ flash._id"/>
           </div>
         <div v-else>
             <p class="text-center"><b>Aucun résultat</b></p>

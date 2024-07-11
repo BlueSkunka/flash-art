@@ -54,7 +54,7 @@ const value1 = ref('20/07/2024');
           <div> {{ props.description }} </div>
         </div>
         <div class="flex justify-between border-2 rounded p-3 items-center my-4">
-          <div v-if="showDate">{{ props.flashDate }}</div>
+          <div v-if="showDate">{{ props.flashDate.toLocaleDateString() }}</div>
           <i class="pi pi-calendar" />
         </div>
       </template>

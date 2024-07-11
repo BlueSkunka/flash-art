@@ -101,9 +101,6 @@ const router = createRouter({
                 {
                     path: '',
                     component: AccueilAdminView,
-                    meta: {
-                        layout: AdminLayout
-                    }
                 },
                 {
                     path: 'profil',
