@@ -30,10 +30,6 @@
 
 <script setup>
 import { ref } from "vue";
-import MultiSelect from 'primevue/multiselect';
-import InputText from 'primevue/inputtext';
-import Slider from 'primevue/slider';
-import Calendar from 'primevue/calendar';
 
 const selectedCities = ref([]);
 const cities = ref([
