@@ -14,7 +14,7 @@ import BaseLayout from "./BaseLayout.vue";
 export default defineComponent({
   name: "AppLayout",
   setup() {
-    const admin = ref(false);
+    const admin = ref(true);
     const layout = shallowRef(admin.value? AdminLayout : BaseLayout);
     return {layout};
   }
