@@ -148,9 +148,9 @@ api.put('/:id', identifer(), async (c) => {
 
 // Voir le profil d'un tattoueur
 api.get('/:id', identifer(), async (c) => {
-    const id = c.req.param('id');
+    const _id = c.req.param('id');
     try {
-        const tattooer = await Tattooer.findOne({ id })
+        const tattooer = await Tattooer.findOne({ _id })
 
         if (null === tattooer) {
             return c.newResponse('Tattooer not found', StatusCode.BAD_REQUEST);

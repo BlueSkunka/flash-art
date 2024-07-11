@@ -88,7 +88,7 @@ api.get('', async (c) => {
             query["price"] = { "$lte": maxPrice }
         }
 
-        query["user"] = { $exists: false, $eq: null }
+
 
         console.log(query);
 

@@ -1,3 +1,7 @@
+import type {Opinion} from "@/entities/opinion";
+import {User} from "@/entities/user";
+import type {Flash} from "@/entities/flash";
+
 class Tattooer extends User {
     surname: string
     place: string
@@ -7,7 +11,9 @@ class Tattooer extends User {
     location: {
         type: { type: string },
         coordinates: [number],
-    }
+    };
+    opinions: Opinion[];
+    flashes: Flash[];
 
     constructor(
         _id: number,
@@ -24,7 +30,9 @@ class Tattooer extends User {
         location: {
             type: { type: string },
             coordinates: [number],
-        }
+        },
+        opinion: Opinion[],
+        flashes: Flash[]
     ) {
         super(
             _id,
@@ -41,6 +49,8 @@ class Tattooer extends User {
         this.styles = styles;
         this.description = description;
         this.location = location;
+        this.opinions = opinion
+        this.flashes = flashes
     }
 }
 

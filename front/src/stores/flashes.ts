@@ -22,7 +22,6 @@ export const useFlashesStore = defineStore('flashes', () => {
 
     async function findByTattooer(tattooer: User) {
         isLoading.value = true
-
         url.searchParams.set("tattooer", tattooer._id.toString())
 
         flashes.value = await axios.get(url)

@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import {useRouter} from "vue-router";
 import {ref} from 'vue';
 
+const router = useRouter();
 const liked = ref(false);
 
 const toggleLike = () => {
@@ -14,17 +16,17 @@ const props = defineProps<{
   showSubtitle: boolean;
   showMultiple: boolean;
   showDate: boolean;
+  _id: string
   title: string
   subtitle: string
   description: string
   styles: Style[]
 }>();
 
-const value1 = ref('20/07/2024');
-
 </script>
 
 <template>
+  <router-link :to="{name: 'tattoer_detail', params: {id: _id}}">
     <Card style="width: 20rem; overflow: hidden; margin-bottom: 5rem;">
       <template #header>
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
@@ -46,18 +48,10 @@ const value1 = ref('20/07/2024');
             <i v-else class="pi pi-heart"></i>
           </button>
         </div>
-        <div v-if="showDate" class="flex justify-between border-2 rounded p-3 items-center my-4">
-          <div>20/07/2024</div>
-          <i class="pi pi-calendar" />
-        </div>
-      </template>
-      <template #footer>
-        <div class="flex gap-4 mt-1 pt-0">
-          <Button :label="showMultiple ? 'Voir les flashs' : 'Voir le flash'" class="w-full" />
-        </div>
       </template>
     </Card>
-  </template>
+  </router-link>
+</template>
   
   <style scoped>
   .like-button {

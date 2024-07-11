@@ -1,5 +1,5 @@
 class User {
-    protected _id: number;
+    _id: number;
     protected email: string;
     protected password: string | undefined | null;
     protected lastname: string;
@@ -21,4 +21,10 @@ class User {
         this.firstname = firstname;
         this.role = role;
     }
+
+    fullname() {
+        return this.lastname + ' ' + this.firstname
+    }
 }
+
+export {User}

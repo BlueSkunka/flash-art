@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {Opinion} from "@/entities/opinion";
 
-const rating = ref(4);
+const props = defineProps<{
+  opinion: Opinion
+}>()
 </script>
 
 <template>
-    <div class="flex justify-center" v-for="index in 6" :key="index">
     <div class="box">
            <div class="flex items-center gap-2">
                <Avatar label="P" class="mr-2" size="large" shape="circle" />
-               <p>User un peu relou</p>    
+               <p>{{props?.opinion.user.fullname()}}</p>
            </div>
-           <Rating v-model="rating" readonly class="mt-4 mb-2" :cancel="false" />
-           <p class="font-medium">Pas ouf franchement ceux tatoueur</p>
-           <p>Je me sui fais tatoué, mais c moch et j’arriv pa à l’enlever avec de la javel</p>
+           <Rating v-model="props.opinion.rate" readonly class="mt-4 mb-2" :cancel="false" />
+           <p>{{props.opinion.commentary}}l</p>
+            <p>Le {{props.opinion.createdAt.toDateString()}}</p>
        </div>
-   </div> 
 </template>
 
 <style>
