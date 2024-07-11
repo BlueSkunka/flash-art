@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white">
+    <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white border-0">
       <template #start>
         <button class="mr-10" @click="goHome">
           <h1>Logo</h1>
