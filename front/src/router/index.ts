@@ -33,6 +33,7 @@ const router = createRouter({
                 {
                     path: '',
                     component: AccueilView,
+                    name: "home"
                 },
                 {
                     path: '/flashs',
@@ -55,6 +56,7 @@ const router = createRouter({
                 {
                     path: '/reservations',
                     component: ReservationView,
+                    name: "reservations"
                 },
                 {
                     path: '/login/customer',
@@ -106,7 +108,7 @@ const router = createRouter({
                 {
                     path: 'profil',
                     component: GestionProfilView,
-
+                    name: "admin-profil"
                 },
                 {
                     path: 'flashs',
@@ -116,6 +118,7 @@ const router = createRouter({
                 {
                     path: 'reservations',
                     component: GestionReservationView,
+                    name: "admin-resservations"
                 }
             ]
         }
@@ -126,6 +129,10 @@ router.beforeEach((to, from) => {
     const authStore = useAuthStore()
 
     const isAuthenticated = computed(() => authStore.user !== null)
+
+    if (false === isAuthenticated.value && to.name === 'reservations') {
+        return {name: "login"}
+    }
 
     if (!isAuthenticated.value && to.name !== 'login' && to.matched.find(match => match.path === '/admin')) {
         return {name: "login"}

@@ -12,8 +12,11 @@
         </a>
       </template>
       <template #end>
-        <Button outlined label="Connexion" @click="goLogin" class="mr-3"/>
-        <Button label="S'inscrire" @click="goRegister"/>
+        <div v-if="!user">
+          <Button outlined label="Connexion" @click="goLogin" class="mr-3"/>
+          <Button label="S'inscrire" @click="goRegister"/>
+        </div>
+        <Button v-else label="Se déconnecter" @click="logout"/>
       </template>
     </Menubar>
   </div>
@@ -28,9 +31,13 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth";
 
+const authStore = useAuthStore()
+
+const user = computed(() => authStore.user)
 
 const router = useRouter();
 
@@ -46,24 +53,50 @@ const goRegister = () => {
   router.push({name: "register"});
 };
 
-const items = ref([
-  {
-    label: 'Les tatoueurs',
-    command: () => {
-      router.push('/tatoueurs');
+const logout = () => {
+  authStore.logout()
+  router.push({name: "home"});
+
+}
+
+
+const items = ref([]);
+
+if (user.value !== null) {
+  items.value = [
+    {
+      label: 'Les tatoueurs',
+      command: () => {
+        router.push('/tatoueurs');
+      }
+    },
+    {
+      label: 'Les flashs',
+      command: () => {
+        router.push('/flashs');
+      }
+    },
+    {
+      label: 'Mes réservations',
+      command: () => {
+        router.push({name: "reservations"});
+      }
     }
-  },
-  {
-    label: 'Les flashs',
-    command: () => {
-      router.push('/flashs');
+  ]
+} else {
+  items.value = [
+    {
+      label: 'Les tatoueurs',
+      command: () => {
+        router.push('/tatoueurs');
+      }
+    },
+    {
+      label: 'Les flashs',
+      command: () => {
+        router.push('/flashs');
+      }
     }
-  },
-  {
-    label: 'Mes réservations',
-    command: () => {
-      router.push('/reservations');
-    }
-  },
-]);
+  ]
+}
 </script>
