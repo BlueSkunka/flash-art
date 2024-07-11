@@ -42,6 +42,8 @@ import Image from "primevue/image";
 import Textarea from "primevue/textarea";
 import Message from "primevue/message";
 import ProgressSpinner from "primevue/progressspinner";
+import Calendar from 'primevue/calendar';
+import Slider from 'primevue/slider';
 
 const app = createApp(App)
 
@@ -92,5 +94,8 @@ app.component("Image", Image);
 app.component("Textarea", Textarea);
 app.component("Message", Message);
 app.component("ProgressSpinner", ProgressSpinner);
+app.component("Calendar", Calendar)
+app.component("Slider", Slider)
+
 
 app.mount('#app')
