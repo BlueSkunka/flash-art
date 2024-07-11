@@ -18,10 +18,10 @@
   <main>
     <router-view></router-view>
   </main>
+  <footer class="bg-zinc-900 text-white text-center py-3">
+        2024 © FlashArt Association - Powered by Atomic Dev 
+    </footer>
 
-  <footer>
-
-  </footer>
 </template>
 
 <script setup>

@@ -26,8 +26,8 @@
   </main>
 
   <footer class="bg-zinc-900 text-white text-center py-3">
-    <small>ici un footer</small>
-  </footer>
+        2024 © FlashArt Association - Powered by Atomic Dev 
+    </footer>
 </template>
 
 <script setup>
