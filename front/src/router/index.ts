@@ -19,94 +19,72 @@ import {useAuthStore} from "@/stores/auth";
 import {computed} from "vue";
 import UserLoginView from "@/views/UserLoginView.vue";
 import TattooerLoginView from "@/views/TattooerLoginView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
+            meta: {
+                layout: BaseLayout
+            },
             children: [
                 {
                     path: '',
                     component: AccueilView,
-                    meta: {
-                        layout: BaseLayout
-                    }
+                    name: "home"
                 },
                 {
                     path: '/flashs',
                     component: FlashView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "flashes"
                 },
                 {
-                    path: '/flashs/1',
+                    path: '/flashs/:id',
                     component: FlashDetailView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/tatoueurs',
                     name: 'tattooers',
                     component: TatoueursView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                 },
                 {
                   path: '/tatoueurs/1',
                   component: TatoueurDetailsView,
-                  meta: {
-                    layout: BaseLayout
-                  }
                 },
                 {
                     path: '/reservations',
                     component: ReservationView,
-                    meta: {
-                        layout: BaseLayout
-                    }
+                    name: "reservations"
                 },
                 {
                     path: '/login/customer',
                     component: UserLoginView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "login-customer"
                 },
                 {
                     path: '/login/tattooer',
                     component: TattooerLoginView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "login-tattooer"
                 },
                 {
                     path: '/login',
                     component: LoginView,
-                    meta: {
-                        layout: BaseLayout
-                    },
                     name: "login"
                 },
                 {
                     path: '/register/user',
                     component: UserRegisterView,
-                    meta: {
-                        layout: BaseLayout
-                    }
                 },
                 {
                     path: '/register/tattooer',
                     component: TattooerRegisterView,
-                    meta: {
-                        layout: BaseLayout
-                    }
+                },
+                {
+                    path: '/register',
+                    component: RegisterView,
+                    name: "register"
                 },
                 {
                     path: '/event/1',
@@ -116,6 +94,9 @@ const router = createRouter({
         },
         {
             path: '/admin',
+            meta: {
+                layout: AdminLayout
+            },
             children: [
                 {
                     path: '',
@@ -127,24 +108,17 @@ const router = createRouter({
                 {
                     path: 'profil',
                     component: GestionProfilView,
-                    meta: {
-                        layout: AdminLayout
-                    }
+                    name: "admin-profil"
                 },
                 {
                     path: 'flashs',
                     component: GestionFlashView,
-                    meta: {
-                        layout: AdminLayout
-                    },
                     name: "admin-flashes"
                 },
                 {
                     path: 'reservations',
                     component: GestionReservationView,
-                    meta: {
-                        layout: AdminLayout
-                    }
+                    name: "admin-resservations"
                 }
             ]
         }
@@ -155,6 +129,10 @@ router.beforeEach((to, from) => {
     const authStore = useAuthStore()
 
     const isAuthenticated = computed(() => authStore.user !== null)
+
+    if (false === isAuthenticated.value && to.name === 'reservations') {
+        return {name: "login"}
+    }
 
     if (!isAuthenticated.value && to.name !== 'login' && to.matched.find(match => match.path === '/admin')) {
         return {name: "login"}

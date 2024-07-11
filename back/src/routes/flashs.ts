@@ -1,8 +1,8 @@
-import {Hono} from "hono";
-import {Flash} from "../models/flash";
+import { Hono } from "hono";
+import { Flash } from "../models/flash";
 import StatusCode from "../enums/statusCode";
-import {validator} from "hono/validator";
-import {identifer} from "../middlewares/identifier";
+import { validator } from "hono/validator";
+import { identifer } from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
 
@@ -36,7 +36,7 @@ api.get('', async (c) => {
 
         // Styles
         if (undefined !== styles) {
-            query["styles.name"] = { "$in": styles }
+            query["styles"] = { name: { $regex: styles, $options: 'i' } }
             //     query["match"] = {
             //         $expr: {
             //             $gt: [{
@@ -142,7 +142,7 @@ api.post('',
 api.get('/:id', identifer(), async (c) => {
     const _id = c.req.param('id')
     try {
-        const flash = await Flash.findOne({_id}).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
+        const flash = await Flash.findOne({ _id }).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         if (null == flash) {
             return c.newResponse('Flash not found', StatusCode.NOT_FOUND)
@@ -183,7 +183,7 @@ api.put('/:id',
         const _id = c.req.param('id');
 
         try {
-            const flash = await Flash.findOneAndUpdate({_id}, {...body}, {new: true})
+            const flash = await Flash.findOneAndUpdate({ _id }, { ...body }, { new: true })
 
             if (null === flash) {
                 return c.newResponse('Flash not found', StatusCode.BAD_REQUEST)
@@ -202,8 +202,8 @@ api.put('/:id',
 api.delete('/:id', identifer(), async (c) => {
     const _id = c.req.param('id')
     try {
-        const result = await Flash.deleteOne({_id})
-        
+        const result = await Flash.deleteOne({ _id })
+
         const { deletedCount } = result;
 
         if (deletedCount) {

@@ -9,6 +9,7 @@ class Flash {
     name: string;
     description: string;
     price: number;
+    styles: Style[];
     location: {
         type: { type: String },
         coordinates: [Number],
@@ -23,6 +24,7 @@ class Flash {
         name: string,
         description: string,
         price: number,
+        styles: Style[],
         location: {
             type: { type: String },
             coordinates: [Number],
@@ -36,6 +38,7 @@ class Flash {
         this.name = name;
         this.description = description;
         this.price = price;
+        this.styles = styles;
         this.location = location;
     }
 }
