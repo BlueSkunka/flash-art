@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col min-h-screen">
+    <!-- Navbar -->
     <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white border-0">
       <template #start>
         <button class="mr-10" @click="goHome">
@@ -15,21 +16,22 @@
         <Button label="Connexion" @click="goLogin"/>
       </template>
     </Menubar>
+
+    <!-- Main content -->
+    <main class="flex-grow">
+      <router-view></router-view>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-900 text-white text-center py-3">
+      <small>ici un footer</small>
+    </footer>
   </div>
-
-  <main class="flex-grow">
-    <router-view></router-view>
-  </main>
-
-  <footer class="bg-zinc-900 text-white text-center py-3">
-    <small>ici un footer</small>
-  </footer>
 </template>
 
 <script setup>
-import {ref} from "vue";
-import {useRouter} from "vue-router";
-
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -62,3 +64,6 @@ const items = ref([
   },
 ]);
 </script>
+
+<style scoped>
+</style>

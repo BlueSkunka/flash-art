@@ -2,6 +2,7 @@
 import {computed, ref} from 'vue';
 import {useTattooersStore} from "@/stores/tattooers";
 import {useStylesStore} from "@/stores/styles";
+import { url } from 'inspector';
 
 const tattooersStore = useTattooersStore()
 const stylesStore = useStylesStore()
@@ -58,7 +59,7 @@ fetchData()
         <div class="grid grid-cols-4 gap-4 justify-items-center m-8" v-if="!isLoadingTattoers">
           <div v-if="tattooers.length > 0" v-for="(tattooer, index) in tattooers" :key="index" >
             <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true" :subtitle="tattooer.surname" :showDate="false"
-                           :styles="tattooer.styles" :title="tattooer.firstname + ' ' + tattooer.lastname"/>
+                           :styles="tattooer.styles" :title="tattooer.firstname + ' ' + tattooer.lastname" :url="'/tatoueurs/'+ tattooer._id"/>
           </div>
           <div v-else>
             <p class="text-center"><b>Aucun résultat</b></p>
