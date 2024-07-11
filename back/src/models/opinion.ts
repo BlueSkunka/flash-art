@@ -1,9 +1,12 @@
 import { Schema, Types, model } from "mongoose";
+import { IUser } from "./user";
+import { ITattooer } from "./tattooer";
+import { IFlash } from "./flash";
 
 interface IOpinion {
-    user: Types.ObjectId,
-    tattooer: Types.ObjectId,
-    flash: Types.ObjectId,
+    user: IUser,
+    tattooer: ITattooer,
+    flash: IFlash,
     rate: number,
     commentary: string,
     createdAt: Date

@@ -1,10 +1,14 @@
 import { Schema, Date, Types, model } from "mongoose";
+import { IStyle } from "./style";
+import DbTable from "../enums/dbTable";
+import { ITattooer } from "./tattooer";
+import { IUser } from "./user";
 
 interface IFlash {
     place: string;
     flashDate: Date;
-    tattooer: Types.ObjectId;
-    user: Types.ObjectId;
+    tattooer: ITattooer;
+    user: IUser;
     name: string;
     description: string;
     price: number;
@@ -12,13 +16,14 @@ interface IFlash {
         type: { type: String },
         coordinates: [Number],
     };
+    styles: IStyle[];
 }
 
 const flashSchema = new Schema<IFlash>({
     place: { type: String, required: true, trim: true },
     flashDate: { type: Date, required: true },
-    tattooer: { type: Types.ObjectId, required: true },
-    user: { type: Types.ObjectId },
+    tattooer: { type: Types.ObjectId, required: true, ref: DbTable.TATTOOERS },
+    user: { type: Types.ObjectId, ref: DbTable.USERS },
     name: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
     price: { type: Number, required: true, trim: true },
@@ -32,9 +37,12 @@ const flashSchema = new Schema<IFlash>({
             type: [Number],
             required: true
         }
-    }
+    },
+    styles: [{
+        name: { type: String, required: true, trim: true, lowercase: true }
+    }]
 })
 
-const Flash = model<IFlash>('flashs', flashSchema);
+const Flash = model<IFlash>(DbTable.FLASHES, flashSchema);
 
 export { IFlash, Flash };

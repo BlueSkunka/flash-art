@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { Flash } from "../models/flash";
 import StatusCode from "../enums/statusCode";
 import { validator } from "hono/validator";
-import { isValidObjectId } from "mongoose";
 import { identifer } from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
@@ -19,14 +18,14 @@ api.get('', async (c) => {
 
         // Location
         if (undefined !== long && undefined !== lat && undefined !== maxRange) {
-            query['$geoNear'] = {
-                "near": {
-                    "type": "Point",
-                    "coordinates": [long, lat]
+            query['location'] = {
+                "$near": {
+                    "$maxDistance": maxRange,
+                    "$geometry": {
+                        "type": "Point",
+                        "coordinates": [long, lat]
+                    }
                 },
-                "distanceField": "distance",
-                "spherical": true,
-                "maxDistance": maxRange
             }
         }
 
@@ -93,7 +92,7 @@ api.get('', async (c) => {
 
         console.log(query);
 
-        const flashes = await Flash.find(query);
+        const flashes = await Flash.find(query).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         return c.json(flashes, StatusCode.OK)
     } catch (error: unknown) {
@@ -143,11 +142,7 @@ api.post('',
 api.get('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-        }
-
-        const flash = await Flash.findOne({ "_id": id })
+        const flash = await Flash.findOne({ "_id": id }).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         if (null == flash) {
             return c.newResponse('Flash not found', StatusCode.BAD_REQUEST)
@@ -188,10 +183,6 @@ api.put('/:id',
         const id = c.req.param('id');
 
         try {
-            if (!isValidObjectId(id)) {
-                return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-            }
-
             const flash = await Flash.findOneAndUpdate({ id }, { ...body })
 
             if (null === flash) {
@@ -209,13 +200,10 @@ api.put('/:id',
 
 // Suppression d'un flash
 api.delete('/:id', identifer(), async (c) => {
-    const _id = c.req.param('id')
+    const id = c.req.param('id')
     try {
-        if (!isValidObjectId(_id)) {
-            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-        }
-
-        const result = await Flash.deleteOne({ _id })
+        const result = await Flash.deleteOne({ id })
+        
         const { deletedCount } = result;
 
         if (deletedCount) {

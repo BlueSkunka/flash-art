@@ -1,13 +1,8 @@
 import { Hono } from "hono";
-import { isValidObjectId } from "mongoose";
 import StatusCode from "../enums/statusCode";
-import { Opinion } from "../models/opinion";
 import { Style } from "../models/style";
 import { validator } from "hono/validator";
 import { identifer } from "../middlewares/identifier";
-import {guard} from "../middlewares/guard";
-import Role from "../enums/role";
-import {User} from "../models/user";
 
 const api = new Hono().basePath('/styles')
 
@@ -19,7 +14,7 @@ api.get('',
 
             if (c.req.query("name")) {
                 filter = {
-                    name: {$regex: c.req.query("name"), $options: 'i'}
+                    name: { $regex: c.req.query("name"), $options: 'i' }
                 }
             }
 
@@ -69,10 +64,6 @@ api.put('/:id',
         const body = c.req.valid('json')
         const id = c.req.param('id')
         try {
-            if (!isValidObjectId(id)) {
-                return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-            }
-
             const style = await Style.findOneAndUpdate({ id }, { ...body })
 
             if (null === style) {
@@ -92,10 +83,6 @@ api.put('/:id',
 api.delete('/:id', identifer(), async (c) => {
     const id = c.req.param('id')
     try {
-        if (!isValidObjectId(id)) {
-            return c.newResponse('Identifier is not valid', StatusCode.BAD_REQUEST)
-        }
-
         const result = await Style.deleteOne({ id })
         const { deletedCount } = result;
 
