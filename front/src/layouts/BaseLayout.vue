@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col min-h-screen">
+    <!-- Navbar -->
     <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white border-0">
       <template #start>
         <button class="mr-10" @click="goHome">
@@ -19,12 +20,11 @@
         <Button v-else label="Se déconnecter" @click="logout"/>
       </template>
     </Menubar>
-  </div>
 
-  <main class="flex-grow">
-    <router-view></router-view>
-  </main>
-
+    <!-- Main content -->
+    <main class="flex-grow">
+      <router-view></router-view>
+    </main>
   <footer class="bg-zinc-900 text-white text-center py-3">
         2024 © FlashArt Association - Powered by Atomic Dev 
     </footer>
@@ -100,3 +100,6 @@ if (user.value !== null) {
   ]
 }
 </script>
+
+<style scoped>
+</style>
