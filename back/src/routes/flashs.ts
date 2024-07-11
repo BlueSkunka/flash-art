@@ -1,8 +1,8 @@
-import { Hono } from "hono";
-import { Flash } from "../models/flash";
+import {Hono} from "hono";
+import {Flash} from "../models/flash";
 import StatusCode from "../enums/statusCode";
-import { validator } from "hono/validator";
-import { identifer } from "../middlewares/identifier";
+import {validator} from "hono/validator";
+import {identifer} from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
 
@@ -129,7 +129,7 @@ api.post('',
             let flash = new Flash(body)
             flash = await flash.save()
 
-            return c.json(flash)
+            return c.json(flash, StatusCode.CREATED)
         } catch (error: unknown) {
             console.error(error);
 
@@ -140,12 +140,12 @@ api.post('',
 
 // Récupérer un flash
 api.get('/:id', identifer(), async (c) => {
-    const id = c.req.param('id')
+    const _id = c.req.param('id')
     try {
-        const flash = await Flash.findOne({ "_id": id }).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
+        const flash = await Flash.findOne({_id}).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         if (null == flash) {
-            return c.newResponse('Flash not found', StatusCode.BAD_REQUEST)
+            return c.newResponse('Flash not found', StatusCode.NOT_FOUND)
         }
 
         return c.json(flash, StatusCode.OK)
@@ -180,10 +180,10 @@ api.put('/:id',
     }),
     async (c) => {
         const body = c.req.valid('json');
-        const id = c.req.param('id');
+        const _id = c.req.param('id');
 
         try {
-            const flash = await Flash.findOneAndUpdate({ id }, { ...body })
+            const flash = await Flash.findOneAndUpdate({_id}, {...body}, {new: true})
 
             if (null === flash) {
                 return c.newResponse('Flash not found', StatusCode.BAD_REQUEST)
@@ -200,9 +200,10 @@ api.put('/:id',
 
 // Suppression d'un flash
 api.delete('/:id', identifer(), async (c) => {
-    const id = c.req.param('id')
+    const _id = c.req.param('id')
     try {
-        const result = await Flash.deleteOne({ id })
+        const result = await Flash.deleteOne({_id})
+        
         const { deletedCount } = result;
 
         if (deletedCount) {
