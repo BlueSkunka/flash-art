@@ -36,12 +36,6 @@ fetchData()
       <!-- Titre -->
       <div class="text-center">
         <h1 class="text-3xl my-12">Les tatoueurs</h1>
-        <div class="flex justify-end pr-6">
-          <button class="tri flex items-center gap-2">
-            Trier par
-            <i class="pi pi-angle-down" style="font-size: 12px"></i>
-          </button>
-        </div>
         <div class="button-group">
           <button
               key="Tous"
