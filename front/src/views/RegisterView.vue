@@ -4,11 +4,11 @@ import {useRouter} from "vue-router";
 const router = useRouter()
 
 const navigateCustomer = () => {
-  router.push("/login/customer")
+  router.push("/register/user")
 }
 
 const navigateTattooer = () => {
-  router.push("/login/tattooer")
+  router.push("/register/tattooer")
 }
 </script>
 
