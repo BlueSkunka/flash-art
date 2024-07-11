@@ -22,7 +22,7 @@
 
     <div class="grid grid-cols-4 gap-4 justify-items-center m-8">
       <div v-for="index in 8" :key="index">
-        <CardComponent :showTitle="true" :showSubtitle="true" />
+        <CardComponent :showTitle="true" :showSubtitle="true" :showDate="true" />
       </div>
     </div>
   </div>

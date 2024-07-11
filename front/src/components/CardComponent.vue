@@ -13,6 +13,7 @@ const props = defineProps<{
   showTitle: boolean;
   showSubtitle: boolean;
   showMultiple: boolean;
+  showDate: boolean;
   title: string
   subtitle: string
   styles: Style[]
@@ -45,7 +46,7 @@ const value1 = ref('20/07/2024');
           </button>
         </div>
         <div class="flex justify-between border-2 rounded p-3 items-center my-4">
-          <div>20/07/2024</div>
+          <div v-if="showDate">20/07/2024</div>
           <i class="pi pi-calendar" />
         </div>
       </template>
