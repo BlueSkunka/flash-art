@@ -49,7 +49,7 @@ import ConfirmPopup from "primevue/confirmpopup";
 import InputNumber from "primevue/inputnumber";
 import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
-
+import Slider from 'primevue/slider';
 
 const app = createApp(App)
 
@@ -109,5 +109,6 @@ app.component("ConfirmPopup", ConfirmPopup);
 app.component("InputNumber", InputNumber);
 app.component("Dialog", Dialog);
 app.component("Calendar", Calendar);
+app.component("Slider", Slider)
 
 app.mount('#app')
