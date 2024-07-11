@@ -1,21 +1,23 @@
 <template>
-  <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white">
-    <template #start>
-      <button class="mr-10" @click="goHome">
-        <h1>Logo</h1>
-      </button>
-    </template>
-    <template #item="{ item, props }">
-      <a v-ripple class="flex items-center" v-bind="props.action">
-        <span class="ml-2">{{ item.label }}</span>
-      </a>
-    </template>
-    <template #end>
-      <Button label="Connexion" @click="goLogin"/>
-    </template>
-  </Menubar>
+  <div class="flex flex-col min-h-screen">
+    <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white">
+      <template #start>
+        <button class="mr-10" @click="goHome">
+          <h1>Logo</h1>
+        </button>
+      </template>
+      <template #item="{ item, props }">
+        <a v-ripple class="flex items-center" v-bind="props.action">
+          <span class="ml-2">{{ item.label }}</span>
+        </a>
+      </template>
+      <template #end>
+        <Button label="Connexion" @click="goLogin"/>
+      </template>
+    </Menubar>
+  </div>
 
-  <main>
+  <main class="flex-grow">
     <router-view></router-view>
   </main>
 

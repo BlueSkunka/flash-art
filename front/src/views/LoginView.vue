@@ -14,7 +14,7 @@ const navigateTattooer = () => {
 
 <template>
   <section class="container mx-auto py-10">
-    <h1 class="text-2xl font-bold mb-5 text-center">Qui est êtes vous ?</h1>
+    <h1 class="text-2xl font-bold mb-5 text-center">Qui êtes vous ?</h1>
     <Splitter style="height: 300px" class="mb-8">
       <SplitterPanel class="flex items-center justify-center">
         <div>

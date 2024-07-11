@@ -99,9 +99,9 @@ async function submit(e: Event) {
     <div class="flex flex-col gap-2 mb-5">
       <label for="password">Mot de passe</label>
       <InputText type="password" id="password" v-model="form.password.value"/>
+      <Button type="submit" label="Se connecter" class="mt-4" />
     </div>
 
-    <Button type="submit" label="Se connecter"/>
   </form>
 
 </template>
