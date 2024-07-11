@@ -90,7 +90,7 @@ api.get('', async (c) => {
 
         // booked
         if (undefined !== booked) {
-            query["user"] = { $exists: true }
+            query["user"] = { $exists: true, $ne: null }
         } else if (undefined !== user) {
             query["user"] = user
         } else {

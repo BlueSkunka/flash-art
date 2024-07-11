@@ -48,13 +48,15 @@ export const useFlashesStore = defineStore('flashes', () => {
             url.searchParams.set('styles', stylesList.join(','))
         }
 
-        console.log(url.href)
-
         flashes.value = await axios.get(url)
             .then(response => {
                 return response.data
             })
             .catch(error => console.log(error))
+
+        url.searchParams.forEach((data, key) => {
+            url.searchParams.delete(key)
+        })
 
         isLoading.value = false
     }

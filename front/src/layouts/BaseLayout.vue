@@ -25,6 +25,7 @@
     <main class="flex-grow">
       <router-view></router-view>
     </main>
+  </div>
   <footer class="bg-zinc-900 text-white text-center py-3">
         2024 © FlashArt Association - Powered by Atomic Dev 
     </footer>
