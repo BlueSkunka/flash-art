@@ -4,7 +4,6 @@ import { validator } from "hono/validator";
 import { sign } from 'hono/jwt'
 import { myEnv } from "../../conf";
 import bcrypt from 'bcrypt'
-import { isValidObjectId } from "mongoose";
 import { guard } from "../middlewares/guard";
 import Role from "../enums/role";
 import { identifer } from '../middlewares/identifier';
@@ -18,11 +17,11 @@ api.get('',
         try {
             const users = await User.find({})
 
-        return c.json(users)
-    } catch (error: any) {
-        return c.json(error._message, StatusCode.BAD_REQUEST)
-    }
-})
+            return c.json(users)
+        } catch (error: any) {
+            return c.json(error._message, StatusCode.BAD_REQUEST)
+        }
+    })
 
 api.get('/:id',
     guard(Role.ADMIN),
@@ -30,12 +29,9 @@ api.get('/:id',
     async (c) => {
         const _id = c.req.param('id')
 
-    if (isValidObjectId(_id)) {
-        const user = await User.findOne({_id})
+        const user = await User.findOne({ _id })
         return c.json(user)
-    }
-    return c.json({msg: 'ObjectId malformed'}, StatusCode.BAD_REQUEST)
-})
+    })
 
 api.post('',
     guard(Role.ADMIN),
@@ -118,17 +114,17 @@ api.delete('/:id',
     guard(Role.ADMIN),
     identifer(),
     async (c) => {
-    const _id = c.req.param('id')
-    const tryToDelete = await User.deleteOne({_id})
-    const {deletedCount} = tryToDelete
+        const _id = c.req.param('id')
+        const tryToDelete = await User.deleteOne({ _id })
+        const { deletedCount } = tryToDelete
 
-    if (deletedCount) {
-        return c.newResponse(null, 204)
-    }
+        if (deletedCount) {
+            return c.newResponse(null, 204)
+        }
 
-    return c.json({msg: "not found"}, 404)
+        return c.json({ msg: "not found" }, 404)
 
-})
+    })
 
 
 api.post('/register',
