@@ -36,7 +36,7 @@ api.get('', async (c) => {
 
         // Styles
         if (undefined !== styles) {
-            query["styles.name"] = { "$in": styles }
+            query["styles"] = { name: { $regex: styles, $options: 'i' } }
             //     query["match"] = {
             //         $expr: {
             //             $gt: [{

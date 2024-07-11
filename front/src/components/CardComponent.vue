@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import { RouterLink } from 'vue-router';
 
 const liked = ref(false);
 
@@ -15,9 +16,12 @@ const props = defineProps<{
   showMultiple: boolean;
   showDate: boolean;
   title: string
+  flashDate: Date;
   subtitle: string
-  description: string
-  styles: Style[]
+  price: number;
+  description: string;
+  styles: Style[];
+  url: string;
 }>();
 
 const value1 = ref('20/07/2024');
@@ -30,7 +34,7 @@ const value1 = ref('20/07/2024');
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
       </template>
       <template #title v-if="showTitle">{{ props.title }}
-        <div class="text-xl font-normal">{{ props.description }}</div>
+        <div class="text-xl font-normal"> {{ props.price }} €</div>
       </template>
       <template #subtitle v-if="showSubtitle">
         {{ subtitle }}
@@ -46,14 +50,19 @@ const value1 = ref('20/07/2024');
             <i v-else class="pi pi-heart"></i>
           </button>
         </div>
-        <div v-if="showDate" class="flex justify-between border-2 rounded p-3 items-center my-4">
-          <div>20/07/2024</div>
+        <div>
+          <div> {{ props.description }} </div>
+        </div>
+        <div class="flex justify-between border-2 rounded p-3 items-center my-4">
+          <div v-if="showDate">{{ props.flashDate }}</div>
           <i class="pi pi-calendar" />
         </div>
       </template>
       <template #footer>
         <div class="flex gap-4 mt-1 pt-0">
-          <Button :label="showMultiple ? 'Voir les flashs' : 'Voir le flash'" class="w-full" />
+          <RouterLink :to="url">
+            <Button :label="showMultiple ? 'Voir les flashs' : 'Voir le flash'" class="w-full" />
+          </RouterLink>
         </div>
       </template>
     </Card>
