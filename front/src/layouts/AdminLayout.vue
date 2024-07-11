@@ -1,9 +1,9 @@
 <template>
   <Menubar :model="items" class="px-52">
     <template #start>
-      <div class="mr-10" @click="goHome">
+      <button class="mr-10" @click="goHome">
         <h1>Logo</h1>
-      </div>
+      </button>
     </template>
     <template #item="{ item, props }">
       <a v-ripple class="flex items-center" v-bind="props.action">

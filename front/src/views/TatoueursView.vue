@@ -34,8 +34,8 @@ fetchData()
     <div class="flex flex-col m-6">
 
       <!-- Titre -->
-      <div class="text-center m-4">
-        <h1 class="text-6xl">Les tatoueurs</h1>
+      <div class="text-center">
+        <h1 class="text-3xl my-12">Les tatoueurs</h1>
         <div class="flex justify-end pr-6">
           <button class="tri flex items-center gap-2">
             Trier par

@@ -5,6 +5,8 @@ import axios from "axios";
 import {useRouter} from "vue-router";
 import {useStylesStore} from "@/stores/styles";
 import {Address} from "@/entities/address";
+import AddressFieldComponent from "@/components/AddressFieldComponent.vue";
+import StyleFieldComponent from "@/components/StyleFieldComponent.vue";
 
 
 const router = useRouter()
@@ -38,37 +40,12 @@ const isDescriptionValid = ref(false)
 
 const hasBeenSubmit = ref(false)
 
-const search = async (event) => {
-  await stylesStore.findAll(event.query)
+const handleAddressUpdateEvent = (data) => {
+  form.place.value = data.address
 }
 
-const addresses = ref<Address[]>([])
-
-async function findAddress(event) {
-  if (event.query.length > 3) {
-    const url = new URL("https://api-adresse.data.gouv.fr/search/")
-    url.searchParams.set("q", event.query)
-
-    addresses.value = await axios.get(url.href)
-        .then(response => {
-          const data = response.data
-          const dataAddress: Address[] = []
-          data.features.forEach((item: any) => {
-            const address = new Address(
-                {
-                  long: item.geometry.coordinates[0],
-                  lat: item.geometry.coordinates[1]
-                },
-                item.properties.label
-            )
-
-            dataAddress.push(address)
-          })
-
-          return dataAddress
-        })
-        .catch(error => console.log(error))
-  }
+const handleStylesSelectedEvent = (data) => {
+  form.styles.value = data.styles
 }
 
 function addLink() {
@@ -119,7 +96,7 @@ async function submit(e: Event) {
     isLinksValid.value = true
   }
 
-  if (form.styles.value.filter((item, index) => form.links.value.indexOf(item) !== index).length > 0) {
+  if (form.links.value.length > 0) {
     isStylesValid.value = true
   }
 
@@ -237,14 +214,7 @@ async function submit(e: Event) {
     </div>
 
     <div class="flex flex-col gap-2 mt-5">
-      <label for="address">Adresse</label>
-      <AutoComplete inputClass="w-full" inputId="address" v-model="form.place.value" @complete="findAddress" optionLabel="label"
-                    :suggestions="addresses" v-if="!isPlaceValid && hasBeenSubmit" invalid/>
-
-      <AutoComplete inputClass="w-full" inputId="address" v-model="form.place.value" @complete="findAddress"
-                    optionLabel="label"
-                    :suggestions="addresses" v-else/>
-      <small>Renseigner au moins 4 caractères</small>
+      <AddressFieldComponent :invalid="!isPlaceValid && hasBeenSubmit" @addressUpdateEvent="handleAddressUpdateEvent"/>
     </div>
 
     <div class="flex flex-col gap-2 mt-5">
@@ -273,9 +243,7 @@ async function submit(e: Event) {
     </div>
 
     <div class="flex flex-col gap-2 mt-5">
-      <label for="style">Styles</label>
-      <AutoComplete v-model="form.styles.value" fluid multiple @complete="search" optionLabel="name"
-                    :suggestions="styles"/>
+      <StyleFieldComponent :invalid="!isStylesValid && hasBeenSubmit" @stylesSelectedEvent="handleStylesSelectedEvent"/>
     </div>
 
     <div class="flex flex-col gap-2 mt-5">

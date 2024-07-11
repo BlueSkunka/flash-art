@@ -1,7 +1,7 @@
 <template>
   <div class="container flex flex-col items-center justify-center mx-auto px-10">
     <h1 class="text-3xl text-center my-12">Les flashs</h1>
-    <div class="flex flex-col items-center justify-center w-full md:w-1/2">
+    <div class="flex flex-col items-center justify-center w-full px-20">
       <div class="flex flex-wrap gap-4 w-full">
         <MultiSelect v-model="selectedCities" :options="cities" optionLabel="name" placeholder="Lieu" class="flex-1 mb-4" />
         <MultiSelect v-model="selectedTatoueurs" :options="tatoueurs" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" />
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-4 justify-items-center m-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 justify-items-center m-8 sm:grid-cols-2 md:grid-cols-3">
       <div v-for="index in 8" :key="index">
         <CardComponent :showTitle="true" :showSubtitle="true" :showDate="true" />
       </div>
@@ -30,10 +30,6 @@
 
 <script setup>
 import { ref } from "vue";
-import MultiSelect from 'primevue/multiselect';
-import InputText from 'primevue/inputtext';
-import Slider from 'primevue/slider';
-import Calendar from 'primevue/calendar';
 
 const selectedCities = ref([]);
 const cities = ref([

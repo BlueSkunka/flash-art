@@ -15,6 +15,10 @@ import TattooerRegisterView from "@/views/TattooerRegisterView.vue";
 import UserRegisterView from "@/views/UserRegisterView.vue";
 import GestionReservationView from '@/views/admin/GestionReservationView.vue';
 import AccueilAdminView from "@/views/admin/AccueilAdminView.vue";
+import {useAuthStore} from "@/stores/auth";
+import {computed} from "vue";
+import UserLoginView from "@/views/UserLoginView.vue";
+import TattooerLoginView from "@/views/TattooerLoginView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,7 +38,8 @@ const router = createRouter({
                     component: FlashView,
                     meta: {
                         layout: BaseLayout
-                    }
+                    },
+                    name: "flashes"
                 },
                 {
                     path: '/flashs/1',
@@ -45,11 +50,11 @@ const router = createRouter({
                 },
                 {
                     path: '/tatoueurs',
-                    name: 'tatoueurs',
+                    name: 'tattooers',
                     component: TatoueursView,
                     meta: {
                         layout: BaseLayout
-                    }
+                    },
                 },
                 {
                   path: '/tatoueurs/1',
@@ -64,6 +69,22 @@ const router = createRouter({
                     meta: {
                         layout: BaseLayout
                     }
+                },
+                {
+                    path: '/login/customer',
+                    component: UserLoginView,
+                    meta: {
+                        layout: BaseLayout
+                    },
+                    name: "login-customer"
+                },
+                {
+                    path: '/login/tattooer',
+                    component: TattooerLoginView,
+                    meta: {
+                        layout: BaseLayout
+                    },
+                    name: "login-tattooer"
                 },
                 {
                     path: '/login',
@@ -115,7 +136,8 @@ const router = createRouter({
                     component: GestionFlashView,
                     meta: {
                         layout: AdminLayout
-                    }
+                    },
+                    name: "admin-flashes"
                 },
                 {
                     path: 'reservations',
@@ -127,6 +149,16 @@ const router = createRouter({
             ]
         }
     ]
+})
+
+router.beforeEach((to, from) => {
+    const authStore = useAuthStore()
+
+    const isAuthenticated = computed(() => authStore.user !== null)
+
+    if (!isAuthenticated.value && to.name !== 'login' && to.matched.find(match => match.path === '/admin')) {
+        return {name: "login"}
+    }
 })
 
 export default router
