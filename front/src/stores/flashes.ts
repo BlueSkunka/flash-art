@@ -8,6 +8,7 @@ import type { Address } from '@/entities/address';
 export const useFlashesStore = defineStore('flashes', () => {
     const url = new URL(import.meta.env.VITE_BACKEND_URL + "/flashes")
     const flashes = ref<Flash[]>([])
+    const flash = ref<Flash>()
     const isLoading = ref(false)
 
     async function findAll(
@@ -70,6 +71,28 @@ export const useFlashesStore = defineStore('flashes', () => {
             .catch(error => console.log(error))
 
         url.searchParams.delete("tattooer")
+
+        isLoading.value = false
+    }
+
+    async function findOne(id: number) {
+        isLoading.value = true
+
+        await axios.get(url.href + '/' + id)
+            .then(response => {
+                if (response.status === 200) {
+                    flash.value = response.data
+
+                    return true
+                }
+
+                return false
+            })
+            .catch(error => {
+                console.log(error)
+
+                return false
+            })
 
         isLoading.value = false
     }
@@ -142,5 +165,5 @@ export const useFlashesStore = defineStore('flashes', () => {
         return isDeleted
     }
 
-    return {flashes, isLoading, findAll, findByTattooer, remove, create, update}
+    return {flash, flashes, isLoading, findAll, findByTattooer, findOne, remove, create, update}
 })

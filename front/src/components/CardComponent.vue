@@ -43,7 +43,7 @@ const value1 = ref('20/07/2024');
       <template #content>
         <div class="flex items-center justify-between">
           <div class="flex gap-4">
-            <Tag :value="style.name" v-for="style in styles"></Tag>
+            <Tag severity="warning" :value="style.name" v-for="style in styles"></Tag>
           </div>
           <button class="like-button" @click="toggleLike">
             <i v-if="liked" class="pi pi-heart-fill filled"></i>

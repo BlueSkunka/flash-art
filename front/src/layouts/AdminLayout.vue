@@ -11,25 +11,27 @@
       </a>
     </template>
     <template #end>
-      <Button label="Connexion" @click="goLogin"/>
+      <Button label="Se deconnecter" @click="goLogout"/>
     </template>
   </Menubar>
 
   <main>
     <router-view></router-view>
   </main>
+  <footer class="bg-zinc-900 text-white text-center py-3">
+        2024 © FlashArt Association - Powered by Atomic Dev 
+    </footer>
 
-  <footer>
-
-  </footer>
 </template>
 
 <script setup>
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth";
 
 
 const router = useRouter();
+const authStore = useAuthStore()
 
 const goHome = () => {
   router.push('/admin');
@@ -38,6 +40,11 @@ const goHome = () => {
 const goLogin = () => {
   router.push('/login');
 };
+
+const goLogout = () => {
+  authStore.logout()
+  router.push({name: 'home'})
+}
 
 const items = ref([
   {

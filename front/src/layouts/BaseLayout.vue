@@ -13,7 +13,11 @@
         </a>
       </template>
       <template #end>
-        <Button label="Connexion" @click="goLogin"/>
+        <div v-if="!user">
+          <Button outlined label="Connexion" @click="goLogin" class="mr-3"/>
+          <Button label="S'inscrire" @click="goRegister"/>
+        </div>
+        <Button v-else label="Se déconnecter" @click="logout"/>
       </template>
     </Menubar>
 
@@ -21,17 +25,19 @@
     <main class="flex-grow">
       <router-view></router-view>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-zinc-900 text-white text-center py-3">
-      <small>ici un footer</small>
+  <footer class="bg-zinc-900 text-white text-center py-3">
+        2024 © FlashArt Association - Powered by Atomic Dev 
     </footer>
-  </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import {computed, ref, watch} from "vue";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/auth";
+
+const authStore = useAuthStore()
+
+const user = computed(() => authStore.user)
 
 const router = useRouter();
 
@@ -40,29 +46,59 @@ const goHome = () => {
 };
 
 const goLogin = () => {
-  router.push('/login');
+  router.push({name: "login"});
 };
 
-const items = ref([
-  {
-    label: 'Les tatoueurs',
-    command: () => {
-      router.push('/tatoueurs');
+const goRegister = () => {
+  router.push({name: "register"});
+};
+
+const logout = () => {
+  authStore.logout()
+  router.push({name: "home"});
+
+}
+
+
+const items = ref([]);
+
+if (user.value !== null) {
+  items.value = [
+    {
+      label: 'Les tatoueurs',
+      command: () => {
+        router.push('/tatoueurs');
+      }
+    },
+    {
+      label: 'Les flashs',
+      command: () => {
+        router.push('/flashs');
+      }
+    },
+    {
+      label: 'Mes réservations',
+      command: () => {
+        router.push({name: "reservations"});
+      }
     }
-  },
-  {
-    label: 'Les flashs',
-    command: () => {
-      router.push('/flashs');
+  ]
+} else {
+  items.value = [
+    {
+      label: 'Les tatoueurs',
+      command: () => {
+        router.push('/tatoueurs');
+      }
+    },
+    {
+      label: 'Les flashs',
+      command: () => {
+        router.push('/flashs');
+      }
     }
-  },
-  {
-    label: 'Mes réservations',
-    command: () => {
-      router.push('/reservations');
-    }
-  },
-]);
+  ]
+}
 </script>
 
 <style scoped>
