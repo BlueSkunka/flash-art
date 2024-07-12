@@ -1,0 +1,21 @@
+meta {
+  name: update
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/opinions/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": "668ceaeabcfd7fba082c65a3", // Récupérer un utilisateur existant 
+    "tattooer": "668ceaeabcfd7fba082c65a3", // Récupérer un tattoueur existant 
+    "flash": "668ceaeabcfd7fba082c65a3", // Récupérer un flash existant 
+    "rate": 4.5,
+    "commentary": "Un excellent tattoueur ! "
+  }
+}
