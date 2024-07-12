@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { useTattooersStore } from "@/stores/tattooers";
 import { useStylesStore } from "@/stores/styles";
 import { useFlashesStore } from '@/stores/flashes';
@@ -110,8 +110,6 @@ const handleStylesSelectedEvent = (data) => {
   form.styles.value = data.styles
 }
 
-console.log(flashes.value)
-
 </script>
 
 
@@ -149,7 +147,7 @@ console.log(flashes.value)
         </form>
       </div>
   
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 justify-items-center m-8 sm:grid-cols-2 md:grid-cols-3" v-if="!isLoadingFlashes">
+      <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-12 gap-4 justify-items-center m-8 sm:grid-cols-2 sm:gap-6 md:grid-cols-2 md:gap-6" v-if="!isLoadingFlashes">
         <div v-if="flashes.length > 0" v-for="(flash, index) in flashes" :key="index" >
             <FlashComponent :flash="flash" />
           </div>
