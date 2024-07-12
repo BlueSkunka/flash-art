@@ -89,15 +89,13 @@ api.get('', async (c) => {
         }
 
         // booked
-        if (undefined !== booked) {
+        if (undefined !== booked && JSON.parse(booked)) {
             query["user"] = { $exists: true, $ne: null }
         } else if (undefined !== user) {
             query["user"] = user
         } else {
             query["user"] = { $exists: false, $eq: null }
         }
-
-        console.log(query);
 
         const flashes = await Flash.find(query).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
