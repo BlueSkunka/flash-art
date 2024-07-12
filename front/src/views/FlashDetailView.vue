@@ -7,7 +7,7 @@
     </div>
     <div>
       <h2 class="text-2xl my-3">{{ flash.name }}</h2>
-      <h3 class="text-xl mb-5 font-medium">{{ flash.price }}</h3>
+      <h3 class="text-xl mb-5 font-medium">{{ flash.price }} €</h3>
       <p class="text-grey-600">{{ flash.description }}</p>
       <p class="mt-5 mb-1">Créneau horaire:
         {{ date.toLocaleString() }}</p>
