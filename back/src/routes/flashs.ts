@@ -36,31 +36,8 @@ api.get('', async (c) => {
 
         // Styles
         if (undefined !== styles) {
-            query["styles"] = { name: { $regex: styles, $options: 'i' } }
-            //     query["match"] = {
-            //         $expr: {
-            //             $gt: [{
-            //                 $size: {
-            //                     $reduce: {
-            //                         input: styles,
-            //                         initialValue: [],
-            //                         in: {
-            //                             $concatArrays: [
-            //                                 "$$value",
-            //                                 {
-            //                                     $filter: {
-            //                                         input: "$name",
-            //                                         as: "name",
-            //                                         cond: { $regexMatch: { input: "$$this", regex: "$$name" } }
-            //                                     }
-            //                                 }
-            //                             ]
-            //                         }
-            //                     }
-            //                 }
-            //             }, 0]
-            //         }
-            //     }
+            // query["styles"] = { name: { $regex: styles, $options: 'i' } }
+                query["styles.name"] = { "$in": styles}
         }
 
         // Favoris
