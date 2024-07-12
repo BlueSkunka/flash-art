@@ -21,7 +21,7 @@ api.get('/:id', identifer(), async (c) => {
             return c.newResponse('Opinion not found', StatusCode.BAD_REQUEST)
         }
 
-        return c.json(opinion)
+        return c.json(opinion, StatusCode.OK)
     } catch (error: unknown) {
         console.error(error);
 
@@ -36,7 +36,7 @@ api.get('/tattooer/:id', identifer(), async (c) => {
         const opinions = await Opinion.find({ tattooer: { "_id": id } })
             .populate('user', 'lastname firstname')
             .populate('flash', 'place flashDate name')
-        return c.json(opinions);
+        return c.json(opinions, StatusCode.OK);
     } catch (error: unknown) {
         console.error(error);
 
@@ -51,7 +51,7 @@ api.get('/user/:id', identifer(), async (c) => {
         const opinions = await Opinion.find({ user: { "_id": id } })
             .populate('tattooer', 'surname place')
             .populate('flash', 'place flashDate name')
-        return c.json(opinions);
+        return c.json(opinions, StatusCode.OK);
     } catch (error: unknown) {
         console.error(error);
 
@@ -79,7 +79,7 @@ api.post('',
             opinion.createdAt = new Date()
             opinion = await opinion.save()
 
-            return c.json(opinion)
+            return c.json(opinion, StatusCode.CREATED)
         } catch (error: unknown) {
             console.error(error);
 
@@ -112,7 +112,7 @@ api.put('/:id',
                 return c.newResponse('Opinion not found', StatusCode.BAD_REQUEST)
             }
 
-            return c.json(opinion)
+            return c.json(opinion, StatusCode.OK)
         } catch (error: unknown) {
             console.error(error);
 

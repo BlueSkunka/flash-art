@@ -72,7 +72,7 @@ api.post('/register',
             const saveTattooer = await tattoer.save();
             saveTattooer.password = undefined;
 
-            return c.json(saveTattooer, 201);
+            return c.json(saveTattooer, StatusCode.CREATED);
         } catch (error: unknown) {
             console.log(error)
             return c.newResponse("An internal error has occurred", StatusCode.INTERNAL_SERVER_ERROR);
@@ -92,32 +92,37 @@ api.post('/login',
     async (c) => {
         const { email, password } = c.req.valid('json')
 
-        const tattoer = await Tattooer.findOne({ email })
+        try {
+            const tattoer = await Tattooer.findOne({ email })
 
-        if (!tattoer) {
-            return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
+            if (!tattoer) {
+                return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
+            }
+
+            const match = bcrypt.compareSync(password, tattoer.password);
+
+            if (!match) {
+                return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
+            }
+
+            const token = await sign({
+                _id: tattoer._id,
+                firstname: tattoer.firstname,
+                lastname: tattoer.lastname,
+                role: tattoer.role,
+                inscriptionDate: tattoer.inscriptionDate,
+            },
+                myEnv.JWT_CAT_SECRET
+            );
+
+            return c.json({
+                token: token,
+                user: tattoer
+            }, StatusCode.OK)
+        } catch (error: unknown) {
+            console.log(error)
+            return c.newResponse("An internal error has occurred", StatusCode.INTERNAL_SERVER_ERROR);
         }
-
-        const match = bcrypt.compareSync(password, tattoer.password);
-
-        if (!match) {
-            return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
-        }
-
-        const token = await sign({
-            _id: tattoer._id,
-            firstname: tattoer.firstname,
-            lastname: tattoer.lastname,
-            role: tattoer.role,
-            inscriptionDate: tattoer.inscriptionDate,
-        },
-            myEnv.JWT_CAT_SECRET
-        );
-
-        return c.json({
-            token: token,
-            user: tattoer
-        })
     }
 )
 
@@ -133,7 +138,7 @@ api.put('/:id', identifer(), async (c) => {
             return c.newResponse('Tattoer not found', StatusCode.BAD_REQUEST);
         }
 
-        return c.json(tattoer, 200);
+        return c.json(tattoer, StatusCode.OK);
     } catch (error: unknown) {
         console.error(error);
 
@@ -143,9 +148,9 @@ api.put('/:id', identifer(), async (c) => {
 
 // Voir le profil d'un tattoueur
 api.get('/:id', identifer(), async (c) => {
-    const id = c.req.param('id');
+    const _id = c.req.param('id');
     try {
-        const tattooer = await Tattooer.findOne({ id })
+        const tattooer = await Tattooer.findOne({ _id })
 
         if (null === tattooer) {
             return c.newResponse('Tattooer not found', StatusCode.BAD_REQUEST);

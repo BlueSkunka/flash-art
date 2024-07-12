@@ -17,9 +17,11 @@ api.get('',
         try {
             const users = await User.find({})
 
-            return c.json(users)
+            return c.json(users, StatusCode.OK)
         } catch (error: any) {
-            return c.json(error._message, StatusCode.BAD_REQUEST)
+            console.error(error);
+
+            return c.json(error._message, StatusCode.INTERNAL_SERVER_ERROR)
         }
     })
 
@@ -29,8 +31,14 @@ api.get('/:id',
     async (c) => {
         const _id = c.req.param('id')
 
-        const user = await User.findOne({ _id })
-        return c.json(user)
+        try {
+            const user = await User.findOne({ _id })
+            return c.json(user)
+        } catch (error: unknown) {
+            console.error(error);
+
+            return c.json("An internal server error has occured", StatusCode.INTERNAL_SERVER_ERROR)
+        }
     })
 
 api.post('',
@@ -42,7 +50,7 @@ api.post('',
             body.firstname === undefined ||
             body.lastname === undefined
         ) {
-            return c.text('Bad Request', StatusCode.BAD_REQUEST)
+            return c.text('Form is invalid', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -66,9 +74,11 @@ api.post('',
 
             user.password = undefined
 
-            return c.json(user)
+            return c.json(user, StatusCode.CREATED)
         } catch (error: any) {
-            return c.json(error._message, StatusCode.BAD_REQUEST)
+            console.error(error);
+
+            return c.json("An internal server error has occured", StatusCode.INTERNAL_SERVER_ERROR)
         }
     })
 
@@ -105,9 +115,16 @@ api.put('/:id',
             ...body
         }
 
-        const tryToUpdate = await User.findOneAndUpdate(q, updateQuery, { new: true })
+        try {
+            const tryToUpdate = await User.findOneAndUpdate(q, updateQuery, { new: true })
 
-        return c.json(tryToUpdate, 200)
+            return c.json(tryToUpdate, StatusCode.OK)
+        } catch (error: unknown) {
+            console.error(error);
+
+            return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR)
+        }
+
     })
 
 api.delete('/:id',
@@ -115,14 +132,21 @@ api.delete('/:id',
     identifer(),
     async (c) => {
         const _id = c.req.param('id')
-        const tryToDelete = await User.deleteOne({ _id })
-        const { deletedCount } = tryToDelete
 
-        if (deletedCount) {
-            return c.newResponse(null, 204)
+        try {
+            const tryToDelete = await User.deleteOne({ _id })
+            const { deletedCount } = tryToDelete
+
+            if (deletedCount) {
+                return c.newResponse(null, StatusCode.NO_CONTENT)
+            }
+        } catch (error: unknown) {
+            console.error(error);
+
+            return c.newResponse('An internal server error has occured', StatusCode.INTERNAL_SERVER_ERROR)
         }
 
-        return c.json({ msg: "not found" }, 404)
+        return c.json("User not found", StatusCode.NOT_FOUND)
 
     })
 
@@ -135,7 +159,7 @@ api.post('/register',
             body.firstname === undefined ||
             body.lastname === undefined
         ) {
-            return c.text('Bad Request', 400)
+            return c.text('Form is invalid', StatusCode.BAD_REQUEST)
         }
 
         return body
@@ -147,7 +171,7 @@ api.post('/register',
             const currentUser = await User.findOne({ email })
 
             if (currentUser !== null) {
-                return c.text("User already exist !", 400)
+                return c.text("User already exist !", StatusCode.CONFLICT)
             }
 
             let user = new User(body)
@@ -159,47 +183,52 @@ api.post('/register',
 
             user.password = undefined
 
-            return c.json(user, 201)
+            return c.json(user, StatusCode.CREATED)
         } catch (error: any) {
             console.log(error)
-            return c.json(error._message, 400)
+            return c.json(error._message, StatusCode.INTERNAL_SERVER_ERROR)
         }
     })
 
 api.post('/login',
     validator('json', (body, c) => {
         if (body.email === undefined || body.password === undefined) {
-            return c.text('Bad Request', 400)
+            return c.text('Form is invalid', StatusCode.BAD_REQUEST)
         }
 
         return body
     }),
     async (c) => {
         const { email, password } = c.req.valid('json')
-        const currentUser = await User.findOne({ email }, "password firstname lastname role email");
+        try {
+            const currentUser = await User.findOne({ email }, "password firstname lastname role email");
 
-        if (!currentUser) {
-            return c.text('Email or Password invalid', 401)
+            if (!currentUser) {
+                return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
+            }
+
+            const match = bcrypt.compareSync(password, currentUser.password);
+
+            if (!match) {
+                return c.text('Email or Password invalid', StatusCode.UNAUTHORIZED)
+            }
+
+            const token = await sign({
+                _id: currentUser._id
+            },
+                myEnv.JWT_CAT_SECRET
+            );
+
+            currentUser.password = undefined
+
+            return c.json({
+                token: token,
+                user: currentUser
+            }, StatusCode.OK)
+        } catch (error: unknown) {
+            console.log(error)
+            return c.json("An internal server error has occured", StatusCode.INTERNAL_SERVER_ERROR)
         }
-
-        const match = bcrypt.compareSync(password, currentUser.password);
-
-        if (!match) {
-            return c.text('Email or Password invalid', 401)
-        }
-
-        const token = await sign({
-            _id: currentUser._id
-        },
-            myEnv.JWT_CAT_SECRET
-        );
-
-        currentUser.password = undefined
-
-        return c.json({
-            token: token,
-            user: currentUser
-        }, 200)
     })
 
 export default api

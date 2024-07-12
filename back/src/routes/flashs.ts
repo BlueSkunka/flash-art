@@ -1,8 +1,8 @@
-import {Hono} from "hono";
-import {Flash} from "../models/flash";
+import { Hono } from "hono";
+import { Flash } from "../models/flash";
 import StatusCode from "../enums/statusCode";
-import {validator} from "hono/validator";
-import {identifer} from "../middlewares/identifier";
+import { validator } from "hono/validator";
+import { identifer } from "../middlewares/identifier";
 
 const api = new Hono().basePath('/flashes')
 
@@ -10,7 +10,7 @@ const api = new Hono().basePath('/flashes')
 
 // Récupération de tous les flash sans réservation 
 api.get('', async (c) => {
-    const { long, lat, maxRange, tattooer, favourite, minDate, maxDate, minPrice, maxPrice } = c.req.query()
+    const { long, lat, maxRange, tattooer, favourite, minDate, maxDate, minPrice, maxPrice, booked, user } = c.req.query()
     const styles = c.req.queries('style')
 
     try {
@@ -88,7 +88,14 @@ api.get('', async (c) => {
             query["price"] = { "$lte": maxPrice }
         }
 
-        query["user"] = { $exists: false, $eq: null }
+        // booked
+        if (undefined !== booked) {
+            query["user"] = { $exists: true, $ne: null }
+        } else if (undefined !== user) {
+            query["user"] = user
+        } else {
+            query["user"] = { $exists: false, $eq: null }
+        }
 
         console.log(query);
 
@@ -142,7 +149,7 @@ api.post('',
 api.get('/:id', identifer(), async (c) => {
     const _id = c.req.param('id')
     try {
-        const flash = await Flash.findOne({_id}).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
+        const flash = await Flash.findOne({ _id }).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         if (null == flash) {
             return c.newResponse('Flash not found', StatusCode.NOT_FOUND)
@@ -183,7 +190,7 @@ api.put('/:id',
         const _id = c.req.param('id');
 
         try {
-            const flash = await Flash.findOneAndUpdate({_id}, {...body}, {new: true})
+            const flash = await Flash.findOneAndUpdate({ _id }, { ...body }, { new: true })
 
             if (null === flash) {
                 return c.newResponse('Flash not found', StatusCode.BAD_REQUEST)
@@ -202,8 +209,8 @@ api.put('/:id',
 api.delete('/:id', identifer(), async (c) => {
     const _id = c.req.param('id')
     try {
-        const result = await Flash.deleteOne({_id})
-        
+        const result = await Flash.deleteOne({ _id })
+
         const { deletedCount } = result;
 
         if (deletedCount) {

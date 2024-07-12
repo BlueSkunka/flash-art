@@ -20,7 +20,7 @@ api.get('',
 
             const styles = await Style.find(filter)
 
-            return c.json(styles)
+            return c.json(styles, StatusCode.OK)
         } catch (error: any) {
             return c.json(error._message, StatusCode.BAD_REQUEST)
         }
@@ -41,7 +41,7 @@ api.post('',
             let style = new Style(body)
             style = await style.save()
 
-            return c.json(style)
+            return c.json(style, StatusCode.CREATED)
         } catch (error: unknown) {
             console.error(error);
 
@@ -70,7 +70,7 @@ api.put('/:id',
                 return c.newResponse('Opinion not found', StatusCode.BAD_REQUEST)
             }
 
-            return c.json(style)
+            return c.json(style, StatusCode.OK)
         } catch (error: unknown) {
             console.error(error);
 

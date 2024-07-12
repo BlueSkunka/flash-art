@@ -1,18 +1,49 @@
 <script setup lang="ts">
 import CommentComponent from '@/components/CommentComponent.vue';
 import CardComponent from '@/components/CardComponent.vue';
-import { ref } from 'vue';
+import {computed, onMounted, ref} from 'vue';
+import { useRoute} from "vue-router";
+import {useTattooersStore} from "@/stores/tattooers";
+import {Network} from "@/enums/network";
+import {useFlashesStore} from "@/stores/flashes";
+import {useOpinionStore} from "@/stores/opinions";
 
-const rating = ref(4);
+const route = useRoute()
+const tattooerStore = useTattooersStore()
+const flashStore = useFlashesStore()
+const opinionStore = useOpinionStore()
+
+const tattooer = computed(() => tattooerStore.tattooer)
+const flashes = computed(() => flashStore.flashes)
+const opinions = computed(() => opinionStore.opinions)
+const avgRating = computed(() => opinionStore.average);
+
+onMounted(() => {
+  const id = route.params.id
+
+  if (typeof id === "string") {
+    tattooerStore.findOne(id)
+  }
+})
+
+const getNetwork = (name: string) => {
+  if (name === Network.FACEBOOK.name) return Network.FACEBOOK.icon
+  if (name === Network.INSTAGRAM.name) return Network.INSTAGRAM.icon
+  if (name === Network.X.name) return Network.X.icon
+  if (name === Network.PINTEREST.name) return Network.PINTEREST.icon
+  if (name === Network.TIKTOK.name) return Network.TIKTOK.icon
+
+  return 'pi pi-globe'
+}
+
 
 const scrollToAvis = () => {
     const avisElement = document.getElementById('avis');
     if (avisElement) {
         avisElement.scrollIntoView({ behavior: 'smooth' });
-    }   
+    }
 }
 
-const totalAvis = ref(6)
 </script>
 
 <template>
@@ -23,20 +54,18 @@ const totalAvis = ref(6)
 
             <div class="flex flex-col gap-4">
                 <div class="flex justify-between items-center ">
-                    <p class="text-4xl">Jean Neymar</p>
+                    <p class="text-4xl">{{ tattooer?.surname }}</p>
                     <div class="flex gap-2 items-center">
-                        <Rating v-model="rating" readonly class="mt-4 mb-2" :cancel="false"/> 
-                       <p>({{ totalAvis }})</p> 
+                        <Rating v-model="avgRating" readonly class="mt-4 mb-2" :cancel="false"/>
+                       <p>({{ tattooer?.opinions?.length }})</p>
                     </div>
                 </div>
                 <div class="icons flex gap-3 text-3xl">
-                    <i class="pi pi-instagram" />
-                    <i class="pi pi-facebook" />
-                    <i class="pi pi-pinterest" />
-                    <i class="pi pi-tiktok" />
-                    <i class="pi pi-twitter" />
+                  <a v-for="link in tattooer?.links" href="{{link.url}}" >
+                    <i class="{{getNetwork(link.name)}}" />
+                  </a>
                 </div>
-                <p>Description lorem ipsum dahjk dhfkjhdf Description lorem ipsum dahjk dhfkjhdf Description lorem ipsum dahjk dhfkjhdf</p>
+                <p>{{tattooer?.description}}</p>
                 <div class="voir-avis-btn flex items-center justify-between">
                     <i class="pi pi-angle-down"></i>
                     <button class="text-xl" @click="scrollToAvis">Voir les avis</button>
@@ -47,26 +76,24 @@ const totalAvis = ref(6)
 
         <!-- Titre -->
         <div class="text-center m-4">
-            <h1 class="text-4xl">Flashs de Jean Neymar</h1>
-            <div class="flex justify-end pr-6">
-                <button class="tri flex items-center gap-2">
-                    Trier par
-                    <i class="pi pi-angle-down" style="font-size: 12px"></i>
-                </button>
-            </div>
+            <h1 class="text-4xl">Mes prochains flashs</h1>
         </div>
 
         <div class="grid grid-cols-3 gap-2 justify-items-center m-8">
-            <div v-for="index in 9" :key="index">
-                <CardComponent :showTitle="false" :showSubtitle="false" :showMultiple="false"/>
+            <div v-for="flash in flashes">
+                <CardComponent :showTitle="true" :showSubtitle="false" :showMultiple="true" :showDate="true"
+                                :styles="flash.styles" :title="flash.name" :description="flash.description" />
             </div>
         </div>
 
         <!-- Avis -->
         <div class="text-center m-4" id="avis">
-            <h1 class="text-3xl">Avis de Jean Neymar</h1>
+            <h1 class="text-3xl">Ils m'ont laissé un avis</h1>
         </div>
-        <CommentComponent />
+
+        <div class="flex justify-center">
+          <CommentComponent v-for="opinion in opinions" :opinion="opinion" />
+        </div>
     </div>
 </template>
 

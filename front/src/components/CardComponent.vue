@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import {useRouter} from "vue-router";
 import {ref} from 'vue';
 import { RouterLink } from 'vue-router';
 
+const router = useRouter();
 const liked = ref(false);
 
 const toggleLike = () => {
@@ -15,6 +17,7 @@ const props = defineProps<{
   showSubtitle: boolean;
   showMultiple: boolean;
   showDate: boolean;
+  _id: string
   title: string
   flashDate: Date;
   subtitle: string
@@ -24,11 +27,10 @@ const props = defineProps<{
   url: string;
 }>();
 
-const value1 = ref('20/07/2024');
-
 </script>
 
 <template>
+  <router-link :to="{name: 'tattoer_detail', params: {id: _id}}">
     <Card style="width: 20rem; overflow: hidden; margin-bottom: 5rem;">
       <template #header>
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
@@ -43,7 +45,7 @@ const value1 = ref('20/07/2024');
       <template #content>
         <div class="flex items-center justify-between">
           <div class="flex gap-4">
-            <Tag :value="style.name" v-for="style in styles"></Tag>
+            <Tag severity="warning" :value="style.name" v-for="style in styles"></Tag>
           </div>
           <button class="like-button" @click="toggleLike">
             <i v-if="liked" class="pi pi-heart-fill filled"></i>
@@ -54,7 +56,7 @@ const value1 = ref('20/07/2024');
           <div> {{ props.description }} </div>
         </div>
         <div class="flex justify-between border-2 rounded p-3 items-center my-4">
-          <div v-if="showDate">{{ props.flashDate }}</div>
+          <div v-if="showDate">{{ props.flashDate.toLocaleDateString() }}</div>
           <i class="pi pi-calendar" />
         </div>
       </template>
@@ -66,7 +68,8 @@ const value1 = ref('20/07/2024');
         </div>
       </template>
     </Card>
-  </template>
+  </router-link>
+</template>
   
   <style scoped>
   .like-button {

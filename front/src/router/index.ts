@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import TatoueursView from '@/views/TatoueursView.vue'
 import LoginView from "@/views/LoginView.vue";
 import EventDetailsView from '@/views/EventDetailsView.vue';
@@ -15,10 +15,11 @@ import TattooerRegisterView from "@/views/TattooerRegisterView.vue";
 import UserRegisterView from "@/views/UserRegisterView.vue";
 import GestionReservationView from '@/views/admin/GestionReservationView.vue';
 import AccueilAdminView from "@/views/admin/AccueilAdminView.vue";
-import {useAuthStore} from "@/stores/auth";
-import {computed} from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { computed } from "vue";
 import UserLoginView from "@/views/UserLoginView.vue";
 import TattooerLoginView from "@/views/TattooerLoginView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,7 @@ const router = createRouter({
                 {
                     path: '',
                     component: AccueilView,
+                    name: "home"
                 },
                 {
                     path: '/flashs',
@@ -39,7 +41,7 @@ const router = createRouter({
                     name: "flashes"
                 },
                 {
-                    path: '/flashs/1',
+                    path: '/flashs/:id',
                     component: FlashDetailView,
                 },
                 {
@@ -48,12 +50,14 @@ const router = createRouter({
                     component: TatoueursView,
                 },
                 {
-                  path: '/tatoueurs/1',
-                  component: TatoueurDetailsView,
+                    path: '/tatoueurs/:id',
+                    component: TatoueurDetailsView,
+                    name: 'tattoer_detail'
                 },
                 {
                     path: '/reservations',
                     component: ReservationView,
+                    name: "reservations"
                 },
                 {
                     path: '/login/customer',
@@ -79,6 +83,11 @@ const router = createRouter({
                     component: TattooerRegisterView,
                 },
                 {
+                    path: '/register',
+                    component: RegisterView,
+                    name: "register"
+                },
+                {
                     path: '/event/1',
                     component: EventDetailsView
                 }
@@ -93,14 +102,11 @@ const router = createRouter({
                 {
                     path: '',
                     component: AccueilAdminView,
-                    meta: {
-                        layout: AdminLayout
-                    }
                 },
                 {
                     path: 'profil',
                     component: GestionProfilView,
-
+                    name: "admin-profil"
                 },
                 {
                     path: 'flashs',
@@ -110,6 +116,7 @@ const router = createRouter({
                 {
                     path: 'reservations',
                     component: GestionReservationView,
+                    name: "admin-resservations"
                 }
             ]
         }
@@ -121,8 +128,12 @@ router.beforeEach((to, from) => {
 
     const isAuthenticated = computed(() => authStore.user !== null)
 
+    if (false === isAuthenticated.value && to.name === 'reservations') {
+        return { name: "login" }
+    }
+
     if (!isAuthenticated.value && to.name !== 'login' && to.matched.find(match => match.path === '/admin')) {
-        return {name: "login"}
+        return { name: "login" }
     }
 })
 

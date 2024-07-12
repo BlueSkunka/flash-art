@@ -50,6 +50,7 @@ import InputNumber from "primevue/inputnumber";
 import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Slider from 'primevue/slider';
+import InlineMessage from "primevue/inlinemessage";
 
 
 const pinia = createPinia()
@@ -111,5 +112,6 @@ app.component("InputNumber", InputNumber);
 app.component("Dialog", Dialog);
 app.component("Calendar", Calendar);
 app.component("Slider", Slider)
+app.component("InlineMessage", InlineMessage)
 
 app.mount('#app')
