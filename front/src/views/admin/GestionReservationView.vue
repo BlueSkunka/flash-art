@@ -11,7 +11,9 @@ import ReservationComponent from "@/components/ReservationComponent.vue";
 import {useFlashesStore} from "@/stores/flashes";
 import {computed, onBeforeMount} from "vue";
 import {useAuthStore} from "@/stores/auth";
+import {useToast} from "primevue/usetoast";
 
+const toast = useToast()
 const authStore = useAuthStore()
 const flashesStore = useFlashesStore()
 
