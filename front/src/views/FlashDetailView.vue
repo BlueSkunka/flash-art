@@ -2,24 +2,24 @@
   <Toast/>
   <h1 class="text-3xl text-center my-12">Réservation d'un flash</h1>
   <div class="grid grid-cols-2 mb-16 w-1/2 mx-auto">
-    <div class="border border-red-600 w-2/3 m-auto">
-      <img src="../assets/illu-tatoueur.jpg" alt="image de flash">
+    <div class="w-80 h-60 border m-auto">
+      <img src="../assets/illu-tatoueur.jpg" alt="image de flash" class="w-full h-full object-cover">
     </div>
     <div>
       <h2 class="text-2xl my-3">{{ flash.name }}</h2>
       <h3 class="text-xl mb-5 font-medium">{{ flash.price }}</h3>
       <p class="text-grey-600">{{ flash.description }}</p>
       <p class="mt-5 mb-1">Créneau horaire:
-        {{ date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' à ' + date.getHours() + 'h' + date.getMinutes() }}</p>
-      <Button v-if="user && flash.user === undefined" @click="toBook">Réserver le créneau</Button>
-      <InlineMessage severity="info" v-else-if="flash.user !== undefined">Ce créneau à déjà été réservé</InlineMessage>
+        {{ date.toLocaleString() }}</p>
+      <Button v-if="user && (flash.user === undefined || flash.user === null)" @click="toBook">Réserver le créneau</Button>
+      <InlineMessage severity="info" v-else-if="flash.user !== undefined && flash.user !== null">Ce créneau à déjà été réservé</InlineMessage>
       <InlineMessage severity="info" v-else>Vous devez être connecté pour réserver ce créneau</InlineMessage>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref, onMounted, onBeforeMount, computed} from "vue";
+import {ref, onBeforeMount, computed} from "vue";
 import FlashComponent from "@/components/FlashComponent.vue";
 import {Flash} from "@/entities/flash";
 import {useFlashesStore} from "@/stores/flashes";
@@ -35,7 +35,7 @@ const user = computed(() => authStore.user)
 const flashId = route.params.id
 const flashesStore = useFlashesStore()
 const flash = computed(() => flashesStore.flash);
-const date = ref(new Date())
+const date = computed(() => new Date(flash.value.flashDate))
 
 onBeforeMount(async () => {
   await flashesStore.findOne(flashId)

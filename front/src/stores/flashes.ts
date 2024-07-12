@@ -63,6 +63,7 @@ export const useFlashesStore = defineStore('flashes', () => {
 
     async function findByTattooer(tattooer: User, isBooked: Boolean|null = null) {
         isLoading.value = true
+        flashes.value.length = 0
         url.searchParams.set("tattooer", tattooer._id.toString())
         url.searchParams.set("booked", isBooked)
 
@@ -80,6 +81,7 @@ export const useFlashesStore = defineStore('flashes', () => {
 
     async function findByUser(user: User) {
         isLoading.value = true
+        flashes.value.length=0
 
         url.searchParams.set("user", user._id.toString())
 

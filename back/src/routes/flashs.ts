@@ -36,31 +36,8 @@ api.get('', async (c) => {
 
         // Styles
         if (undefined !== styles) {
-            query["styles"] = { name: { $regex: styles, $options: 'i' } }
-            //     query["match"] = {
-            //         $expr: {
-            //             $gt: [{
-            //                 $size: {
-            //                     $reduce: {
-            //                         input: styles,
-            //                         initialValue: [],
-            //                         in: {
-            //                             $concatArrays: [
-            //                                 "$$value",
-            //                                 {
-            //                                     $filter: {
-            //                                         input: "$name",
-            //                                         as: "name",
-            //                                         cond: { $regexMatch: { input: "$$this", regex: "$$name" } }
-            //                                     }
-            //                                 }
-            //                             ]
-            //                         }
-            //                     }
-            //                 }
-            //             }, 0]
-            //         }
-            //     }
+            // query["styles"] = { name: { $regex: styles, $options: 'i' } }
+                query["styles.name"] = { "$in": styles}
         }
 
         // Favoris
@@ -94,7 +71,7 @@ api.get('', async (c) => {
         } else if (undefined !== user) {
             query["user"] = user
         } else {
-            query["user"] = { $exists: false, $eq: null }
+            query["user"] = { $eq: null }
         }
 
         const flashes = await Flash.find(query).populate('tattooer', 'surname place').populate('user', 'lastname firstname')

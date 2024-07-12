@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import {useAuthStore} from "@/stores/auth";
 import {useToast} from "primevue/usetoast";
 import {useRouter} from "vue-router";
@@ -27,7 +27,7 @@ const isEmailValid = ref(false)
 let urlParams = new URLSearchParams(window.location.search);
 const isRegistered = urlParams.get('isRegistered')
 
-onMounted(() => {
+onBeforeMount(() => {
   if (isRegistered === '1') {
     toast.add({
       severity: 'success',
