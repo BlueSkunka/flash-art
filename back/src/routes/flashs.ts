@@ -12,7 +12,7 @@ const api = new Hono().basePath('/flashes')
 api.get('', async (c) => {
     const { long, lat, maxRange, tattooer, favourite, minDate, maxDate, minPrice, maxPrice, booked, user } = c.req.query()
     const styles = c.req.queries('style')
-
+    console.log(c.req.url)
     try {
         const query = {}
 
@@ -73,7 +73,7 @@ api.get('', async (c) => {
         } else {
             query["user"] = { $eq: null }
         }
-
+        console.log(styles)
         const flashes = await Flash.find(query).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
 
         return c.json(flashes, StatusCode.OK)
