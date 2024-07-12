@@ -12,6 +12,10 @@ const props = defineProps({
   address: {
     required: false,
     type: Address
+  },
+  showLabel: {
+    require: false,
+    type: Boolean,
   }
 })
 
@@ -54,10 +58,10 @@ async function findAddress(event) {
 </script>
 
 <template>
-  <label for="address">Adresse</label>
+  <label v-if="showLabel" for="address">Adresse</label>
   <AutoComplete inputClass="w-full" inputId="address" v-model="address" @complete="findAddress" optionLabel="label"
-                :suggestions="addresses" :invalid="invalid" @itemSelect="emitAddressUpdateEvent"/>
-  <small>Renseigner au moins 4 caractères</small>
+                :suggestions="addresses" :invalid="invalid" @itemSelect="emitAddressUpdateEvent" :class="showLabel ? '' : 'w-full'"/>
+  <small :class="showLabel ? '' : 'block'">Renseigner au moins 4 caractères</small>
 </template>
 
 <style scoped>
