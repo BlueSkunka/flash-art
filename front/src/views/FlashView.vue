@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import {computed, onBeforeMount, ref} from 'vue';
 import { useTattooersStore } from "@/stores/tattooers";
 import { useStylesStore } from "@/stores/styles";
 import { useFlashesStore } from '@/stores/flashes';
@@ -28,13 +28,11 @@ const filterTattooers = async (style: string | null = null) => {
 };
 
 
-const fetchData = async () => {
+onBeforeMount(async () => {
   await stylesStore.findAll();
   await tattooersStore.findAll();
   await flashesStore.findAll();
-};
-
-fetchData();
+})
 
 const selectedCities = ref([]);
 const selectedStyles = ref([]);

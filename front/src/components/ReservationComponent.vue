@@ -7,25 +7,25 @@
             <Image src="../src/assets/illu-tatoueur.jpg" class="m-auto"/>
           </div>
           <div class="ml-10">
-            <h2 class="mb-3 text-xl"> Flash "{{ props.flash.name }}"</h2>
+            <h2 class="mb-3 text-xl"> Flash "{{ flash.name }}"</h2>
             <div class="flex gap-6" v-if="tatoueurReservation">
               <div class="flex my-2">
                 <i class="pi pi-user my-auto pr-1"/>
-                <p class="my-auto">{{ props.flash.user.firstname + ' ' + props.flash.user.lastname }}</p>
+                <p class="my-auto">{{ flash.user.firstname + ' ' + flash.user.lastname }}</p>
               </div>
             </div>
             <div class="flex gap-6">
               <div class="flex my-2">
                 <i class="pi pi-calendar-clock my-auto pr-1"/>
-                <p class="my-auto">{{ props.flash.flashDate }}</p>
+                <p class="my-auto">{{ flash.flashDate }}</p>
               </div>
               <div class="flex my-2">
                 <i class="pi pi-map-marker my-auto pr-1"/>
-                <p class="my-auto">{{ props.flash.place }}</p>
+                <p class="my-auto">{{ flash.place }}</p>
               </div>
               <div class="flex my-2">
                 <i class="pi pi-wallet my-auto pr-1"/>
-                <p class="my-auto">{{ props.flash.price }} €</p>
+                <p class="my-auto">{{ flash.price }} €</p>
               </div>
             </div>
           </div>

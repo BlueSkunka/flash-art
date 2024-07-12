@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CommentComponent from '@/components/CommentComponent.vue';
 import CardComponent from '@/components/CardComponent.vue';
-import {computed, onMounted, ref} from 'vue';
+import {computed, onBeforeMount, ref} from 'vue';
 import { useRoute} from "vue-router";
 import {useTattooersStore} from "@/stores/tattooers";
 import {Network} from "@/enums/network";
@@ -19,11 +19,11 @@ const flashes = computed(() => flashStore.flashes)
 const opinions = computed(() => opinionStore.opinions)
 const avgRating = computed(() => opinionStore.average);
 
-onMounted(() => {
+onBeforeMount(async () => {
   const id = route.params.id
 
   if (typeof id === "string") {
-    tattooerStore.findOne(id)
+    await tattooerStore.findOne(id)
   }
 })
 

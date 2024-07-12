@@ -2,7 +2,7 @@
   <Toast/>
   <h1 class="text-3xl text-center my-12">Mes réservations</h1>
   <div class="mb-20">
-    <div class="w-1/2 mx-auto" v-for="(flash) in flashes">
+    <div class="w-1/2 mx-auto" v-for="(flash) in flashes" :key="flash._id">
       <ReservationComponent v-if="flash.user !== null" :flash="flash" :tatoueur-reservation="true" @cancel-book-event="handleCancelBookEvent"/>
     </div>
   </div>
@@ -25,7 +25,6 @@ const flashes = computed(() => flashesStore.flashes)
 
 onBeforeMount(async () => {
   await flashesStore.findByUser(user.value)
-
 })
 
 const handleCancelBookEvent = (ev) => {
