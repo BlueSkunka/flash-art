@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col min-h-screen">
+    <!-- Navbar -->
     <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white border-0">
       <template #start>
         <button class="mr-10" @click="goHome">
@@ -19,12 +20,12 @@
         <Button v-else label="Se déconnecter" @click="logout"/>
       </template>
     </Menubar>
+
+    <!-- Main content -->
+    <main class="flex-grow">
+      <router-view></router-view>
+    </main>
   </div>
-
-  <main class="flex-grow">
-    <router-view></router-view>
-  </main>
-
   <footer class="bg-zinc-900 text-white text-center py-3">
         2024 © FlashArt Association - Powered by Atomic Dev 
     </footer>
@@ -62,41 +63,46 @@ const logout = () => {
 
 const items = ref([]);
 
-if (user.value !== null) {
-  items.value = [
-    {
-      label: 'Les tatoueurs',
-      command: () => {
-        router.push('/tatoueurs');
+watch(() => {
+  if (user.value !== null) {
+    items.value = [
+      {
+        label: 'Les tatoueurs',
+        command: () => {
+          router.push('/tatoueurs');
+        }
+      },
+      {
+        label: 'Les flashs',
+        command: () => {
+          router.push('/flashs');
+        }
+      },
+      {
+        label: 'Mes réservations',
+        command: () => {
+          router.push({name: "reservations"});
+        }
       }
-    },
-    {
-      label: 'Les flashs',
-      command: () => {
-        router.push('/flashs');
+    ]
+  } else {
+    items.value = [
+      {
+        label: 'Les tatoueurs',
+        command: () => {
+          router.push('/tatoueurs');
+        }
+      },
+      {
+        label: 'Les flashs',
+        command: () => {
+          router.push('/flashs');
+        }
       }
-    },
-    {
-      label: 'Mes réservations',
-      command: () => {
-        router.push({name: "reservations"});
-      }
-    }
-  ]
-} else {
-  items.value = [
-    {
-      label: 'Les tatoueurs',
-      command: () => {
-        router.push('/tatoueurs');
-      }
-    },
-    {
-      label: 'Les flashs',
-      command: () => {
-        router.push('/flashs');
-      }
-    }
-  ]
-}
+    ]
+  }
+})
 </script>
+
+<style scoped>
+</style>

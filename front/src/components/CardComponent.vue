@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {ref} from 'vue';
+import { RouterLink } from 'vue-router';
 
 const router = useRouter();
 const liked = ref(false);
@@ -18,9 +19,12 @@ const props = defineProps<{
   showDate: boolean;
   _id: string
   title: string
+  flashDate: Date;
   subtitle: string
-  description: string
-  styles: Style[]
+  price: number;
+  description: string;
+  styles: Style[];
+  url: string;
 }>();
 
 </script>
@@ -32,7 +36,7 @@ const props = defineProps<{
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />
       </template>
       <template #title v-if="showTitle">{{ props.title }}
-        <div class="text-xl font-normal">{{ props.description }}</div>
+        <div class="text-xl font-normal"> {{ props.price }} €</div>
       </template>
       <template #subtitle v-if="showSubtitle">
         {{ subtitle }}
@@ -47,6 +51,20 @@ const props = defineProps<{
             <i v-if="liked" class="pi pi-heart-fill filled"></i>
             <i v-else class="pi pi-heart"></i>
           </button>
+        </div>
+        <div>
+          <div> {{ props.description }} </div>
+        </div>
+        <div class="flex justify-between border-2 rounded p-3 items-center my-4">
+          <div v-if="showDate">{{ props.flashDate.toLocaleDateString() }}</div>
+          <i class="pi pi-calendar" />
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex gap-4 mt-1 pt-0">
+          <RouterLink :to="url">
+            <Button :label="showMultiple ? 'Voir les flashs' : 'Voir le flash'" class="w-full" />
+          </RouterLink>
         </div>
       </template>
     </Card>

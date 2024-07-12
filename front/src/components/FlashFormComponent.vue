@@ -144,7 +144,7 @@ const submit = async (e: Event) => {
 
     <div class="flex flex-col gap-2 mb-5">
       <label for="date">Date</label>
-      <Calendar v-model="form.flashDate.value" dateFormat="dd/mm/yy"/>
+      <Calendar showTime hourFormat="24" v-model="form.flashDate.value" dateFormat="dd/mm/yy"/>
     </div>
 
     <div class="flex flex-col gap-2 mb-5">

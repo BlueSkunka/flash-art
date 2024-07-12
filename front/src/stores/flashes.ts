@@ -2,14 +2,51 @@ import {ref} from 'vue'
 import {defineStore} from 'pinia'
 import axios from "axios";
 import type {Flash} from "@/entities/flash";
+import type { Tattooer } from '@/entities/tattooer';
+import type { Address } from '@/entities/address';
 
 export const useFlashesStore = defineStore('flashes', () => {
     const url = new URL(import.meta.env.VITE_BACKEND_URL + "/flashes")
     const flashes = ref<Flash[]>([])
+    const flash = ref<Flash>()
     const isLoading = ref(false)
 
-    async function findAll() {
+    async function findAll(
+        place: Address | null = null,
+        flashDate: Date | null = null, 
+        tattooer: {} | null = null,
+        name: string | null = null,
+        description : string | null = null,
+        minPrice: number | null = null,
+        maxPrice: number | null = null,
+        styles: Style[] = []
+    ) {
         isLoading.value = true
+
+        if (place !== null && place.label.length > 0) {
+            url.searchParams.set('long', place.coordinates.long.toString())
+            url.searchParams.set('lat', place.coordinates.lat.toString())
+            url.searchParams.set('maxRange', 50000)
+        }
+
+        // if (null !== minPrice) {
+        //     url.searchParams.set('minPrice', minPrice.toString())
+        // }
+
+
+        if (maxPrice) {
+            url.searchParams.set('maxPrice', maxPrice.toString())
+        }
+
+        if (styles.length > 0) {
+            const stylesList = []
+
+            styles.forEach((style: any) => {
+                stylesList.push(style.name)
+            })
+
+            url.searchParams.set('styles', stylesList.join(','))
+        }
 
         flashes.value = await axios.get(url)
             .then(response => {
@@ -17,12 +54,17 @@ export const useFlashesStore = defineStore('flashes', () => {
             })
             .catch(error => console.log(error))
 
+        url.searchParams.forEach((data, key) => {
+            url.searchParams.delete(key)
+        })
+
         isLoading.value = false
     }
 
-    async function findByTattooer(tattooer: User) {
+    async function findByTattooer(tattooer: User, isBooked: Boolean|null = null) {
         isLoading.value = true
         url.searchParams.set("tattooer", tattooer._id.toString())
+        url.searchParams.set("booked", isBooked)
 
         flashes.value = await axios.get(url)
             .then(response => {
@@ -31,6 +73,45 @@ export const useFlashesStore = defineStore('flashes', () => {
             .catch(error => console.log(error))
 
         url.searchParams.delete("tattooer")
+        url.searchParams.delete("booked")
+
+        isLoading.value = false
+    }
+
+    async function findByUser(user: User) {
+        isLoading.value = true
+
+        url.searchParams.set("user", user._id.toString())
+
+        flashes.value = await axios.get(url)
+            .then(response => {
+                return response.data
+            })
+            .catch(error => console.log(error))
+
+        url.searchParams.delete("user")
+
+        isLoading.value = false
+    }
+
+    async function findOne(id: number) {
+        isLoading.value = true
+
+        await axios.get(url.href + '/' + id)
+            .then(response => {
+                if (response.status === 200) {
+                    flash.value = response.data
+
+                    return true
+                }
+
+                return false
+            })
+            .catch(error => {
+                console.log(error)
+
+                return false
+            })
 
         isLoading.value = false
     }
@@ -103,5 +184,5 @@ export const useFlashesStore = defineStore('flashes', () => {
         return isDeleted
     }
 
-    return {flashes, isLoading, findAll, findByTattooer, remove, create, update}
+    return {flash, flashes, isLoading, findAll, findByTattooer, findByUser, findOne, remove, create, update}
 })

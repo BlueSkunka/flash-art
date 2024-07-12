@@ -41,7 +41,7 @@ const router = createRouter({
                     name: "flashes"
                 },
                 {
-                    path: '/flashs/1',
+                    path: '/flashs/:id',
                     component: FlashDetailView,
                 },
                 {
@@ -102,9 +102,6 @@ const router = createRouter({
                 {
                     path: '',
                     component: AccueilAdminView,
-                    meta: {
-                        layout: AdminLayout
-                    }
                 },
                 {
                     path: 'profil',
