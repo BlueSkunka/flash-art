@@ -17,7 +17,7 @@ const props = defineProps<{
   showSubtitle: boolean;
   showMultiple: boolean;
   showDate: boolean;
-  _id: string
+  id: string
   title: string
   subtitle: string
   description: string;
@@ -27,7 +27,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <router-link :to="{name: 'tattoer_detail', params: {id: _id}}">
+  <router-link :to="{name: 'tattoer_detail', params: {id: props.id}}">
     <Card style="width: 20rem; overflow: hidden; margin-bottom: 5rem;">
       <template #header>
         <img alt="user header" src="https://primefaces.org/cdn/primevue/images/usercard.png" />

@@ -7,6 +7,7 @@ import {useTattooersStore} from "@/stores/tattooers";
 import {Network} from "@/enums/network";
 import {useFlashesStore} from "@/stores/flashes";
 import {useOpinionStore} from "@/stores/opinions";
+import FlashComponent from "@/components/FlashComponent.vue";
 
 const route = useRoute()
 const tattooerStore = useTattooersStore()
@@ -81,8 +82,7 @@ const scrollToAvis = () => {
 
         <div class="grid grid-cols-3 gap-2 justify-items-center m-8">
             <div v-for="flash in flashes">
-                <CardComponent :showTitle="true" :showSubtitle="false" :showMultiple="true" :showDate="true"
-                                :styles="flash.styles" :title="flash.name" :description="flash.description" />
+              <FlashComponent :flash="flash"/>
             </div>
         </div>
 
