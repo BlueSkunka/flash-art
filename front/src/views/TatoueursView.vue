@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {computed, onBeforeMount, ref} from 'vue';
 import {useTattooersStore} from "@/stores/tattooers";
 import {useStylesStore} from "@/stores/styles";
-import { url } from 'inspector';
 
 const tattooersStore = useTattooersStore()
 const stylesStore = useStylesStore()
@@ -18,12 +17,10 @@ const filterTattooers = async (style: string|null = null) => {
   await tattooersStore.findAll(style)
 }
 
-const fetchData = async () => {
+onBeforeMount(async () => {
   await stylesStore.findAll()
   await tattooersStore.findAll()
-}
-
-fetchData()
+})
 
 </script>
 
