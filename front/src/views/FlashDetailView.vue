@@ -11,8 +11,8 @@
       <p class="text-grey-600">{{ flash.description }}</p>
       <p class="mt-5 mb-1">Créneau horaire:
         {{ date.toLocaleString() }}</p>
-      <Button v-if="user && flash.user === undefined" @click="toBook">Réserver le créneau</Button>
-      <InlineMessage severity="info" v-else-if="flash.user !== undefined">Ce créneau à déjà été réservé</InlineMessage>
+      <Button v-if="user && (flash.user === undefined || flash.user === null)" @click="toBook">Réserver le créneau</Button>
+      <InlineMessage severity="info" v-else-if="flash.user !== undefined && flash.user !== null">Ce créneau à déjà été réservé</InlineMessage>
       <InlineMessage severity="info" v-else>Vous devez être connecté pour réserver ce créneau</InlineMessage>
     </div>
   </div>

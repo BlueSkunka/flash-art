@@ -55,7 +55,6 @@ const props = defineProps({
   },
 })
 
-const user = { nom: "Dark Bernadette", mail: "dark_bernadette@gmail.com" };
 const flashesStore = useFlashesStore()
 
 const emits = defineEmits(['cancel-book-event'])
@@ -81,7 +80,7 @@ const cancelBook = async () => {
 
   const isUpdated = await flashesStore.update(data, props.flash._id)
 
-  emits('cancel-book-event', {isCanceked: isUpdated})
+  emits('cancel-book-event', {isCanceled: isUpdated})
 }
 
 </script>

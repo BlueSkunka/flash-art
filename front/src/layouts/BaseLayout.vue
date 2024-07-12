@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col">
     <!-- Navbar -->
     <Menubar :model="items" class="px-52 bg-zinc-900 m-0 rounded-none text-white border-0">
       <template #start>

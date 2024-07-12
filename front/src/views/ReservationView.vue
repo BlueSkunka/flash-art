@@ -27,9 +27,9 @@ onBeforeMount(async () => {
   await flashesStore.findByUser(user.value)
 })
 
-const handleCancelBookEvent = (ev) => {
-  if (ev.isCanceled) {
-    toast.add({'severity': "", summary: "Flash canceled"})
+const handleCancelBookEvent = (data) => {
+  if (data.isCanceled) {
+    toast.add({'severity': "success", summary: "Flash canceled"})
   } else {
     toast.add({'severity': "error", summary: "Error occured"})
   }
