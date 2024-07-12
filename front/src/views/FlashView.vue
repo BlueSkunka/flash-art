@@ -9,6 +9,8 @@ import {useAuthStore} from "@/stores/auth";
 import StyleFieldComponent from "@/components/StyleFieldComponent.vue";
 import AddressFieldComponent from '@/components/AddressFieldComponent.vue';
 import FlashComponent from '@/components/FlashComponent.vue';
+import {ZIndexUtils} from "primevue/utils";
+import clear = ZIndexUtils.clear;
 
 const tattooersStore = useTattooersStore();
 const stylesStore = useStylesStore();
@@ -108,8 +110,11 @@ const handleStylesSelectedEvent = (data) => {
   form.styles.value = data.styles
 }
 
-console.log(flashes.value)
+const clearFilter = (e: Event) => {
+  form.place.value = new Address('')
 
+  submit(e)
+}
 </script>
 
 
@@ -129,6 +134,7 @@ console.log(flashes.value)
             <!-- <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
             <MultiSelect v-model="selectedTatoueurs" :options="nameTattooers" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" inputId="tattooer"/> -->
             <Button label="Filtrer" type="submit" @click="submit" class="h-12" />
+            <Button label="Effacer" type="button" @click="clearFilter" class="h-12" severity="danger"/>
           </div>
           <!-- <div class="flex flex-wrap gap-4 w-full">
             <div class="flex-1 mb-4">
@@ -147,7 +153,7 @@ console.log(flashes.value)
         </form>
       </div>
   
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 justify-items-center m-8 sm:grid-cols-2 md:grid-cols-3" v-if="!isLoadingFlashes">
+      <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-12 gap-4 justify-items-center m-8 sm:grid-cols-2 sm:gap-6 md:grid-cols-2 md:gap-6" v-if="!isLoadingFlashes">
         <div v-if="flashes.length > 0" v-for="(flash, index) in flashes" :key="index" >
             <FlashComponent :flash="flash" />
           </div>

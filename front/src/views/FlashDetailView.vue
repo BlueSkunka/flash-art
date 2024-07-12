@@ -2,8 +2,8 @@
   <Toast/>
   <h1 class="text-3xl text-center my-12">Réservation d'un flash</h1>
   <div class="grid grid-cols-2 mb-16 w-1/2 mx-auto">
-    <div class="border border-red-600 w-2/3 m-auto">
-      <img src="../assets/illu-tatoueur.jpg" alt="image de flash">
+    <div class="w-80 h-60 border m-auto">
+      <img src="../assets/illu-tatoueur.jpg" alt="image de flash" class="w-full h-full object-cover">
     </div>
     <div>
       <h2 class="text-2xl my-3">{{ flash.name }}</h2>
