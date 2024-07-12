@@ -9,6 +9,8 @@ import {useAuthStore} from "@/stores/auth";
 import StyleFieldComponent from "@/components/StyleFieldComponent.vue";
 import AddressFieldComponent from '@/components/AddressFieldComponent.vue';
 import FlashComponent from '@/components/FlashComponent.vue';
+import {ZIndexUtils} from "primevue/utils";
+import clear = ZIndexUtils.clear;
 
 const tattooersStore = useTattooersStore();
 const stylesStore = useStylesStore();
@@ -110,6 +112,11 @@ const handleStylesSelectedEvent = (data) => {
   form.styles.value = data.styles
 }
 
+const clearFilter = (e: Event) => {
+  form.place.value = new Address('')
+
+  submit(e)
+}
 </script>
 
 
@@ -129,6 +136,7 @@ const handleStylesSelectedEvent = (data) => {
             <!-- <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
             <MultiSelect v-model="selectedTatoueurs" :options="nameTattooers" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" inputId="tattooer"/> -->
             <Button label="Filtrer" type="submit" @click="submit" class="h-12" />
+            <Button label="Effacer" type="button" @click="clearFilter" class="h-12" severity="danger"/>
           </div>
           <!-- <div class="flex flex-wrap gap-4 w-full">
             <div class="flex-1 mb-4">
