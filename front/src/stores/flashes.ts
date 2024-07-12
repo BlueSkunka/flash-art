@@ -63,7 +63,6 @@ export const useFlashesStore = defineStore('flashes', () => {
 
     async function findByTattooer(tattooer: User, isBooked: Boolean|null = null) {
         isLoading.value = true
-
         url.searchParams.set("tattooer", tattooer._id.toString())
         url.searchParams.set("booked", isBooked)
 
