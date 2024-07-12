@@ -3,8 +3,8 @@ import {defineStore} from 'pinia'
 import axios from "axios";
 
 export const useStylesStore = defineStore('styles', () => {
-    const url = import.meta.env.VITE_BACKEND_URL + "/styles"
-    const styles = ref<[]>([])
+    const url = new URL(import.meta.env.VITE_BACKEND_URL + "/styles")
+    const styles = ref<Style[]>([])
     const isLoading = ref(false)
 
     async function findAll(name: string | null = null) {
@@ -13,14 +13,12 @@ export const useStylesStore = defineStore('styles', () => {
         if (name) {
             url.searchParams.set("name", name)
         }
-        const allStyles = await axios.get(url)
-        const {data} = allStyles;
-        styles.value = data
-        console.log(styles.value)
-            // .then(response => {
-            //     return response.data
-            // })
-            // .catch(error => console.log(error))
+
+        styles.value = await axios.get(url)
+            .then(response => {
+                return response.data
+            })
+            .catch(error => console.log(error))
 
         isLoading.value = false
     }

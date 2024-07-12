@@ -29,7 +29,6 @@
   <footer class="bg-zinc-900 text-white text-center py-3">
         2024 © FlashArt Association - Powered by Atomic Dev 
     </footer>
-  </div>
 </template>
 
 <script setup>
