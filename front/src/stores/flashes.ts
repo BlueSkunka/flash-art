@@ -39,13 +39,9 @@ export const useFlashesStore = defineStore('flashes', () => {
         }
 
         if (styles.length > 0) {
-            const stylesList = []
-
-            styles.forEach((style: any) => {
-                stylesList.push(style.name)
+            styles.forEach((style: Style) => {
+                url.searchParams.append('style', style.name)
             })
-
-            url.searchParams.set('styles', stylesList.join(','))
         }
 
         flashes.value = await axios.get(url)

@@ -131,8 +131,8 @@ const clearFilter = (e: Event) => {
             <div class="flex flex-col">
               <AddressFieldComponent :invalid="false" :address="form.place.value" @addressUpdateEvent="handleAddressUpdateEvent" />
             </div>
-            <!-- <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
-            <MultiSelect v-model="selectedTatoueurs" :options="nameTattooers" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" inputId="tattooer"/> -->
+            <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
+            <!-- <MultiSelect v-model="selectedTatoueurs" :options="nameTattooers" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" inputId="tattooer"/> -->
             <Button label="Filtrer" type="submit" @click="submit" class="h-12" />
             <Button label="Effacer" type="button" @click="clearFilter" class="h-12" severity="danger"/>
           </div>
@@ -154,7 +154,7 @@ const clearFilter = (e: Event) => {
       </div>
   
       <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-12 gap-4 justify-items-center m-8 sm:grid-cols-2 sm:gap-6 md:grid-cols-2 md:gap-6" v-if="!isLoadingFlashes">
-        <div v-if="flashes.length > 0" v-for="(flash, index) in flashes" :key="index" >
+        <div v-if="flashes?.length > 0" v-for="(flash, index) in flashes" :key="index" >
             <FlashComponent :flash="flash" />
           </div>
         <div v-else>
