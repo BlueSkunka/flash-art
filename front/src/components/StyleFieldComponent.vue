@@ -32,7 +32,7 @@ const emitStylesSelectedEvent = () => {
 
 <template>
   <label for="style">Styles</label>
-  <AutoComplete :invalid="props.invalid" v-model="styles" fluid multiple @complete="search" optionLabel="name"
+  <AutoComplete inputClass="w-full" :invalid="props.invalid" v-model="styles" fluid multiple @complete="search" optionLabel="name"
                 :suggestions="fetchStyles" @itemSelect="emitStylesSelectedEvent"/>
 </template>
 
