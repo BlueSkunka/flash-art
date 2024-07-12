@@ -16,7 +16,6 @@ class Flash {
         type: { type: String },
         coordinates: [Number],
     };
-    styles: Style[]
 
     constructor(
         _id: number,
@@ -32,7 +31,6 @@ class Flash {
             type: { type: String },
             coordinates: [Number],
         },
-        styles: Style[]
     ) {
         this._id = _id;
         this.place = place;
@@ -44,7 +42,6 @@ class Flash {
         this.price = price;
         this.styles = styles;
         this.location = location;
-        this.styles = styles
     }
 }
 

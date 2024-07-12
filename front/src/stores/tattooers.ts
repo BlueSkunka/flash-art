@@ -40,7 +40,7 @@ export const useTattooersStore = defineStore('tattooers', () => {
             })
             .catch(err => console.error(err))
 
-        await flashStore.findByTattooer(tattooer.value)
+        await flashStore.findByTattooer(tattooer.value, false)
         await opinionStore.findByTattooer(tattooer.value)
 
         isLoading.value = false
