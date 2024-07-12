@@ -127,14 +127,18 @@ const clearFilter = (e: Event) => {
       <h1 class="text-3xl text-center my-12">Les flashs</h1>
       <div class="flex flex-col items-center justify-center w-full px-20">
         <form>
-          <div class="flex flex-wrap gap-4 items-center">
+          <div class="flex flex-wrap gap-4 ">
             <div class="flex flex-col">
-              <AddressFieldComponent :invalid="false" :address="form.place.value" @addressUpdateEvent="handleAddressUpdateEvent" />
+              <AddressFieldComponent :invalid="false" :showLabel="true" :address="form.place.value" @addressUpdateEvent="handleAddressUpdateEvent" />
             </div>
-            <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
+            <div class="flex flex-col">
+              <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
+            </div>
             <!-- <MultiSelect v-model="selectedTatoueurs" :options="nameTattooers" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" inputId="tattooer"/> -->
-            <Button label="Filtrer" type="submit" @click="submit" class="h-12" />
-            <Button label="Effacer" type="button" @click="clearFilter" class="h-12" severity="danger"/>
+            <div class="flex items-center gap-4">
+              <Button label="Filtrer" type="submit" @click="submit" class="h-12" />
+              <Button label="Effacer" type="button" @click="clearFilter" class="h-12" severity="danger"/>
+            </div>
           </div>
           <!-- <div class="flex flex-wrap gap-4 w-full">
             <div class="flex-1 mb-4">
