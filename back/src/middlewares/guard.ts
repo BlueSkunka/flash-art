@@ -1,7 +1,8 @@
-import { createMiddleware } from 'hono/factory'
-import { verify } from 'hono/jwt'
-import { User } from "../models/user";
+import {createMiddleware} from 'hono/factory'
+import {verify} from 'hono/jwt'
+import {User} from "../models/user";
 import StatusCode from "../enums/statusCode";
+import {myEnv} from "../../conf";
 
 const guard = (role: string) => createMiddleware(async (c, next) => {
 
@@ -10,9 +11,9 @@ const guard = (role: string) => createMiddleware(async (c, next) => {
     const token = authorization?.replace("Bearer ", "")
 
     if (token) {
-        const { header, payload } = verify(token)
+        const data = await verify(token, myEnv.JWT_CAT_SECRET)
 
-        const _id = payload._id
+        const _id = data._id
 
         try {
             const user = await User.findOne({ _id })

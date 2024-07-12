@@ -8,6 +8,7 @@ import {Address} from "@/entities/address";
 import {useAuthStore} from "@/stores/auth";
 import StyleFieldComponent from "@/components/StyleFieldComponent.vue";
 import AddressFieldComponent from '@/components/AddressFieldComponent.vue';
+import FlashComponent from '@/components/FlashComponent.vue';
 
 const tattooersStore = useTattooersStore();
 const stylesStore = useStylesStore();
@@ -88,7 +89,7 @@ const form = {
 
 const submit = async (e: Event) => {
   e.preventDefault()
-  console.log(form.styles.value)
+
   await flashesStore.findAll(
     form.place.value,
     form.flashDate.value,
@@ -109,6 +110,8 @@ const handleStylesSelectedEvent = (data) => {
   form.styles.value = data.styles
 }
 
+console.log(flashes.value)
+
 </script>
 
 
@@ -121,11 +124,13 @@ const handleStylesSelectedEvent = (data) => {
       <h1 class="text-3xl text-center my-12">Les flashs</h1>
       <div class="flex flex-col items-center justify-center w-full px-20">
         <form>
-          <div class="flex flex-col flex-wrap gap-4 w-full">
-            <AddressFieldComponent :invalid="false" :address="form.place.value" @addressUpdateEvent="handleAddressUpdateEvent" />
+          <div class="flex flex-wrap gap-4 items-center">
+            <div class="flex flex-col">
+              <AddressFieldComponent :invalid="false" :address="form.place.value" @addressUpdateEvent="handleAddressUpdateEvent" />
+            </div>
             <!-- <StyleFieldComponent :styles="form.styles.value" :invalid="false" @stylesSelectedEvent="handleStylesSelectedEvent" />
             <MultiSelect v-model="selectedTatoueurs" :options="nameTattooers" optionLabel="name" placeholder="Tatoueur" class="flex-1 mb-4" inputId="tattooer"/> -->
-            <Button label="Filtrer" type="submit" @click="submit" />
+            <Button label="Filtrer" type="submit" @click="submit" class="h-12" />
           </div>
           <!-- <div class="flex flex-wrap gap-4 w-full">
             <div class="flex-1 mb-4">
@@ -146,8 +151,7 @@ const handleStylesSelectedEvent = (data) => {
   
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 justify-items-center m-8 sm:grid-cols-2 md:grid-cols-3" v-if="!isLoadingFlashes">
         <div v-if="flashes.length > 0" v-for="(flash, index) in flashes" :key="index" >
-            <CardComponent :showTitle="true" :showSubtitle="true" :showMultiple="true" :subtitle="flash.tattooer.surname" :showDate="true"
-                          :price="flash.price" :description="flash.description" :flashDate="flash.flashDate.getDay"  :title="flash.name" :styles="flash.styles" :url="'/flashs/'+ flash._id"/>
+            <FlashComponent :flash="flash" />
           </div>
         <div v-else>
             <p class="text-center"><b>Aucun résultat</b></p>
