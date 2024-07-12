@@ -80,6 +80,7 @@ export const useFlashesStore = defineStore('flashes', () => {
 
     async function findByUser(user: User) {
         isLoading.value = true
+        flashes.value.length=0
 
         url.searchParams.set("user", user._id.toString())
 

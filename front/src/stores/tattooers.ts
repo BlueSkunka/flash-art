@@ -26,15 +26,16 @@ export const useTattooersStore = defineStore('tattooers', () => {
             })
             .catch(error => console.log(error))
 
+        url.searchParams.delete("style")
+
+
         isLoading.value = false
     }
 
-    async function
-    findOne(_id: string) {
+    async function findOne(_id: string) {
         isLoading.value = true
 
-        url.href = url.href + '/' + _id;
-        tattooer.value = await axios.get(url)
+        tattooer.value = await axios.get(url + '/' + _id)
             .then(response => {
                 return response.data
             })

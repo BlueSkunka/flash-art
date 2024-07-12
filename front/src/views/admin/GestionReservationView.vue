@@ -9,7 +9,7 @@
 <script setup>
 import ReservationComponent from "@/components/ReservationComponent.vue";
 import {useFlashesStore} from "@/stores/flashes";
-import {computed, onMounted} from "vue";
+import {computed, onBeforeMount} from "vue";
 import {useAuthStore} from "@/stores/auth";
 
 const authStore = useAuthStore()
@@ -18,7 +18,7 @@ const flashesStore = useFlashesStore()
 const user = computed(() => authStore.user)
 const flashes = computed(() => flashesStore.flashes)
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await flashesStore.findByTattooer(user.value, true)
 })
 

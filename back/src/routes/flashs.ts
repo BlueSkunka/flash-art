@@ -71,7 +71,7 @@ api.get('', async (c) => {
         } else if (undefined !== user) {
             query["user"] = user
         } else {
-            query["user"] = { $exists: false, $eq: null }
+            query["user"] = { $eq: null }
         }
 
         const flashes = await Flash.find(query).populate('tattooer', 'surname place').populate('user', 'lastname firstname')
